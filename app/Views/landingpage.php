@@ -9,7 +9,7 @@
                 <button class="btn btn-accent">
                     <a href="<?= base_url("/signup") ?>">Get Started</a>
                 </button>
-            </div>~
+            </div>
         </div>
     </section>
 

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NomNomNow</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.9.0/dist/full.min.css" rel="stylesheet" type="text/css" />
-    <link href="<?= base_url('css/output.css') ?>" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Lilita+One&family=Righteous&family=Rubik+Bubbles&display=swap" rel="stylesheet">
@@ -82,6 +82,22 @@
                 }
             }
         };
+    </script>
+    <script>
+        tailwind.config = {
+            daisyui: {
+                themes: ["light", "dracula", "retro", "night", "sunset"],
+            },
+            theme: {
+                extend: {
+                fontFamily: {
+                    header: ['Rubik Bubbles', 'Lilita One','sans-serif'],
+                    'sub-header': ['Lilita One','sans-serif'],
+                    body: ['Josefin Sans', 'Lilita One','sans-serif'],
+                },
+                },
+            }
+        }
     </script>
 </body>
 </html>
