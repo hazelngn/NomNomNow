@@ -21,6 +21,10 @@
                         <li>Specials</li>
                         <i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i>
                     </div>
+                    <!-- lg:tooltip doesn't work -->
+                    <div class="w-full flex justify-center pt-3 tooltip tooltip-accent" data-tip="Add new menu">
+                        <i class="text-accent text-lg lg:text-2xl fa-solid fa-circle-plus"></i>
+                    </div>
                 </ul>
             </div>
         </div>

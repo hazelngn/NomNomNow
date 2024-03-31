@@ -4,7 +4,7 @@
         <section class="flex flex-col w-full">
             <h3 class="lg:text-2xl text-xl font-bold mb-7 mt-10 text-accent text-center <?= $step == 4 ? 'hidden' : '' ?>">Sign up to your account</h3>
             <h3 class="lg:text-2xl text-xl font-bold mb-7 mt-10 text-accent text-center <?= $step != 4 ? 'hidden' : '' ?>">Thank you for creating an account with NomNomNow</h3>
-            <ul class="steps mb-11">
+            <ul class="steps steps-vertical mb-11">
                 <li class="step <?= $step >= 1 ? 'step-secondary text-secondary' : '' ?> ">User Information</li>
                 <li class="step <?= $step >= 2  ? 'step-secondary text-secondary' : '' ?>">Credentials</li>
                 <li class="step <?= $step >= 3 ? 'step-secondary text-secondary' : '' ?>">Business Information</li>
@@ -38,10 +38,10 @@
                         </div>
                     </div>
                     <div class="flex flex-row justify-evenly">
-                        <a class="<?= $backStep = $step - 1; $backStep < 0 ? 'hidden' : '' ?>" href="<?= base_url('signup/' . $backStep);  ?>">
-                            <i class="text-accent text-3xl fa-solid fa-circle-arrow-left" ></i>
+                        <a class="<?= $step - 1 <= 0 ? 'pointer-events-none' : '' ?>"   href="<?= $backStep = $step - 1; base_url('signup/' . $backStep);  ?>">
+                            <i class="text-accent text-3xl fa-solid fa-circle-arrow-left <?= $step - 1 <= 0 ? 'text-neutral' : '' ?>" ></i>
                         </a>
-                        <a class="<?= $nextStep = $step + 1; $nextStep > 4 ? 'hidden' : '' ?>" href="<?= base_url('signup/' . $nextStep)  ?>">
+                        <a href="<?= $nextStep = $step + 1;  base_url('signup/' . $nextStep)  ?>">
                             <i class="text-accent text-3xl fa-solid fa-circle-arrow-right" ></i>
                         </a>
                     </div>
@@ -66,11 +66,11 @@
                     </div>
 
                     <div class="flex flex-row justify-evenly">
-                        <a class="<?= $backStep = $step - 1; $backStep < 0 ? 'hidden' : '' ?>" href="<?= base_url('signup/' . $backStep);  ?>">
+                        <a href="<?=  $backStep = $step - 1; base_url('signup/' . $backStep);  ?>">
                             <i class="text-accent text-3xl fa-solid fa-circle-arrow-left" ></i>
                         </a>
-                        <a class="<?= $nextStep = $step + 1; $nextStep > 4 ? 'hidden' : '' ?>" href="<?= base_url('signup/' . $nextStep)  ?>">
-                            <i class="text-accent text-3xl fa-solid fa-circle-arrow-right" ></i>
+                        <a href="<?= $nextStep = $step + 1; base_url('signup/' . $nextStep)  ?>">
+                            <i class="text-accent text-3xl fa-solid fa-circle-arrow-right"></i>
                         </a>
                     </div>
                 </section>
@@ -98,10 +98,10 @@
                     </div>
 
                     <div class="flex flex-row justify-evenly">
-                        <a class="<?= $backStep = $step - 1; $backStep < 0 ? 'hidden' : '' ?>" href="<?= base_url('signup/' . $backStep);  ?>">
+                        <a href="<?=  $backStep = $step - 1; base_url('signup/' . $backStep);  ?>">
                             <i class="text-accent text-3xl fa-solid fa-circle-arrow-left" ></i>
                         </a>
-                        <a class="<?= $nextStep = $step + 1; ?>" href="<?= base_url('signup/' . $nextStep)  ?>">
+                        <a href="<?= $nextStep = $step + 1; base_url('signup/' . $nextStep)  ?>">
                             <i class="text-accent text-3xl fa-solid fa-circle-check"></i>
                         </a>
                     </div>

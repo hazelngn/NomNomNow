@@ -36,4 +36,23 @@ class NomNomController extends BaseController
         }
         return view('signup', $data);
     }
+
+    public function menu($id = null)
+    {
+        $data['menu'] = null;
+        $data['businessName'] = 'haeduri';
+        $data['categories'] = [
+            'Entrees' => 'images/menu/entrees.png',
+            'Sides' => 'images/menu/sides.png',
+            'Main Dishes' => 'images/menu/maindish.png',
+            'Desserts' => 'images/menu/dessert.png',
+            'Alcoholic Beverages' => 'images/menu/alcoholicBV.png',
+            'Coffee & Tea' => 'images/menu/coffee&tea.png',
+            'Soft Drinks' => 'images/menu/softdrink.png',
+            
+        ];
+        $data['step'] = 2;
+        // [', 'Sides', 'Main Dishes', 'Desserts', 'Alcoholic Beverage', 'Coffee & Tea', 'Soft Drinks'];
+        return view('menu', $data);
+    }
 }
