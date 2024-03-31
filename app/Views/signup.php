@@ -61,8 +61,8 @@
                     </div>
 
                     <div class="flex flex-col gap-2">
-                        <label for="password">Retype your password</label>
-                        <input type="password" name="password" id="password" class="p-2 rounded-lg" placeholder="Enter your password" required>
+                        <label for="passwordRetype">Retype your password</label>
+                        <input type="password" name="passwordRetype" id="passwordRetype" class="p-2 rounded-lg" placeholder="Enter your password" required>
                     </div>
 
                     <div class="flex flex-row justify-evenly">

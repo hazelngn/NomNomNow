@@ -12,9 +12,14 @@ class NomNomController extends BaseController
         helper('url'); 
     }
 
-    public function index()
+    public function index($name = null)
     {
-        return view('landingpage');
+        if ($name == null ){
+            return view('landingpage');
+        } else {
+            $data['businessName'] = $name;
+            return view('business_landingpage', $data);
+        }
     }
 
     public function login()
