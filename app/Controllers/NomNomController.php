@@ -37,21 +37,27 @@ class NomNomController extends BaseController
         return view('signup', $data);
     }
 
-    public function menu($id = null)
+    public function menu($resId, $step = null)
     {
-        $data['menu'] = null;
-        $data['businessName'] = 'haeduri';
-        $data['categories'] = [
-            'Entrees' => 'images/menu/entrees.png',
-            'Sides' => 'images/menu/sides.png',
-            'Main Dishes' => 'images/menu/maindish.png',
-            'Desserts' => 'images/menu/dessert.png',
-            'Alcoholic Beverages' => 'images/menu/alcoholicBV.png',
-            'Coffee & Tea' => 'images/menu/coffee&tea.png',
-            'Soft Drinks' => 'images/menu/softdrink.png',
-            
-        ];
-        $data['step'] = 2;
+        $businessModel = new \App\Models\BusinessModel();
+        $menuModel = new \App\Models\MenuModel();
+        $menuItemModel = new \App\Models\MenuItemModel();
+        $categoryModel = new \App\Models\CategoryModel();
+        $DietaryPreferencesModel = new \App\Models\DietaryPreferencesModel();
+        $DietaryPrefItemModel = new \App\Models\DietaryPrefItemModel();
+
+        $step == null ? $data['step'] = 1 : $data['step'] = intval($step);
+        $data['business'] = $businessModel->find($resId);
+
+        if ($this->request->getMethod() === 'post') {
+            if ($step == '2') {
+                $menu = $this->request->getPost();
+                // $data['menu'] = $menu;
+                $data['menu'] = $menuModel->find(1);
+                $data['items'] = $menuItemModel->where('menu_id', 1)->findAll();
+            }
+        }
+        
         // [', 'Sides', 'Main Dishes', 'Desserts', 'Alcoholic Beverage', 'Coffee & Tea', 'Soft Drinks'];
         return view('menu', $data);
     }

@@ -22,7 +22,7 @@
                     <li>
                         <details>
                             <summary>
-                                <?= isset($businessName) ? $businessName : 'Account' ?>
+                                <?= isset($business['name']) ? $business['name'] : 'Account' ?>
                             </summary>
                             <ul class="p-2 bg-base-100 rounded-t-none">
                                 <?php if (isset($businessName)): ?>

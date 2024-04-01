@@ -14,8 +14,8 @@ $routes->group('signup', function($routes) {
 });
 
 $routes->group('menu', function($routes) {
-    $routes->get('/', 'NomNomController::menu');
     $routes->get('(:num)', 'NomNomController::menu/$1');
+    $routes->match(['get', 'post'],'(:num)/(:num)', 'NomNomController::menu/$1/$2');
 });
 
 $routes->group('/', function($routes) {

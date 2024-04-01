@@ -11,15 +11,5 @@
         <section class="flex flex-col justify-between mb-3 <?= $step == 2 ? '' : 'hidden' ?>">
             <?php include "menu_creation/step2.php" ?>
         </section>
-        <section>
-            <div class="flex flex-row justify-evenly">
-                <a class="<?= $step - 1 <= 0 ? 'pointer-events-none' : '' ?>"   href="<?= $backStep = $step - 1; base_url('menu/' . $backStep);  ?>">
-                    <i class="text-accent text-3xl fa-solid fa-circle-arrow-left <?= $step - 1 <= 0 ? 'text-neutral' : '' ?>" ></i>
-                </a>
-                <a href="<?= $nextStep = $step + 1; base_url('menu/' . $nextStep)  ?>">
-                    <i class="text-accent text-3xl fa-solid fa-circle-arrow-right" ></i>
-                </a>
-            </div>
-        </section>
     </section>
 </section>

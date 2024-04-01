@@ -1,12 +1,23 @@
-<h3 class="text-base text-center font-bold mb-5">Choose categories for your menu</h3>
-<form class="flex flex-row flex-wrap justify-evenly">
-    <?php foreach ($categories as $cat => $url): ?>
-        <div class="grow-0 basis-5/12 mb-3 text-center">
-            <img class="max-w-16 mb-3 m-auto" src="<?= base_url($url) ?>" alt="<?= $cat ?>">
-            <div class="flex flex-row items-center gap-2 justify-center">
-                <input type="checkbox" class="checkbox" id="<?= $cat ?>" name="<?= $cat ?>" value="<?= $cat ?>">
-                <label for="<?= $cat ?>"><?= $cat ?></label>
-            </div>
-        </div>
-    <?php endforeach; ?>
+<h3 class="text-xl text-center font-bold mb-5">Menu Overview</h3>
+<form id="menu_creation" method="post" action="<?= base_url('menu/' . $business['id'] . '/' . ($step + 1)) ?>" class="flex flex-col p-5">
+    <div class="flex flex-col gap-2">
+        <label for="name">Menu Name</label>
+        <input type="text" name="name" id="name" class="p-2 rounded-lg" required>
+    </div>
+    <div class="flex flex-col gap-2">
+        <label for="start_date">The start date of this menu</label>
+        <input type="date" name="start_date" id="start_date" class="p-2 rounded-lg" required>
+    </div>
+    <div class="flex flex-col gap-2">
+        <label for="start_date">The end date of this menu</label>
+        <input type="date" name="start_date" id="start_date" class="p-2 rounded-lg">
+    </div>
+    <div class="flex flex-row justify-evenly mt-5">
+        <a class="<?= $step - 1 <= 0 ? 'pointer-events-none' : '' ?>"   href="<?= base_url('menu/' . $business['id'] . '/' . ($step - 1) );  ?>">
+            <i class="text-accent text-3xl fa-solid fa-circle-arrow-left <?= $step - 1 <= 0 ? 'text-neutral' : '' ?>" ></i>
+        </a>
+        <button type="submit">
+            <i class="text-accent text-3xl fa-solid fa-circle-arrow-right" ></i>
+        </button>
+    </div>
 </form>
