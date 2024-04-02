@@ -54,7 +54,19 @@ class NomNomController extends BaseController
                 $menu = $this->request->getPost();
                 // $data['menu'] = $menu;
                 $data['menu'] = $menuModel->find(1);
-                $data['items'] = $menuItemModel->where('menu_id', 1)->findAll();
+                $items = $menuItemModel->where('menu_id', 1)->findAll();
+                foreach ($items as &$item) {
+                    $diet_ids = $DietaryPrefItemModel->where('item_id', $item['id'])->findAll();
+                    $dietaries = [];
+                    foreach ($diet_ids as $id) {
+                        $values = $DietaryPreferencesModel->where('id', $id['diet_pr_id'])->findColumn('name');
+                        foreach ($values as $value) {
+                            $dietaries[] = $value;
+                        }
+                    }
+                    $item['dietaries'] = $dietaries;
+                }
+                $data['items'] = $items;
             }
         }
         
