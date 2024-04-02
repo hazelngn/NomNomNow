@@ -30,6 +30,14 @@
         <?php endforeach; ?>
     </section>
 <?php endif; ?>
+<div class="flex flex-row justify-evenly mt-5">
+    <a class="<?= $step - 1 <= 0 ? 'pointer-events-none' : '' ?>"   href="<?= base_url('menu/' . $business['id'] . '/' . ($step - 1) );  ?>">
+        <i class="text-accent text-3xl fa-solid fa-circle-arrow-left <?= $step - 1 <= 0 ? 'text-neutral' : '' ?>" ></i>
+    </a>
+    <a href="<?= base_url( 'menu/' . $business['id'] . '/' . ($step + 1) ); ?>">
+        <i class="text-accent text-3xl fa-solid fa-circle-check"></i>
+    </a>
+</div>
 
 <dialog id="item_details" class="modal">
     <div class="modal-box">
@@ -77,6 +85,21 @@
                 <label for="name">Item name</label>
                 <input type="text" name="name" id="name" class="p-2 rounded-lg" required>
             </div>
+            <div>
+                <label for="category_id">What category is this item?</label>
+
+                <select class="p-2 rounded-lg" name="category_id" id="category_id">
+                    <option value="1">Entrees</option>
+                    <option value="2">Sides</option>
+                    <option value="3">Main Dishes</option>
+                    <option value="4">Desserts</option>
+                    <option value="5">Alcoholic Beverages</option>
+                    <option value="6">Coffee & Tea</option>
+                    <option value="7">Soft Drinks</option>
+                </select>
+            </div>
+
+
             <div class="flex flex-col gap-2">
                 <label for="description">Description</label>
                 <input type="text" name="description" id="description" class="p-2 rounded-lg" required>
