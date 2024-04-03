@@ -1,5 +1,5 @@
-<h3 class="text-xl text-center font-bold mb-5">Menu Overview</h3>
-<form id="menu_creation" method="post" action="<?= base_url('menu/' . $business['id'] . '/' . ($step + 1)) ?>" class="flex flex-col p-5">
+<h3 class="text-xl text-center font-bold mb-5 lg:text-2xl">Create your menu</h3>
+<form id="menu_creation" method="post" action="<?= base_url('menu/' . $business['id'] . '/' . ($step + 1)) ?>" class="flex flex-col p-5 w-full gap-5">
     <div class="flex flex-col gap-2">
         <label for="name">Menu Name</label>
         <input type="text" name="name" id="name" class="p-2 rounded-lg" required>

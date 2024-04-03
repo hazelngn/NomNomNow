@@ -1,13 +1,13 @@
-<h3 class="text-xl text-center font-bold mb-5">
+<h3 class="text-xl text-center font-bold mb-5 lg:text-2xl">
     Add items for your menu
     <button onclick="item_creation.showModal()"><i class="text-accent text-lg lg:text-2xl fa-solid fa-circle-plus"></i></button>
 </h3>
 <?php if (!isset($items)): ?>
     <p>No items created yet.</p>
 <?php else: ?>
-    <section class="flex flex-col justify-center gap-5">
+    <section class="flex flex-col justify-center gap-5 lg:flex-row lg:flex-wrap">
         <?php foreach ($items as $item): ?>
-            <div class="card w-9/12 h-6/12 bg-neutral shadow-base m-auto">
+            <div class="card w-9/12 h-6/12 bg-neutral shadow-base m-auto lg:basis-4/12 lg:grow-0">
                 <figure class="float-left" ><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
                 <div class="card-body p-4 text-xs">
                     <h2 class="card-title text-sm font-bold flex justify-between">
@@ -30,7 +30,7 @@
         <?php endforeach; ?>
     </section>
 <?php endif; ?>
-<div class="flex flex-row justify-evenly mt-5">
+<div class="flex flex-row justify-evenly mt-5 lg:mt-11">
     <a class="<?= $step - 1 <= 0 ? 'pointer-events-none' : '' ?>"   href="<?= base_url('menu/' . $business['id'] . '/' . ($step - 1) );  ?>">
         <i class="text-accent text-3xl fa-solid fa-circle-arrow-left <?= $step - 1 <= 0 ? 'text-neutral' : '' ?>" ></i>
     </a>
