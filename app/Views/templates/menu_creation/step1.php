@@ -1,19 +1,28 @@
-<h3 class="text-xl text-center font-bold mb-5 lg:text-2xl">Create your menu</h3>
-<form id="menu_creation" method="post" action="<?= base_url('menu/' . $business['id'] . '/' . ($step + 1)) ?>" class="flex flex-col p-5 w-full gap-5">
+<h3 class="text-xl text-center font-bold mb-5 lg:text-2xl">
+    <?= $mode == 'add' ? 'Create your menu' : 'Edit menu ' . $menu['name'] ?>
+</h3>
+<form id="menu_creation" method="post" action="<?= base_url('menu/addedit/' . $menu['id'] . '/' . ($step + 1)) ?>" class="flex flex-col p-5 w-full gap-5">
     <div class="flex flex-col gap-2">
-        <label for="name">Menu Name</label>
-        <input type="text" name="name" id="name" class="p-2 rounded-lg" required>
+        <label for="name">Menu name</label>
+        <input type="text" name="name" id="name" class="p-2 rounded-lg" required 
+            value="<?= $mode == "add" ? '' : $menu['name'] ?>"
+        >
     </div>
     <div class="flex flex-col gap-2">
         <label for="start_date">The start date of this menu</label>
-        <input type="date" name="start_date" id="start_date" class="p-2 rounded-lg" required>
+        <input type="date" name="start_date" id="start_date" class="p-2 rounded-lg" required
+            value="<?= $mode == "add" ? '' : $menu['start_date'] ?>"
+        >
     </div>
     <div class="flex flex-col gap-2">
         <label for="start_date">The end date of this menu</label>
-        <input type="date" name="start_date" id="start_date" class="p-2 rounded-lg">
+        <input type="date" name="start_date" id="start_date" class="p-2 rounded-lg" 
+            value="<?= $mode == "add" ? '' : 
+                        ($menu['end_date'] ? $menu['end_date'] : '') ?>"
+        >
     </div>
     <div class="flex flex-row justify-evenly mt-5">
-        <a class="<?= $step - 1 <= 0 ? 'pointer-events-none' : '' ?>"   href="<?= base_url('menu/' . $business['id'] . '/' . ($step - 1) );  ?>">
+        <a class="<?= $step - 1 <= 0 ? 'pointer-events-none' : '' ?>"   href="<?= base_url('menu/addedit/' . $menu['id'] . '/' . ($step - 1) );  ?>">
             <i class="text-accent text-3xl fa-solid fa-circle-arrow-left <?= $step - 1 <= 0 ? 'text-neutral' : '' ?>" ></i>
         </a>
         <button type="submit">

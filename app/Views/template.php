@@ -15,7 +15,7 @@
         <!-- Code snippets from daisy UI https://daisyui.com/components/navbar/ -->
         <div class="navbar bg-base-100">
             <div class="flex-1">
-                <a class="btn btn-ghost text-3xl font-header" href="<?= base_url() ?>">NomNomNow</a>
+                <a class="btn btn-ghost text-3xl font-header" href="<?= base_url(isset($business) ? "/1" : "") ?>">NomNomNow</a>
             </div>
             <div class="flex-none">
                 <ul class="menu menu-horizontal px-1">

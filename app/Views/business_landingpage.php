@@ -1,5 +1,18 @@
 <?= $this->extend('template') ?>
 <?= $this->section('content') ?>
+    <section class="pb-5">
+        <div class="container">
+            <?php if (session()->getFlashdata('success')): ?>
+                <div role="alert" class="alert alert-success">
+                    <?= session()->getFlashdata('success') ?>
+                </div>
+            <?php elseif (session()->getFlashdata('error')): ?>
+                <div role="alert"  class="alert alert-error">
+                    <?= session()->getFlashdata('error') ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </section>
     <section class="flex flex-col lg:flex-row flex-wrap justify-evenly mt-5">
         <div class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12">
             <input type="radio" name="my-accordion-2" checked="checked" /> 
@@ -10,20 +23,22 @@
             <div class="collapse-content bg-neutral"> 
                 <ul>
                     <div class="flex flex-row justify-between items-center pt-3">
-                        <li>Regular</li>
-                        <i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i>
+                        <li><a href="<?= base_url("menu") ?>">Regular</a></li>
+                        <a href="<?= base_url("menu/addedit/1") ?>"><i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i></a>
                     </div>
                     <div class="flex flex-row justify-between items-center pt-3">
                         <li>Drinks</li>
-                        <i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i>
+                        <a href="<?= base_url("menu/addedit/1") ?>"><i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i></a>
                     </div>
                     <div class="flex flex-row justify-between items-center pt-3">
                         <li>Specials</li>
-                        <i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i>
+                        <a href="<?= base_url("menu/addedit/1") ?>"><i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i></a>
                     </div>
                     <!-- lg:tooltip doesn't work -->
                     <div class="w-full flex justify-center pt-3 tooltip tooltip-accent" data-tip="Add new menu">
-                        <i class="text-accent text-lg lg:text-2xl fa-solid fa-circle-plus"></i>
+                        <a href="<?= base_url("/menu/addedit") ?>">
+                            <i class="text-accent text-lg lg:text-2xl fa-solid fa-circle-plus"></i>
+                        </a>
                     </div>
                 </ul>
             </div>

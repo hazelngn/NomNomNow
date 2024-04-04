@@ -13,9 +13,12 @@ $routes->group('signup', function($routes) {
     $routes->get('(:num)', 'NomNomController::signup/$1');
 });
 
-$routes->group('menu', function($routes) {
-    $routes->get('(:num)', 'NomNomController::menu/$1');
-    $routes->match(['get', 'post'],'(:num)/(:num)', 'NomNomController::menu/$1/$2');
+$routes->get('/menu', 'NomNomController::menu');
+
+$routes->group('menu/addedit', function($routes) {
+    $routes->get('', 'NomNomController::menu_addedit'); // add
+    $routes->get('(:num)', 'NomNomController::menu_addedit/$1'); // edit
+    $routes->match(['get', 'post'],'(:num)/(:num)', 'NomNomController::menu_addedit/$1/$2');
 });
 
 $routes->group('/', function($routes) {

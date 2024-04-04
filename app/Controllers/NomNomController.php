@@ -10,6 +10,7 @@ class NomNomController extends BaseController
         // Adding this within the __construct() function will make it 
         // available to all views in the PortfolioController
         helper('url'); 
+        $this->session = session();
     }
 
     public function index($name = null)
@@ -17,7 +18,8 @@ class NomNomController extends BaseController
         if ($name == null ){
             return view('landingpage');
         } else {
-            $data['businessName'] = $name;
+            $json = file_get_contents("content.json");
+            $data = json_decode($json, true);
             return view('business_landingpage', $data);
         }
     }
@@ -37,7 +39,13 @@ class NomNomController extends BaseController
         return view('signup', $data);
     }
 
-    public function menu($resId, $step = null)
+    public function menu() {
+        $json = file_get_contents("content.json");
+        $data = json_decode($json, true);
+        return view('menu_temp', $data);
+    }
+
+    public function menu_addedit($menuId = null, $step = null)
     {
         $businessModel = new \App\Models\BusinessModel();
         $menuModel = new \App\Models\MenuModel();
@@ -76,11 +84,17 @@ class NomNomController extends BaseController
 
         // }
 
+
         $json = file_get_contents("content.json");
         $data = json_decode($json, true);
+        $data['mode'] = $menuId == null ? 'add' : 'edit';
         $step == null ? $data['step'] = 1 : $data['step'] = intval($step);
+        if ($step == 4) {
+            $this->session->setFlashData('suceess', 'Menu created successfully');
+            return redirect()->to("/1");
+        }
         
         // [', 'Sides', 'Main Dishes', 'Desserts', 'Alcoholic Beverage', 'Coffee & Tea', 'Soft Drinks'];
-        return view('menu', $data);
+        return view('menu_addedit', $data);
     }
 }

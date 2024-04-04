@@ -1,5 +1,5 @@
 <h3 class="text-xl text-center font-bold mb-5 lg:text-2xl">
-    Review your menu
+    <?= $menu['name'] ?>
 </h3>
 <section>
     <div role="tablist" class="tabs tabs-lifted mr-3">
@@ -13,12 +13,9 @@
                         <div class="card-body p-4 text-xs">
                             <h2 class="card-title text-sm font-bold flex justify-between">
                                 <?= $item['name'] ?>
-                                <button onclick="item_details.showModal()">
-                                    <i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square self-baseline"></i>
-                                </button>
                             </h2>
                             <p><?= $item['description'] ?></p>
-                            <p><?= $item['price'] ?></p>
+                            <p>$<?= $item['price'] ?></p>
                             <div class="card-actions justify-end">
                                 <?php if (isset($item['dietaries'])): ?>
                                     <?php foreach ($item['dietaries'] as $dietary): ?>
@@ -41,12 +38,9 @@
                         <div class="card-body p-4 text-xs">
                             <h2 class="card-title text-sm font-bold flex justify-between">
                                 <?= $item['name'] ?>
-                                <button onclick="item_details.showModal()">
-                                    <i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square self-baseline"></i>
-                                </button>
                             </h2>
                             <p><?= $item['description'] ?></p>
-                            <p><?= $item['price'] ?></p>
+                            <p>$<?= $item['price'] ?></p>
                             <div class="card-actions justify-end">
                                 <?php if (isset($item['dietaries'])): ?>
                                     <?php foreach ($item['dietaries'] as $dietary): ?>
@@ -69,12 +63,9 @@
                         <div class="card-body p-4 text-xs">
                             <h2 class="card-title text-sm font-bold flex justify-between">
                                 <?= $item['name'] ?>
-                                <button onclick="item_details.showModal()">
-                                    <i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square self-baseline"></i>
-                                </button>
                             </h2>
                             <p><?= $item['description'] ?></p>
-                            <p><?= $item['price'] ?></p>
+                            <p>$<?= $item['price'] ?></p>
                             <div class="card-actions justify-end">
                                 <?php if (isset($item['dietaries'])): ?>
                                     <?php foreach ($item['dietaries'] as $dietary): ?>
@@ -90,5 +81,8 @@
     </div>
 </section>
 <section class="flex justify-end mr-3">
-    <button class="btn btn-accent w-4/12 mt-11">Save</button>
+    <button class="btn btn-accent w-4/12 mt-11">
+        <a href="<?= base_url('menu/addedit/' . $menu['id'] . '/' . ($step + 1) ); ?>">Save</a>
+    </button>   
+    
 </section>

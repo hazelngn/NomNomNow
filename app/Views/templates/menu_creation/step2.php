@@ -17,7 +17,7 @@
                         </button>
                     </h2>
                     <p><?= $item['description'] ?></p>
-                    <p><?= $item['price'] ?></p>
+                    <p>$<?= $item['price'] ?></p>
                     <div class="card-actions justify-end">
                         <?php if (isset($item['dietaries'])): ?>
                             <?php foreach ($item['dietaries'] as $dietary): ?>
@@ -31,10 +31,10 @@
     </section>
 <?php endif; ?>
 <div class="flex flex-row justify-evenly mt-5 lg:mt-11">
-    <a class="<?= $step - 1 <= 0 ? 'pointer-events-none' : '' ?>"   href="<?= base_url('menu/' . $business['id'] . '/' . ($step - 1) );  ?>">
+    <a class="<?= $step - 1 <= 0 ? 'pointer-events-none' : '' ?>"   href="<?= base_url('menu/addedit/' . $menu['id'] . '/' . ($step - 1) );  ?>">
         <i class="text-accent text-3xl fa-solid fa-circle-arrow-left <?= $step - 1 <= 0 ? 'text-neutral' : '' ?>" ></i>
     </a>
-    <a href="<?= base_url( 'menu/' . $business['id'] . '/' . ($step + 1) ); ?>">
+    <a href="<?= base_url('menu/addedit/' . $menu['id'] . '/' . ($step + 1) ); ?>">
         <i class="text-accent text-3xl fa-solid fa-circle-check"></i>
     </a>
 </div>
