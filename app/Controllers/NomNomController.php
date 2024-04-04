@@ -46,29 +46,39 @@ class NomNomController extends BaseController
         $DietaryPreferencesModel = new \App\Models\DietaryPreferencesModel();
         $DietaryPrefItemModel = new \App\Models\DietaryPrefItemModel();
 
-        $step == null ? $data['step'] = 1 : $data['step'] = intval($step);
-        $data['business'] = $businessModel->find($resId);
+        // $data['business'] = $businessModel->find($resId);
+        // $data['categories'] = $categoryModel->findAll();
 
-        if ($this->request->getMethod() === 'post') {
-            if ($step == '2') {
-                $menu = $this->request->getPost();
-                // $data['menu'] = $menu;
-                $data['menu'] = $menuModel->find(1);
-                $items = $menuItemModel->where('menu_id', 1)->findAll();
-                foreach ($items as &$item) {
-                    $diet_ids = $DietaryPrefItemModel->where('item_id', $item['id'])->findAll();
-                    $dietaries = [];
-                    foreach ($diet_ids as $id) {
-                        $values = $DietaryPreferencesModel->where('id', $id['diet_pr_id'])->findColumn('name');
-                        foreach ($values as $value) {
-                            $dietaries[] = $value;
-                        }
-                    }
-                    $item['dietaries'] = $dietaries;
-                }
-                $data['items'] = $items;
-            }
-        }
+        // if ($this->request->getMethod() === 'post') {
+        //     if ($step == '2') {
+        //         $menu = $this->request->getPost();
+        //         // $data['menu'] = $menu;
+        //         $data['menu'] = $menuModel->find(1);
+        //         $items = $menuItemModel->where('menu_id', 1)->findAll();
+        //         foreach ($items as &$item) {
+        //             $diet_ids = $DietaryPrefItemModel->where('item_id', $item['id'])->findAll();
+        //             $dietaries = [];
+        //             foreach ($diet_ids as $id) {
+        //                 $values = $DietaryPreferencesModel->where('id', $id['diet_pr_id'])->findColumn('name');
+        //                 foreach ($values as $value) {
+        //                     $dietaries[] = $value;
+        //                 }
+        //             }
+        //             $item['dietaries'] = $dietaries;
+        //         }
+        //         $data['items'] = $items;
+        //         // $myfile = fopen("content.json", "w");
+        //         // fwrite($myfile, json_encode($data));
+        //         // fclose($myfile);
+
+                
+        //     }
+
+        // }
+
+        $json = file_get_contents("content.json");
+        $data = json_decode($json, true);
+        $step == null ? $data['step'] = 1 : $data['step'] = intval($step);
         
         // [', 'Sides', 'Main Dishes', 'Desserts', 'Alcoholic Beverage', 'Coffee & Tea', 'Soft Drinks'];
         return view('menu', $data);

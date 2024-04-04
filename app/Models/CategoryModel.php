@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class CategoryModel extends Model
 {
-    protected $table = 'menus'; 
+    protected $table = 'categories'; 
     protected $primaryKey = 'id';
     protected $allowedFields = ['name', 'iconUrl']; 
     protected $returnType = 'array'; 

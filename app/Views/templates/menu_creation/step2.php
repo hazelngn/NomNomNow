@@ -5,9 +5,9 @@
 <?php if (!isset($items)): ?>
     <p>No items created yet.</p>
 <?php else: ?>
-    <section class="flex flex-col justify-center gap-5 lg:flex-row lg:flex-wrap">
+    <section class="flex flex-col justify-center gap-5 md:flex-row md:flex-wrap">
         <?php foreach ($items as $item): ?>
-            <div class="card w-9/12 h-6/12 bg-neutral shadow-base m-auto lg:basis-4/12 lg:grow-0">
+            <div class="card w-9/12 h-6/12 bg-neutral shadow-base m-auto lg:basis-4/12 md:basis-5/12 md:grow-0">
                 <figure class="float-left" ><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
                 <div class="card-body p-4 text-xs">
                     <h2 class="card-title text-sm font-bold flex justify-between">
@@ -40,12 +40,12 @@
 </div>
 
 <dialog id="item_details" class="modal">
-    <div class="modal-box">
+    <div class="modal-box md:6/1 md:max-w-xl lg:w-8/12 lg:max-w-3xl">
         <form method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
         <form method="post" action="<?= base_url("menu/1/2") ?>" class="flex flex-col p-5 gap-4">
-            <h3>Edit your item</h3>
+            <h3 class="lg:text-3xl text-center text-accent text-xl">Edit your item</h3>
             <div class="flex flex-col gap-2">
                 <label for="name">Item name</label>
                 <input type="text" name="name" id="name" class="p-2 rounded-lg" value="Test">
@@ -76,7 +76,8 @@
 </dialog>
 
 <dialog id="item_creation" class="modal">
-    <div class="modal-box">
+    <div class="modal-box md:6/1 md:max-w-xl lg:w-8/12 lg:max-w-3xl">
+        <h3 class="lg:text-3xl text-center text-accent text-xl">Add a new item</h3>
         <form method="dialog">
         <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>

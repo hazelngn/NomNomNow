@@ -60,10 +60,10 @@
 
     <script src="https://kit.fontawesome.com/fbc01cbf45.js" crossorigin="anonymous"></script>
     <script>
-        const smallScreenSize = window.matchMedia("(max-width: 600px)");
+        const smallScreenSize = window.matchMedia("(max-width: 768px)");
         const stepElements = document.getElementsByClassName("steps");
 
-        if (window.innerWidth > 600) {
+        if (window.innerWidth > 768) {
             /* the viewport is more than 600 pixels wide */
             for (let i = 0; i < stepElements.length; i++) {
                 stepElements[i].classList.remove("steps-vertical")
