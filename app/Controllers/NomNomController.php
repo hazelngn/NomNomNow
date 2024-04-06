@@ -42,7 +42,8 @@ class NomNomController extends BaseController
     public function menu() {
         $json = file_get_contents("content.json");
         $data = json_decode($json, true);
-        return view('menu_temp', $data);
+        $data['preview'] = TRUE;
+        return view('menu_view', $data);
     }
 
     public function menu_addedit($menuId = null, $step = null)
@@ -89,12 +90,36 @@ class NomNomController extends BaseController
         $data = json_decode($json, true);
         $data['mode'] = $menuId == null ? 'add' : 'edit';
         $step == null ? $data['step'] = 1 : $data['step'] = intval($step);
+        if ($step == 3) {
+            $data['preview'] = TRUE;
+        }
+
         if ($step == 4) {
-            $this->session->setFlashData('suceess', 'Menu created successfully');
+            $this->session->setFlashData('success', 'Menu created successfully');
             return redirect()->to("/1");
         }
         
         // [', 'Sides', 'Main Dishes', 'Desserts', 'Alcoholic Beverage', 'Coffee & Tea', 'Soft Drinks'];
         return view('menu_addedit', $data);
+    }
+
+    public function customer_view($resId) {
+        $json = file_get_contents("content.json");
+        $data = json_decode($json, true);
+        $data['preview'] = TRUE;
+        $data['customer_view']= TRUE;
+        return view('customer_view', $data);    
+    }
+
+    public function order_system() {
+        $json = file_get_contents("content.json");
+        $data = json_decode($json, true);
+        return view('order_system', $data);    
+    }
+
+    public function admin() {
+        $json = file_get_contents("content.json");
+        $data = json_decode($json, true);
+        return view('admin', $data);    
     }
 }

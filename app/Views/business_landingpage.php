@@ -1,19 +1,6 @@
 <?= $this->extend('template') ?>
 <?= $this->section('content') ?>
-    <section class="pb-5">
-        <div class="container">
-            <?php if (session()->getFlashdata('success')): ?>
-                <div role="alert" class="alert alert-success">
-                    <?= session()->getFlashdata('success') ?>
-                </div>
-            <?php elseif (session()->getFlashdata('error')): ?>
-                <div role="alert"  class="alert alert-error">
-                    <?= session()->getFlashdata('error') ?>
-                </div>
-            <?php endif; ?>
-        </div>
-    </section>
-    <section class="flex flex-col lg:flex-row flex-wrap justify-evenly mt-5">
+    <section class="flex flex-col lg:flex-row flex-wrap justify-evenly mt-5 ">
         <div class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12">
             <input type="radio" name="my-accordion-2" checked="checked" /> 
             <div class="collapse-title text-xl font-medium flex flex-row gap-3">
@@ -66,15 +53,15 @@
                 <ul>
                     <div class="flex flex-row justify-between items-center pt-3">
                         <li>Table 1</li>
-                        <i class="text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center"></i>
+                        <i onclick="qr.showModal()" class="text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center"></i>
                     </div>
                     <div class="flex flex-row justify-between items-center pt-3">
                         <li>Table 2</li>
-                        <i class="text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center"></i>
+                        <i onclick="qr.showModal()" class="text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center"></i>
                     </div>
                     <div class="flex flex-row justify-between items-center pt-3">
                         <li>Table 3</li>
-                        <i class="text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center"></i>
+                        <i onclick="qr.showModal()" class="text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center"></i>
                     </div>
                 </ul>
             </div>
@@ -82,8 +69,33 @@
         <div class="bg-base-200 lg:grow-0 lg:basis-5/12">
             <div class="collapse-title text-xl font-medium flex flex-row gap-3 w-full">
                 <i class="inline-block text-accent text-3xl fa-solid fa-gears"></i>
-                <h3 class="text-xl lg:text-3xl">Order System</h3>
+                <a href="<?= base_url('ordersystem') ?>" class="text-xl lg:text-3xl text-info underline underline-offset-4">Order System</a>
             </div>
         </div>
     </section>
+    <section>
+        <div class="container md:w-4/6 m-auto mt-11 md:text-md">
+            <?php if (session()->getFlashdata('success')): ?>
+                <div role="alert" class="alert alert-success">
+                    <?= session()->getFlashdata('success') ?>
+                </div>
+            <?php elseif (session()->getFlashdata('error')): ?>
+                <div role="alert"  class="alert alert-error">
+                    <?= session()->getFlashdata('error') ?>
+                </div>
+            <?php endif; ?>
+        </div>
+    </section>
+    <!-- You can open the modal using ID.showModal() method -->
+    <dialog id="qr" class="modal">
+        <div class="modal-box p-10">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3>Table 1</h3>
+            <section>
+                <img class="w-1/2 m-auto" src="<?= base_url("images/test-qr.png") ?>" alt="">
+            </section>
+        </div>
+    </dialog>
 <?= $this->endSection() ?>

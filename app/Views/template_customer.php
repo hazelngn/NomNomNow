@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NomNomNow</title>
+    <title><?= $business['name'] ?></title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.9.0/dist/full.min.css" rel="stylesheet" type="text/css" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,33 +15,13 @@
         <!-- Code snippets from daisy UI https://daisyui.com/components/navbar/ -->
         <div class="navbar bg-base-100">
             <div class="flex-1">
-                <a class="btn btn-ghost text-3xl font-header" href="<?= base_url(isset($business) ? "/1" : "") ?>">NomNomNow</a>
+                <a class="btn btn-ghost text-3xl font-header" href="<?= base_url("onlineorder/1") ?>"><?= $business['name'] ?></a>
             </div>
-            <div class="flex-none">
-                <ul class="menu menu-horizontal px-1">
-                    <li>
-                        <details>
-                            <summary>
-                                <?= isset($business['name']) ? $business['name'] : 'Account' ?>
-                            </summary>
-                            <ul class="p-2 bg-base-100 rounded-t-none">
-                                <?php if (isset($business['name'])): ?>
-                                    <li class="hover:bg-accent hover:text-base-100 hover:rounded-md">
-                                        <a href="<?= base_url("login") ?>">Logout</a>
-                                    </li>
-                                <?php else: ?>
-                                    <li class="hover:bg-accent hover:text-base-100 hover:rounded-md">
-                                        <a href="<?= base_url("login") ?>">Login</a>
-                                    </li>
-                                    <li class="hover:bg-accent hover:text-base-100 hover:rounded-md">
-                                        <a href="<?= base_url("signup") ?>">Sign Up</a>
-                                    </li>
-                                <?php endif; ?>
-                                
-                            </ul>
-                        </details>
-                    </li>
-                </ul>
+            <div class="indicator mr-4">
+                <span class="indicator-item badge badge-accent badge-sm">0</span> 
+                <button onclick="cart.showModal()">
+                    <i class="text-2xl fa-solid fa-cart-shopping"></i>
+                </button>
             </div>
             
         </div>

@@ -5,7 +5,7 @@ use CodeIgniter\Router\RouteCollection;
 /**
  * @var RouteCollection $routes
  */
-$routes->get('/login', 'NomNomController::login');
+$routes->get('login', 'NomNomController::login');
 // $routes->get('signup/(:num)', 'NomNomController::signup/$1');
 
 $routes->group('signup', function($routes) {
@@ -13,7 +13,11 @@ $routes->group('signup', function($routes) {
     $routes->get('(:num)', 'NomNomController::signup/$1');
 });
 
-$routes->get('/menu', 'NomNomController::menu');
+$routes->get('menu', 'NomNomController::menu');
+// (:num) is restaurant id == 1 (test data)
+$routes->get('onlineorder/(:num)', 'NomNomController::customer_view/$1');
+$routes->get('ordersystem', 'NomNomController::order_system');
+$routes->get('admin', 'NomNomController::admin');
 
 $routes->group('menu/addedit', function($routes) {
     $routes->get('', 'NomNomController::menu_addedit'); // add
