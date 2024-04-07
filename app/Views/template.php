@@ -21,19 +21,19 @@
                 <ul class="menu menu-horizontal px-1">
                     <li>
                         <details>
-                            <summary class="text-base md:text-2xl lg:text-xl">
+                            <summary class="text-base md:text-xl">
                                 <?= isset($business['name']) ? $business['name'] : 'Account' ?>
                             </summary>
                             <ul class="p-2 bg-base-100 rounded-t-none">
                                 <?php if (isset($business['name'])): ?>
-                                    <li class="text-sm md:text-xl lg:text-lg hover:bg-accent hover:text-base-100 hover:rounded-md">
+                                    <li class="text-sm md:text-md hover:bg-accent hover:text-base-100 hover:rounded-md">
                                         <a href="<?= base_url("login") ?>">Logout</a>
                                     </li>
                                 <?php else: ?>
-                                    <li class="text-sm md:text-xl lg:text-lg hover:bg-accent hover:text-base-100 hover:rounded-md">
+                                    <li class="text-sm md:text-md lg:text-lg hover:bg-accent hover:text-base-100 hover:rounded-md">
                                         <a href="<?= base_url("login") ?>">Login</a>
                                     </li>
-                                    <li class="text-sm md:text-xl lg:text-lg hover:bg-accent hover:text-base-100 hover:rounded-md">
+                                    <li class="text-sm md:text-md lg:text-lg hover:bg-accent hover:text-base-100 hover:rounded-md">
                                         <a href="<?= base_url("signup") ?>">Sign Up</a>
                                     </li>
                                 <?php endif; ?>

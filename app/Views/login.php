@@ -1,10 +1,10 @@
 <?= $this->extend('template'); ?>
 <?= $this->section('content'); ?>
-    <section class="flex flex-row w-4/6 m-auto items-center ">
-        <section class="lg:w-1/2 lg:block hidden">
+    <section class="flex flex-row w-4/6 gap-5  m-auto items-center ">
+        <section class="md:w-1/2 lg:block hidden">
             <img class="max-w-96 m-auto" src="<?= base_url('images/login.png') ?>" alt="">
         </section>
-        <section class="lg:w-1/2 flex flex-col w-full">
+        <section class="md:w-4/6 md:m-auto flex flex-col w-full">
             <h3 class="lg:text-2xl text-xl font-bold mb-5 text-accent text-center">Sign in to your account</h3>
             <form method="" action="<?= base_url("1") ?>" class="flex flex-col gap-5 lg:w-1/2 lg:m-auto">
                 <div class="flex flex-col gap-2">
