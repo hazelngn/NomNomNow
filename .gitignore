@@ -128,5 +128,4 @@ nb-configuration.xml
 
 node_modules
 core
-public/images
 public/css/output.css

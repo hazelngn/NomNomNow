@@ -17,10 +17,10 @@
             <div class="mt-5 hidden" id="content-<?=$category['id'] ?>">
                 <?php foreach ($items as $item): ?>
                     <?php if ($item["category_id"] == $category['id']):  ?>
-                        <a onclick="item_detail.showModal()">
+                        <span >
                             <?php include 'components/item_card.php' ?>
-                        </a>
-                        
+                        </span>
+
                     <?php endif; ?>
                 <?php endforeach; ?>
             </div>

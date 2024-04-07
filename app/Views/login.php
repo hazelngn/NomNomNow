@@ -1,6 +1,6 @@
 <?= $this->extend('template'); ?>
 <?= $this->section('content'); ?>
-    <section class="flex flex-row w-4/6 m-auto items-center">
+    <section class="flex flex-row w-4/6 m-auto items-center ">
         <section class="lg:w-1/2 lg:block hidden">
             <img class="max-w-96 m-auto" src="<?= base_url('images/login.png') ?>" alt="">
         </section>
@@ -19,7 +19,7 @@
                     <input type="submit" class="p-2 btn btn-accent" value="Sign In">
                     <div class="mt-4">
                         <p>Don't have an account? <a href="<?= base_url("signup") ?>" class="text-accent font-bold">Sign Up</a></p>
-                    </div>                        
+                    </div>
                 </div>
             </form>
         </section>

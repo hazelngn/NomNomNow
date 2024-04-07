@@ -1,6 +1,6 @@
 <?= $this->extend('template'); ?>
 <?= $this->section('content'); ?>
-<div role="tablist" class="tabs tabs-lifted mt-5 w-full md:w-4/6 m-auto">
+<div role="tablist" class="tabs tabs-lifted mt-5 w-full md:w-4/6 m-auto overflow-x-hidden">
     <!-- colors -->
     <input type="radio" name="order_status" role="tab" class="tab checked:[--tab-border-color:text-purple-400] checked:text-purple-400" aria-label="Not started" checked/>
     <div role="tabpanel" class="tab-content bg-base-100 border-purple-400 !col-span-3 rounded-box p-7 z-10">

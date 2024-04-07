@@ -1,4 +1,4 @@
-<section class="flex flex-row p-3 md:p-6 rounded-3xl bg-neutral items-center md:flex-col md:basis-5/12 md:grow-0 md:w-5/12 lg:w-4/12">
+<section class="flex flex-row p-3 md:p-6 rounded-3xl bg-neutral items-center md:flex-col md:basis-5/12 md:grow-0 md:w-5/12 lg:w-4/12 <?= service('router')->getMatchedRoute()[0] == 'onlineorder/([0-9]+)' ? 'cursor-pointer' : ''; ?>" onclick="item_detail.showModal()" >
     <section class="w-6/12 h-fit md:w-full">
         <img class="mask mask-hexagon-2 w-full" src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="">
     </section>
