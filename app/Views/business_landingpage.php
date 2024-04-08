@@ -10,7 +10,7 @@
             <div class="collapse-content bg-neutral"> 
                 <ul>
                     <div class="flex flex-row justify-between items-center pt-3">
-                        <li><a href="<?= base_url("menu") ?>">Regular</a></li>
+                        <li><a href="<?= base_url("menu") ?>">Casual</a></li>
                         <a href="<?= base_url("menu/addedit/1") ?>"><i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i></a>
                     </div>
                     <div class="flex flex-row justify-between items-center pt-3">
@@ -53,15 +53,15 @@
                 <ul>
                     <div class="flex flex-row justify-between items-center pt-3">
                         <li>Table 1</li>
-                        <i onclick="qr.showModal()" class="text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center"></i>
+                        <i onclick="qr.showModal()" class="cursor-pointer text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center"></i>
                     </div>
                     <div class="flex flex-row justify-between items-center pt-3">
                         <li>Table 2</li>
-                        <i onclick="qr.showModal()" class="text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center"></i>
+                        <i onclick="qr.showModal()" class="cursor-pointer text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center"></i>
                     </div>
                     <div class="flex flex-row justify-between items-center pt-3">
                         <li>Table 3</li>
-                        <i onclick="qr.showModal()" class="text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center"></i>
+                        <i onclick="qr.showModal()" class="cursor-pointer text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center"></i>
                     </div>
                 </ul>
             </div>

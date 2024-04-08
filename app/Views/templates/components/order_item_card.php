@@ -1,6 +1,6 @@
 <section class="indicator w-full flex flex-row p-5 mb-5 md:p-5 rounded-3xl bg-neutral items-center md:flex-col md:basis-5/12 md:grow-0 lg:basis-3/12">
     <span class="indicator-item badge badge-secondary badge-sm">Note</span> 
-    <section class="flex flex-col gap-3 w-10/12 md:w-full md:text-lg" onclick="status_md.showModal()">
+    <section class="cursor-pointer flex flex-col gap-3 w-10/12 md:w-full md:text-lg" onclick="status_md.showModal()">
         <h2 class="flex justify-between font-bold text-md">
             Greek Salad
         </h2>
