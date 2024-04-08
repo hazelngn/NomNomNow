@@ -20,7 +20,7 @@
     </a>
 </div>
 
-<dialog id="item_details" class="modal">
+<dialog id="item_detail_edit" class="modal">
     <div class="modal-box md:6/1 md:max-w-xl lg:w-8/12 lg:max-w-3xl">
         <form method="dialog" >
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>

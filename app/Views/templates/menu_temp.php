@@ -48,7 +48,9 @@
                     <div class="badge badge-accent badge-outline shrink-0 md:text-md md:p-3">Diet 1</div>
                     <div class="badge badge-accent badge-outline shrink-0 md:text-md md:p-3">Diet 2</div>
                 </div>
-                <button class="btn btn-accent btn-sm mt-2 md:btn-md">Add to cart</button>
+                <?php if (service('router')->getMatchedRoute()[0] == 'onlineorder/([0-9]+)'): ?>
+                    <button class="btn btn-accent btn-sm mt-2 md:btn-md">Add to cart</button>
+                <?php endif; ?>
             </section>
         </section>
     </div>
