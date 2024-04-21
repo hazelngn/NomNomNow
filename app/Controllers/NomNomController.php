@@ -13,14 +13,12 @@ class NomNomController extends BaseController
         $this->session = session();
     }
 
-    public function index($name = null)
+    public function index($id = null)
     {
-        if ($name == null ){
+        if ($id == null && !$this->session->get('isLoggedIn')){
             return view('landingpage');
         } else {
-            $json = file_get_contents("content.json");
-            $data = json_decode($json, true);
-            return view('business_landingpage', $data);
+            return view('business_landingpage');
         }
     }
 
@@ -55,51 +53,30 @@ class NomNomController extends BaseController
         $DietaryPreferencesModel = new \App\Models\DietaryPreferencesModel();
         $DietaryPrefItemModel = new \App\Models\DietaryPrefItemModel();
 
-        // $data['business'] = $businessModel->find($resId);
-        // $data['categories'] = $categoryModel->findAll();
 
-        // if ($this->request->getMethod() === 'post') {
-        //     if ($step == '2') {
-        //         $menu = $this->request->getPost();
-        //         // $data['menu'] = $menu;
-        //         $data['menu'] = $menuModel->find(1);
-        //         $items = $menuItemModel->where('menu_id', 1)->findAll();
-        //         foreach ($items as &$item) {
-        //             $diet_ids = $DietaryPrefItemModel->where('item_id', $item['id'])->findAll();
-        //             $dietaries = [];
-        //             foreach ($diet_ids as $id) {
-        //                 $values = $DietaryPreferencesModel->where('id', $id['diet_pr_id'])->findColumn('name');
-        //                 foreach ($values as $value) {
-        //                     $dietaries[] = $value;
-        //                 }
-        //             }
-        //             $item['dietaries'] = $dietaries;
-        //         }
-        //         $data['items'] = $items;
-        //         // $myfile = fopen("content.json", "w");
-        //         // fwrite($myfile, json_encode($data));
-        //         // fclose($myfile);
-
-                
-        //     }
-
-        // }
-
-
-        $json = file_get_contents("content.json");
-        $data = json_decode($json, true);
-        $data['mode'] = $menuId == null ? 'add' : 'edit';
+        if ($menuId != null) {
+            $menu = $menuModel->find($menuId);
+            $data['menu'] = $menu;
+        }
         $step == null ? $data['step'] = 1 : $data['step'] = intval($step);
-        if ($step == 3) {
-            $data['preview'] = TRUE;
+
+        if ($step == '2') {
+            $items = $menuItemModel->where('menu_id', $menuId)->findAll();
+            foreach ($items as &$item) {
+                $diet_ids = $DietaryPrefItemModel->where('item_id', $item['id'])->findAll();
+                $dietaries = [];
+                foreach ($diet_ids as $id) {
+                    $values = $DietaryPreferencesModel->where('id', $id['diet_pr_id'])->findColumn('name');
+                    foreach ($values as $value) {
+                        $dietaries[] = $value;
+                    }
+                }
+                $item['dietaries'] = $dietaries;
+            }
+            $data['items'] = $items;
         }
 
-        if ($step == 4) {
-            $this->session->setFlashData('success', 'Menu created successfully');
-            return redirect()->to("/1");
-        }
         
-        // [', 'Sides', 'Main Dishes', 'Desserts', 'Alcoholic Beverage', 'Coffee & Tea', 'Soft Drinks'];
         return view('menu_addedit', $data);
     }
 

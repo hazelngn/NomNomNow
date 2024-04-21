@@ -13,14 +13,6 @@
                         <li><a href="<?= base_url("menu") ?>">Casual</a></li>
                         <a href="<?= base_url("menu/addedit/1") ?>"><i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i></a>
                     </div>
-                    <div class="flex flex-row justify-between items-center pt-3">
-                        <li>Drinks</li>
-                        <a href="<?= base_url("menu/addedit/1") ?>"><i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i></a>
-                    </div>
-                    <div class="flex flex-row justify-between items-center pt-3">
-                        <li>Specials</li>
-                        <a href="<?= base_url("menu/addedit/1") ?>"><i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i></a>
-                    </div>
                     <!-- lg:tooltip doesn't work -->
                     <div class="w-full flex justify-center pt-3 tooltip tooltip-accent" data-tip="Add new menu">
                         <a href="<?= base_url("/menu/addedit") ?>">

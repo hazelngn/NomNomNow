@@ -20,7 +20,7 @@ class Auth extends BaseController
         $this->client = new GoogleClient();
         $this->client->setClientId(getenv('GOOGLE_CLIENT_ID'));        // Set the Google Client ID from .env
         $this->client->setClientSecret(getenv('GOOGLE_CLIENT_SECRET')); // Set the Google Client Secret from .env
-        $this->client->setRedirectUri($this->base_url . 'google_login/callback'); // Set the Redirect URI for Google OAuth callback
+        $this->client->setRedirectUri($this->base_url . '/google_login/google_callback'); // Set the Redirect URI for Google OAuth callback
         $this->client->addScope("email");   // Request access to user's email
         $this->client->addScope("profile"); // Request access to user's basic profile info
     }
@@ -53,6 +53,7 @@ class Auth extends BaseController
 
         // Load the user model to interact with the database
         $userModel = new \App\Models\UserModel();
+        $businessModel = new \App\Models\BusinessModel();
         // Check if the user's email exists in the database
         $user = $userModel->where('email', $google_account_info->email)->first();
 
@@ -74,14 +75,14 @@ class Auth extends BaseController
         // Set user information in the session
         session()->set([
             'isLoggedIn' => true,
-            'userId' => $user['user_id'],
+            'userId' => $user['id'],
             'email' => $user['email'],
             'name' => $user['name'],
-            'usertype' => $user['usertype'] // Assumes 'isAdmin' field is a boolean in your user table
+            'usertype' => $user['usertype']
         ]);
 
         // Redirect user to the admin dashboard if they are an admin, otherwise to their resume page
-        if (session()->get('isAdmin')) {
+        if (session()->get('usertype') == 'admin') {
             return redirect()->to('/admin');
         } else {
             return redirect()->to('/' . session()->get('userId') . '/');
@@ -97,7 +98,7 @@ class Auth extends BaseController
         $session = session();
         
         // Remove specific session variables
-        $session->remove(['isLoggedIn', 'userId', 'email', 'name', 'isAdmin']);
+        $session->remove(['isLoggedIn', 'userId', 'email', 'name', 'usertype']);
         
         // Redirect the user to the homepage
         return redirect()->to('/');

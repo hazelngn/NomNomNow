@@ -13,21 +13,27 @@
 <body class="font-body min-h-screen w-full bg-base-200 flex flex-col text-sm lg:text-lg">
     <header class="sticky top-0 z-10" >
         <!-- Code snippets from daisy UI https://daisyui.com/components/navbar/ -->
-        <div class="navbar bg-base-100">
+        <div class="navbar bg-base-100 flex-wrap">
             <div class="flex-1">
-                <a class="btn btn-ghost text-3xl font-header" href="<?= base_url(isset($business) ? "/1" : "") ?>">NomNomNow</a>
+                <a class="btn btn-ghost text-3xl font-header" 
+                href="
+                <?= 
+                    base_url(session()->get("usertype") == "admin" ? "admin" : (session()->get("isLoggedIn") ?  session()->get('userId') : "")); 
+                ?>"
+                
+                >NomNomNow</a>
             </div>
             <div class="flex-none">
                 <ul class="menu menu-horizontal px-1">
                     <li>
                         <details>
                             <summary class="text-base md:text-xl">
-                                <?= isset($business['name']) ? $business['name'] : 'Account' ?>
+                                <?= session()->get('isLoggedIn') ? session()->get('name') : 'Account' ?>
                             </summary>
                             <ul class="p-2 bg-base-100 rounded-t-none">
-                                <?php if (isset($business['name'])): ?>
+                                <?php if (session()->get('isLoggedIn')): ?>
                                     <li class="text-sm md:text-md hover:bg-accent hover:text-base-100 hover:rounded-md">
-                                        <a href="<?= base_url("login") ?>">Logout</a>
+                                        <a href="<?= base_url("google_logout") ?>">Logout</a>
                                     </li>
                                 <?php else: ?>
                                     <li class="text-sm md:text-md lg:text-lg hover:bg-accent hover:text-base-100 hover:rounded-md">

@@ -4,7 +4,7 @@
         <div class="hero-content flex-col md:flex-row">
             <img src="<?= base_url('images/landingPage/landing.png') ?>" class="lg:max-w-sm max-w-60 rounded-lg shadow-2xl" />
             <div>
-                <h1 class="text-2xl md:text-5xl font-bold font-sub-header">Welcome to <span class="font-header text-accent">NomNomNow</span></h1>
+                <h1 class="text-2xl md:text-5xl font-bold font-sub-header">Welcome to <span class="font-header text-accent">NomNomNow </span></h1>
                 <p class="text-sm md:text-lg py-6 text-dark-beige">Create Digital Menu So Easily with Us!!</p>
                 <button class="btn btn-accent">
                     <a href="<?= base_url("/signup") ?>">Get Started</a>

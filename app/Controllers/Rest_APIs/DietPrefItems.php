@@ -27,4 +27,21 @@ class DietPrefItems extends ResourceController
         return $this->respond($data);
     }
 
+    public function show($item_id = null)
+    {
+        $model = new \App\Models\DietaryPrefItemModel();
+
+        // Attempt to retrieve the specific education entry by ID.
+        $data = $model->where('item_id', $item_id)->findAll();
+
+        // Check if data was found.
+        if ($data) {
+            return $this->respond($data);
+        } else {
+            // Return a 404 error if no data is found.
+            return $this->failNotFound("No Education entry found with ID: {$id}");
+        }
+        
+    }
+
 }

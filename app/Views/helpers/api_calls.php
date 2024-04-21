@@ -26,7 +26,7 @@
     }
 
     async function update(name, data) {
-        const baseUrl = `<?= base_url(); ?>/${name}/${data.id}`;
+        const url = `<?= base_url(); ?>/${name}/${data.id}`;
         let result = undefined;
 
         await fetch(url, {
@@ -52,11 +52,11 @@
     }
 
     async function add(name, data) {
-        const baseUrl = `<?= base_url(); ?>/${name}/${data.id}`;
+        const url = `<?= base_url(); ?>/${name}`;
         let result = undefined;
 
         await fetch(url, {
-            method: 'DELETE',
+            method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
         })
@@ -78,11 +78,11 @@
     }
 
     async function deleteItem(name, id) {
-        const baseUrl = `<?= base_url(); ?>/${name}`;
+        const baseUrl = `<?= base_url(); ?>/${name}/${data.id}`;
         let result = undefined;
 
         await fetch(url, {
-            method: 'POST',
+            method: 'DELETE',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(data)
         })

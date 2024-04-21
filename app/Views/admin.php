@@ -10,18 +10,35 @@
                 <i class="text-accent md:text-xl fa-solid fa-magnifying-glass"></i>
             </section>
         </form>
-        <section id="usersList" class="flex flex-col text-cente gap-5 p-3 mt-11 mb-11 md:text-lg">
-            <div class="flex gap-1">
-                <p class="basis-1/12 grow-0">User ID</p>
-                <p class="basis-3/12 grow-0">User name</p>
-                <p class="basis-3/12 grow-0">Business name</p>
-                <p class="basis-1/12 grow-0">Business ID</p>
-                <p class="basis-2/12 grow-0">Status</p>
-                <p class="basis-1/12 grow-0">Delete</p>
-                <p class="basis-1/12 grow-0">Edit</p>
+            
+        <section  class="flex flex-col text-cente gap-5 p-3 mt-11 mb-11 md:text-lg">
+            <div class="overflow-x-auto">
+                <table class="table table-zebra">
+                    <!-- head -->
+                    <thead>
+                        <tr>
+                            <th>User ID</th>
+                            <th>Name</th>
+                            <th>Business name</th>
+                            <th>Business ID</th>
+                            <th>Status</th>
+                            <th>Delete</th>
+                            <th>Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersList">
+                        <!-- Users data will be here -->
+                        <template id="userDetailsTemplate">
+                            <tr>
+                                <td><i class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-trash-can"></i></td>
+                                <td><i class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-square-pen"></i></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
             </div>
-            <!-- Users data will be here -->
         </section>
+
         <!-- Pagination -->
         <div class="join m-auto self-center">
             <input class="join-item btn btn-neutral btn-square " type="radio" name="options" aria-label="1" checked />
@@ -31,35 +48,51 @@
         </div>
     </section>
 
-    <template id="userDetailsTemplate">
-        <div class="flex gap-1">
-            <i class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-trash-can"></i>
-            <i class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-square-pen"></i>
-        </div>
-    </template>
-    <template id="childTemplate"> 
-        <p class="basis-1/12 grow-0"></p>
+    <template id="childTemplate">
+        <p class="basis-1/12 grow-0">User ID</p>
     </template>
 
     <?php include "helpers/api_calls.php" ?>
     <script>
         async function listUserDetails() {
             const parentTemplate = document.getElementById("userDetailsTemplate");
-            const childTemplate = document.getElementById("childTemplate");
             const usersList = document.getElementById("usersList");
-            const users = await get("users");
-            users.forEach(user => {
+            let details = await getNeededDetails();
+
+            details.forEach(detail => {
                 const parent = parentTemplate.content.cloneNode(true).children[0];
-                const appendPoint = parent.children[0];
-                parent.id = user.id;
-                for (const [key, value] of Object.entries(user)) {
-                    const child = childTemplate.content.cloneNode(true).children[0];
-                    child.innerText = value
-                    parent.insertBefore(child, appendPoint);
+                const beforePoint = parent.children[0];
+                parent.id = detail.user_id;
+                for (const [key,value] of Object.entries(detail)) {
+                    const td = document.createElement('td');
+                    td.innerText = value;
+                    parent.insertBefore(td, beforePoint);
                 }
+                
                 usersList.append(parent);
             });
             
+        }
+
+        async function getNeededDetails() {
+            const users = await get("users");
+            const neededStructure = Promise.all(users.map(async user => {
+                let business = await get("businesses");
+                business = business.filter(busi => busi.user_id == user.id)[0];
+
+
+                const result = {
+                    user_id: user.id,
+                    username: user.username,
+                    businessName: business ? business.name : "N.A",
+                    businessID: business ? business.id : "N.A",
+                    status: user.status ? "active" : "not active",
+                }
+                
+                return result;
+            }))
+            
+            return neededStructure;
         }
 
         listUserDetails();

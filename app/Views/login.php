@@ -24,7 +24,7 @@
                 <div class="flex flex-col">
                     <h3>Or sign in with...</h3>
                     <div class="flex justify-evenly md:mt-5 md:text-3xl mt-3 text-2xl text-accent">
-                        <i class="fa-brands fa-google"></i>
+                        <a href="<?= base_url("google_login") ?>"><i class="fa-brands fa-google"></i></a>
                         <i class="fa-brands fa-github"></i>
                         <i class="fa-brands fa-facebook"></i>
                     </div>

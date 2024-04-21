@@ -19,7 +19,7 @@ class Menus extends ResourceController
         $menuId = $this->request->getGet('menu_id');
 
         // Filter the data by user_id if provided, otherwise retrieve all entries.
-        $data = $menuId ? $model->where('id', $userId)->findAll() : $model->findAll();
+        $data = $menuId ? $model->where('id', $$menuId)->findAll() : $model->findAll();
 
         // Use HTTP 200 to return data.
         return $this->respond($data);
@@ -60,6 +60,8 @@ class Menus extends ResourceController
 
         // Insert data and check for success.
         $inserted = $model->insert($data);
+        $id = $model->getInsertID();
+        $data = $model->find($id);
         if ($inserted) {
             return $this->respondCreated($data, 'User data created successfully.');
         } else {
