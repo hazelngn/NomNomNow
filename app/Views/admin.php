@@ -10,7 +10,7 @@
                 <i class="text-accent md:text-xl fa-solid fa-magnifying-glass"></i>
             </section>
         </form>
-        <section class="flex flex-col text-cente gap-5 p-3 mt-11 mb-11 md:text-lg">
+        <section id="usersList" class="flex flex-col text-cente gap-5 p-3 mt-11 mb-11 md:text-lg">
             <div class="flex gap-1">
                 <p class="basis-1/12 grow-0">User ID</p>
                 <p class="basis-3/12 grow-0">User name</p>
@@ -20,34 +20,9 @@
                 <p class="basis-1/12 grow-0">Delete</p>
                 <p class="basis-1/12 grow-0">Edit</p>
             </div>
-            <div class="flex gap-1">
-                <p class="basis-1/12 grow-0">1</p>
-                <p class="basis-3/12 grow-0">Hazel</p>
-                <p class="basis-3/12 grow-0">Carrot Co.</p>
-                <p class="basis-1/12 grow-0">1</p>
-                <p class="basis-2/12 grow-0">Active</p>
-                <i class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-trash-can"></i>
-                <i class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-square-pen"></i>
-            </div>
-            <div class="flex gap-1">
-                <p class="basis-1/12 grow-0">2</p>
-                <p class="basis-3/12 grow-0">Ava</p>
-                <p class="basis-3/12 grow-0">Slay Co.</p>
-                <p class="basis-1/12 grow-0">2</p>
-                <p class="basis-2/12 grow-0">Active</p>
-                <i class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-trash-can"></i>
-                <i class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-square-pen"></i>
-            </div>
-            <div class="flex gap-1">
-                <p class="basis-1/12 grow-0">3</p>
-                <p class="basis-3/12 grow-0">Josh</p>
-                <p class="basis-3/12 grow-0">V. Slay Co.</p>
-                <p class="basis-1/12 grow-0">3</p>
-                <p class="basis-2/12 grow-0">Active</p>
-                <i class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-trash-can"></i>
-                <i class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-square-pen"></i>
-            </div>
+            <!-- Users data will be here -->
         </section>
+        <!-- Pagination -->
         <div class="join m-auto self-center">
             <input class="join-item btn btn-neutral btn-square " type="radio" name="options" aria-label="1" checked />
             <input class="join-item btn btn-neutral btn-square " type="radio" name="options" aria-label="2" />
@@ -55,4 +30,40 @@
             <input class="join-item btn btn-neutral btn-square " type="radio" name="options" aria-label="4" />
         </div>
     </section>
+
+    <template id="userDetailsTemplate">
+        <div class="flex gap-1">
+            <i class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-trash-can"></i>
+            <i class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-square-pen"></i>
+        </div>
+    </template>
+    <template id="childTemplate"> 
+        <p class="basis-1/12 grow-0"></p>
+    </template>
+
+    <?php include "helpers/api_calls.php" ?>
+    <script>
+        async function listUserDetails() {
+            const parentTemplate = document.getElementById("userDetailsTemplate");
+            const childTemplate = document.getElementById("childTemplate");
+            const usersList = document.getElementById("usersList");
+            const users = await get("users");
+            users.forEach(user => {
+                const parent = parentTemplate.content.cloneNode(true).children[0];
+                const appendPoint = parent.children[0];
+                parent.id = user.id;
+                for (const [key, value] of Object.entries(user)) {
+                    const child = childTemplate.content.cloneNode(true).children[0];
+                    child.innerText = value
+                    parent.insertBefore(child, appendPoint);
+                }
+                usersList.append(parent);
+            });
+            
+        }
+
+        listUserDetails();
+
+    </script>
+
 <?= $this->endSection() ?>

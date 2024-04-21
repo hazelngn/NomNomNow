@@ -21,6 +21,14 @@
                         <p>Don't have an account? <a href="<?= base_url("signup") ?>" class="text-accent font-bold">Sign Up</a></p>
                     </div>
                 </div>
+                <div class="flex flex-col">
+                    <h3>Or sign in with...</h3>
+                    <div class="flex justify-evenly md:mt-5 md:text-3xl mt-3 text-2xl text-accent">
+                        <i class="fa-brands fa-google"></i>
+                        <i class="fa-brands fa-github"></i>
+                        <i class="fa-brands fa-facebook"></i>
+                    </div>
+                </div>
             </form>
         </section>
     </section>
