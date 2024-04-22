@@ -60,22 +60,6 @@ class NomNomController extends BaseController
         }
         $step == null ? $data['step'] = 1 : $data['step'] = intval($step);
 
-        if ($step == '2') {
-            $items = $menuItemModel->where('menu_id', $menuId)->findAll();
-            foreach ($items as &$item) {
-                $diet_ids = $DietaryPrefItemModel->where('item_id', $item['id'])->findAll();
-                $dietaries = [];
-                foreach ($diet_ids as $id) {
-                    $values = $DietaryPreferencesModel->where('id', $id['diet_pr_id'])->findColumn('name');
-                    foreach ($values as $value) {
-                        $dietaries[] = $value;
-                    }
-                }
-                $item['dietaries'] = $dietaries;
-            }
-            $data['items'] = $items;
-        }
-
         
         return view('menu_addedit', $data);
     }

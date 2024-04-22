@@ -1,4 +1,4 @@
-<section class="flex flex-row mt-3 md:flex-col md:w-4/6 lg:flex-col lg:w-4/6 m-auto">
+<section id="main_content" class="flex flex-row mt-3 md:flex-col md:w-4/6 lg:flex-col lg:w-4/6 m-auto">
     <ul class="steps steps-vertical pl-5 overflow-hidden w-1/5 h-96 md:h-fit md:w-full md:mb-11 lg:w-full lg:mb-11">
         <li class="step text-transparent md:text-current <?= $step >= 1 ? 'step-secondary' : '' ?> ">Menu Overview</li>
         <li class="step text-transparent md:text-current <?= $step >= 2  ? 'step-secondary' : '' ?>">Adding Items</li>
@@ -22,6 +22,7 @@
         } elseif ($step == 3) {
             include "menu_creation/step3.php";
         }
+        include "components/item_form_details.php";
     ?>
     
 </section>
@@ -30,9 +31,11 @@
 <script>
     let step = <?= $step ?>;
     let stepTemplate;
+    const itemDetailsTemplate = document.querySelector('#itemFormTemplate');
+    const mainContent = document.querySelector('#main_content');
     const prevBtn = document.querySelector("#prevBtn");
     const nextBtn = document.querySelector("#nextBtn");
-    const menuId = <?= esc($menu['id']) ? esc($menu['id']) : undefined ?>;
+    const menuId = "<?= isset($menu['id']) ? esc($menu['id']) : "" ?>";
 
     const menu = document.getElementById('menu_creation').children[0];
 
@@ -40,7 +43,8 @@
         stepTemplate = document.querySelector('#step1Template').content.cloneNode(true);
     } else if (step == 2) {
         stepTemplate = document.querySelector('#step2Template').content.cloneNode(true);
-        displayItems().then(data => console.log("result", data));
+        displayItems();
+
     } else if (step == 3) {
         stepTemplate = document.querySelector('#step3Template').content.cloneNode(true);
     }
@@ -54,15 +58,16 @@
             if (form.reportValidity()) {
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
-                if (!menu) {
+                if (!menuId) {
                     await add("menus", data)
                     .then(data => result = data);
                 }
                 step += 1;
-                console.log(menu);
                 window.location.replace(`<?= base_url("menu/addedit") ?>/${result ? result.id : menuId}/${step}`);
             };
         } else if (step == 2) {
+            step += 1;
+            window.location.replace(`<?= base_url("menu/addedit") ?>/${menuId}/${step}`);
         }
     })
 
@@ -72,11 +77,11 @@
 
         menuItems.forEach(item => {
             const itemCard = document.querySelector("#item-card").content.cloneNode(true).children[0];
-            console.log(itemCard)
             itemCard.id = item.id;
             // itemCard.querySelector("#item-img").innerText = item.name;
             itemCard.querySelector("#item-name").innerText = item.name;
             itemCard.querySelector("#item-price").innerText = item.price;
+            itemCard.querySelector("#item-name").nextElementSibling.addEventListener("click", () => showItemDetails(item.id));
             itemsContainer.append(itemCard);
         })
         
@@ -105,6 +110,91 @@
         }))
 
         return menuItems;
+    }
+
+    async function showItemDetails(id) {
+        // modals
+        const itemDetail = itemDetailsTemplate.content.cloneNode(true).children[0];
+        mainContent.append(itemDetail);
+        const detailForm = itemDetail.querySelector("#detail_form");
+        const modalHeading = detailForm.querySelector("h3>span");
+        const name = detailForm.querySelector("#name");
+        const category = detailForm.querySelector("#category_id");
+        const description = detailForm.querySelector("#description");
+        const ingredients = detailForm.querySelector("#ingredients");
+        const notes = detailForm.querySelector("#notes");
+        const price = detailForm.querySelector("#price");
+        const item_img = detailForm.querySelector("#item_img");
+        const item_id = detailForm.querySelector("#id");
+        if (!id) {
+            // Add
+            modalHeading.innerText = "Add";
+            document.getElementById("detail_form").reset();
+            detailForm.querySelector("#submitBtn").addEventListener("click", (e) => addEditItem(e));
+        } else {
+            // Edit
+            const menuItems = await fetchItems();
+            modalHeading.innerText = "Edit";
+
+            const item = menuItems.filter(item => item.id == id)[0];
+
+            // Updating the modal
+            name.value = item.name;
+            category.value = item.category_id;
+            description.value = item.description;
+            ingredients.value = item.ingredients;
+            notes.value = item.notes ? item.notes : "No notes provided"; 
+            price.value = item.price;
+            item_id.value = item.id
+            detailForm.querySelector("#submitBtn").addEventListener("click", (e) => addEditItem(e, item.id));
+
+            
+            // Show that a file has been uploaded
+            if (item.item_img) {
+                const successUpload = document.createElement("p");
+                const replaceImage = document.createElement("p");
+                const parent = item_img.parentElement;
+                successUpload.innerText = "An image has been uploaded.";
+                successUpload.classList.add("text-success");
+                replaceImage.innerText = "Change image";
+                parent.insertBefore(successUpload, item_img);
+                parent.insertBefore(replaceImage, item_img);
+            }
+            
+        }
+
+        item_detail.querySelector("#close_modal").addEventListener("click", () => itemDetail.remove())
+        
+        item_detail.showModal();
+    }
+
+    async function addEditItem(e,id) {
+        e.preventDefault();
+        const itemDetail = document.querySelector("#item_detail");
+        const detailForm = document.querySelector("#detail_form");
+        let result = undefined;
+
+        if (detailForm.reportValidity()) {
+            const formData = new FormData(detailForm);
+            const data = Object.fromEntries(formData.entries());
+            data['menu_id'] = menuId;
+            // placeholder image
+            data['item_img'] = null;
+            if (!id) {
+                // add
+                await add("menu_items", data)
+                .then(data => result = data);
+            } else {
+                // edit
+                await update("menu_items", data)
+                .then(data => result = data);
+            }
+
+            itemDetail.close();
+            detailForm.remove();
+        };
+
+
     }
 
 

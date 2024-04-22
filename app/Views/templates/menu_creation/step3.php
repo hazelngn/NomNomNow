@@ -5,7 +5,7 @@
     <section>
         <div role="tablist" class="tabs tabs-lifted mr-3">
             <!-- colors -->
-            <input type="radio" name="category" role="tab" class="tab checked:[--tab-border-color:text-purple-400] checked:text-purple-400" aria-label="Entree"/>
+            <input type="radio" name="category" role="tab" class="tab checked:[--tab-border-color:text-purple-400] checked:text-purple-400" aria-label="Ent~ree"/>
             <div role="tabpanel" class="tab-content bg-base-100 border-purple-400 rounded-box p-6 z-10">
                 <?php foreach ($items as $item): ?>
                     <?php if ($item["category_id"] == 1):  ?>
