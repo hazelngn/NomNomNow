@@ -18,7 +18,14 @@ class NomNomController extends BaseController
         if ($id == null && !$this->session->get('isLoggedIn')){
             return view('landingpage');
         } else {
-            return view('business_landingpage');
+            $userId = $this->session->get('userId');
+            $businessModel = new \App\Models\BusinessModel();
+            $menuModel = new \App\Models\MenuModel();
+            $business = $businessModel->where('user_id', $userId)->first();
+            $menus = $menuModel->where('business_id', $business['id'])->findAll();
+            $data['menus'] = $menus;
+            $data['business'] = $business;
+            return view('business_landingpage', $data);
         }
     }
 
@@ -58,9 +65,14 @@ class NomNomController extends BaseController
             $menu = $menuModel->find($menuId);
             $data['menu'] = $menu;
         }
+
         $step == null ? $data['step'] = 1 : $data['step'] = intval($step);
 
-        
+        if ($step == 4) {
+            $this->session->setFlashData('success', 'Menu created successfully');
+            return redirect()->to("/");
+        }
+
         return view('menu_addedit', $data);
     }
 

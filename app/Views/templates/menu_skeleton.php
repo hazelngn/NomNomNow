@@ -18,10 +18,11 @@
             include "menu_creation/step1.php";
         } elseif ($step == 2) {
             include "menu_creation/step2.php";
-            include "components/item_card.php";
         } elseif ($step == 3) {
             include "menu_creation/step3.php";
+            include "components/item_card.php";
         }
+        include "components/item_card.php";
         include "components/item_form_details.php";
     ?>
     
@@ -47,11 +48,13 @@
 
     } else if (step == 3) {
         stepTemplate = document.querySelector('#step3Template').content.cloneNode(true);
+        displayItems();
     }
     menu.append(stepTemplate);
 
 
     nextBtn.addEventListener("click", async () => {
+        step += 1;
         if (step == 1) {
             const form = document.getElementById("step-1");
             let result = undefined;
@@ -62,31 +65,71 @@
                     await add("menus", data)
                     .then(data => result = data);
                 }
-                step += 1;
                 window.location.replace(`<?= base_url("menu/addedit") ?>/${result ? result.id : menuId}/${step}`);
             };
-        } else if (step == 2) {
-            step += 1;
-            window.location.replace(`<?= base_url("menu/addedit") ?>/${menuId}/${step}`);
+        } else if (step == 3) {
         }
+        window.location.replace(`<?= base_url("menu/addedit") ?>/${menuId}/${step}`);
     })
 
     async function displayItems() {
+        
         const itemsContainer = stepTemplate.querySelector("#items");
         const menuItems = await fetchItems();
+        console.log(menuItems)
 
-        menuItems.forEach(item => {
-            const itemCard = document.querySelector("#item-card").content.cloneNode(true).children[0];
-            itemCard.id = item.id;
-            // itemCard.querySelector("#item-img").innerText = item.name;
-            itemCard.querySelector("#item-name").innerText = item.name;
-            itemCard.querySelector("#item-price").innerText = item.price;
-            itemCard.querySelector("#item-name").nextElementSibling.addEventListener("click", () => showItemDetails(item.id));
-            itemsContainer.append(itemCard);
-        })
-        
+        if (step == 2) {
+            if (menuItems.length == 0) {
+                console.log("empty")
+                const emptyText = document.createElement("p");
+                emptyText.id = "empty_text";
+                emptyText.innerText = "No items created yet."
+                emptyText.classList.add("text-center");
+                itemsContainer.append(emptyText);
+            } else {
+                const emptyText = document.querySelector("#empty_text");
+                if (emptyText) emptyText.remove();
+                menuItems.forEach(item => {
+                    const itemCard = document.querySelector("#item-card").content.cloneNode(true).children[0];
+                    itemCard.id = item.id;
+                    // itemCard.querySelector("#item-img").innerText = item.name;
+                    itemCard.querySelector("#item-name").innerText = item.name;
+                    itemCard.querySelector("#item-price").innerText = item.price;
+                    itemCard.querySelector("#item-name").nextElementSibling.addEventListener("click", () => showItemDetails(item.id));
+                    itemsContainer.append(itemCard);
+                })
+            }
+            
+        } else {
+            let menuCategories = menuItems.map(item => item.category_id);
+            menuCategories = new Set(menuCategories);
+            let categories = await get("categories");
+            const tablist = document.querySelector("#items>div");
+            menuCategories.forEach(async cat_id => {
+                const category = categories.filter(cat => cat.id == cat_id)[0]
+                const items = menuItems.filter(item => item.category_id == cat_id);
+                const tabTemplate = document.querySelector("#tabTemplate").content.cloneNode(true);
+                const input = tabTemplate.querySelector("input");
+                const tabPanel = tabTemplate.querySelector("div");
+                input.setAttribute("aria-label", category.name);
+                
+                items.forEach(item => {
+                    const itemCard = document.querySelector("#item-card").content.cloneNode(true).children[0];
+                    // add margin at the bottom of the card
+                    itemCard.classList.add("mb-3")
+                    itemCard.id = item.id;
+                    // itemCard.querySelector("#item-img").innerText = item.name;
+                    itemCard.querySelector("#item-name").innerText = item.name;
+                    itemCard.querySelector("#item-price").innerText = item.price;
+                    itemCard.querySelector("#item-name").nextElementSibling.remove();
+                    tabPanel.append(itemCard);
+                })
+                tablist.append(input);
+                tablist.append(tabPanel);
+
+            })
+        }
     }
-
     async function fetchItems() {
         let menuItems = await get("menu_items");
 

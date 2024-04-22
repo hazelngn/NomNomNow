@@ -1,5 +1,6 @@
 <?= $this->extend('template') ?>
 <?= $this->section('content') ?>
+    
     <section class="flex flex-col lg:flex-row flex-wrap justify-evenly mt-5 ">
         <div class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12">
             <input type="radio" name="my-accordion-2" checked="checked" /> 
@@ -9,10 +10,17 @@
             </div>
             <div class="collapse-content bg-neutral"> 
                 <ul>
-                    <div class="flex flex-row justify-between items-center pt-3">
-                        <li><a href="<?= base_url("menu") ?>">Casual</a></li>
-                        <a href="<?= base_url("menu/addedit/1") ?>"><i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i></a>
-                    </div>
+                    <?php if (isset($menus)): ?>
+                        <?php foreach ($menus as $menu): ?>
+                            <div class="flex flex-row justify-between items-center pt-3">
+                                <li><a href="<?= base_url("menu/") . $menu['id'] ?>">
+                                    <?= $menu['name'] ?>
+                                </a></li>
+                                <a href="<?= base_url("menu/addedit/") . $menu['id'] ?>"><i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i></a>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                    
                     <!-- lg:tooltip doesn't work -->
                     <div class="w-full flex justify-center pt-3 tooltip tooltip-accent" data-tip="Add new menu">
                         <a href="<?= base_url("/menu/addedit") ?>">
@@ -28,11 +36,9 @@
                 <i class="inline-block text-accent text-3xl fa-solid fa-circle-info"></i>
                 <h3 class="text-xl lg:text-3xl">Business Information</h3>
             </div>
-            <div class="collapse-content  bg-neutral flex flex-col gap-3"> 
+            <div id="business-info" class="collapse-content  bg-neutral flex flex-col gap-3"> 
                 <i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square text-end mt-3"></i>
-                <form class="flex flex-col gap-5">
-                    <?= $editMode = FALSE; include "templates/business_form.php"; ?>
-                </form>
+                <?php include "templates/business_form.php"; ?>
             </div>
         </div>
         <div class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12">
@@ -90,4 +96,25 @@
             </section>
         </div>
     </dialog>
+
+    
+    <?php include "helpers/api_calls.php" ?>
+    <script>
+        const businessFormTemplate = document.querySelector('#businessFormTemplate');
+        const businessInfo = document.querySelector('#business-info');
+        const parent = businessInfo.parentElement;
+        const businessId = <?= $business['id'] ?>;
+        
+
+        function renderModal() {
+            const dialog = document.createElement("dialog");
+            dialog.classList.add("modal");
+            dialog.id = "business_edit";
+
+        }
+            
+        console.log(businessInfo, parent)
+
+
+    </script>
 <?= $this->endSection() ?>

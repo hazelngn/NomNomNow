@@ -25,15 +25,15 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <label class="font-bold" for="description">Description</label>
-                    <input type="text" name="description" id="description" class="p-2 rounded-lg" required>
+                    <textarea type="text" name="description" id="description" class="p-2 rounded-lg" required></textarea>
                 </div>
                 <div class="flex flex-col gap-2">
                     <label class="font-bold" for="ingredients">Ingredients</label>
-                    <input type="text" name="ingredients" id="ingredients" class="p-2 rounded-lg" required>
+                    <textarea type="text" name="ingredients" id="ingredients" class="p-2 rounded-lg" required></textarea>
                 </div>
                 <div class="flex flex-col gap-2">
                     <label class="font-bold" for="notes">Notes</label>
-                    <input type="text" name="notes" id="notes" class="p-2 rounded-lg">
+                    <textarea type="text" name="notes" id="notes" class="p-2 rounded-lg"></textarea>
                 </div>
                 <div class="flex flex-col gap-2">
                     <label class="font-bold" for="price">Price</label>

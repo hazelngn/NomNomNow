@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&family=Lilita+One&family=Righteous&family=Rubik+Bubbles&display=swap" rel="stylesheet">
 </head>
-<body class="font-body min-h-screen w-full bg-base-200 flex flex-col text-sm lg:text-lg">
+<body class="font-body min-h-screen w-full bg-base-200 flex flex-col text-sm md:text-lg">
     <header class="sticky top-0 z-10" >
         <!-- Code snippets from daisy UI https://daisyui.com/components/navbar/ -->
         <div class="navbar bg-base-100 flex-wrap">
