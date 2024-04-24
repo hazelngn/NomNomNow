@@ -43,6 +43,7 @@
                     <label class="font-bold" for="item_img">Image</label>
                     <input type="file" id="item_img" name="item_img" class="file-input file-input-bordered file-input-accent w-full max-w-xs file-input-sm lg:file-input-md" />
                 </div>
+                <!-- Add some context where this shows and not, using aria-label,.... -->
                 <input id="submitBtn" class="btn btn-accent" type="submit" value="Save">
                 <input type="hidden" id="id" name="id">
             </form>

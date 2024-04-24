@@ -1,4 +1,11 @@
+<template id="close_modal_form">
+    <form method="dialog">
+        <button id="close_modal" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+    </form>
+</template>
 <form id="business_form" class="flex flex-col gap-5">
+    <!-- Add some context where this shows and not, using aria-label,.... -->
+    <h4></h4>
     <div class="flex flex-col gap-2">
         <label for="name">Business name</label>
         <input type="text" name="name" id="name" class="p-2 rounded-lg readonly:" placeholder="Enter your business name" value="<?= $business['name'] ?>" disabled required>
@@ -28,4 +35,6 @@
         <label for="weekend_hours">Your business's weekend working hours</label>
         <input type="text" name="weekend_hours" id="weekend_hours" class="p-2 rounded-lg" placeholder="HH:mm-HH:mm"required value="<?= $business['weekend_hours'] ?>" disabled>
     </div>
+    <input type="hidden" id="userId" name="user_id" value="<?= session()->get('userId') ?>">
+    <input type="hidden" id="businessId" name="id" value="<?= $business['id'] ?>">
 </form>

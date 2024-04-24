@@ -25,6 +25,7 @@
         include "components/item_card.php";
         include "components/item_form_details.php";
     ?>
+
     
 </section>
 
@@ -54,7 +55,6 @@
 
 
     nextBtn.addEventListener("click", async () => {
-        step += 1;
         if (step == 1) {
             const form = document.getElementById("step-1");
             let result = undefined;
@@ -66,9 +66,17 @@
                     .then(data => result = data);
                 }
                 window.location.replace(`<?= base_url("menu/addedit") ?>/${result ? result.id : menuId}/${step}`);
-            };
+            } else {
+                return;
+            }
         } else if (step == 3) {
         }
+        step += 1;
+        window.location.replace(`<?= base_url("menu/addedit") ?>/${menuId}/${step}`);
+    })
+
+    prevBtn.addEventListener("click", () => {
+        step -= 1;
         window.location.replace(`<?= base_url("menu/addedit") ?>/${menuId}/${step}`);
     })
 

@@ -36,8 +36,8 @@
                 <i class="inline-block text-accent text-3xl fa-solid fa-circle-info"></i>
                 <h3 class="text-xl lg:text-3xl">Business Information</h3>
             </div>
-            <div id="business-info" class="collapse-content  bg-neutral flex flex-col gap-3"> 
-                <i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square text-end mt-3"></i>
+            <div id="business_info" class="collapse-content  bg-neutral flex flex-col gap-3"> 
+                <i onclick="businessFormModal.showModal()" class="text-info text-base lg:text-xl fa-solid fa-pen-to-square text-end mt-3"></i>
                 <?php include "templates/business_form.php"; ?>
             </div>
         </div>
@@ -100,21 +100,67 @@
     
     <?php include "helpers/api_calls.php" ?>
     <script>
-        const businessFormTemplate = document.querySelector('#businessFormTemplate');
-        const businessInfo = document.querySelector('#business-info');
-        const parent = businessInfo.parentElement;
-        const businessId = <?= $business['id'] ?>;
+        const businessInfo = document.querySelector("#business_info")
+        const businessFormTemplate = document.querySelector("#business_form");
+        const businessForm = businessFormTemplate.cloneNode(true);
+        businessForm.id = "businessForEdit";
         
 
         function renderModal() {
             const dialog = document.createElement("dialog");
             dialog.classList.add("modal");
-            dialog.id = "business_edit";
+            dialog.id = "businessFormModal";
 
+            const formHeader = businessForm.querySelector("h4");
+            formHeader.classList.add("text-center", "text-accent", "text-xl", "md:text-2xl");
+            formHeader.innerText = "Edit your business information";
+
+            const modalContainer = document.createElement("div");
+            modalContainer.classList.add("modal-box", "md:6/1", "md:max-w-xl", "lg:w-8/12", "lg:max-w-3xl", "p-7");
+
+            const saveBtn = document.createElement("input");
+            saveBtn.id = "saveBtn";
+            saveBtn.classList.add("btn", "btn-accent");
+            saveBtn.type = "submit";
+            saveBtn.value = "Save"
+            saveBtn.addEventListener("click", (e) => editForm(e))
+            // <input id="submitBtn" class="btn btn-accent" type="submit" value="Save">
+            businessForm.append(saveBtn);
+
+            const closeModalForm = document.querySelector("#close_modal_form").content.cloneNode(true).children[0];
+            modalContainer.appendChild(closeModalForm);
+            modalContainer.appendChild(businessForm);
+            
+
+            const formInputs = modalContainer.querySelectorAll("input");
+            const formTextarea = modalContainer.querySelector("textarea");
+            formInputs.forEach(input => input.removeAttribute("disabled"))
+            formTextarea.removeAttribute("disabled");
+
+            dialog.appendChild(modalContainer);
+            businessInfo.appendChild(dialog);
+            console.log(dialog)
+        }
+
+        async function editForm(e) {
+            e.preventDefault();
+            let result = undefined;
+            const businessFormModal = document.querySelector("#businessFormModal");
+
+            if (businessForm.reportValidity()) {
+                const formData = new FormData(businessForm);
+                const data = Object.fromEntries(formData.entries());
+                // placeholder image
+                data['logo'] = null;
+                await update("businesses", data)
+                .then(data => result = data);
+
+                businessFormModal.close();
+            };
         }
             
-        console.log(businessInfo, parent)
-
+        renderModal();
+        
 
     </script>
 <?= $this->endSection() ?>
