@@ -19,7 +19,7 @@
             result = data;
         })
         .catch(error => {
-            console.log("An error has occurred. The error is: " + error);
+            result = [];
         });
 
         return result

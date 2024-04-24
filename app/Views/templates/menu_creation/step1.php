@@ -22,7 +22,8 @@
             >
         </div>
         <input type="hidden" value=<?= session()->get('userId') ?> id="userId" name="last_edited_by">
-        <!-- for now businessId is set -->
-        <input type="hidden" value=1 id="businessId" name="business_id"> 
+        <input type="hidden" value="<?= $business['id'] ?>" id="businessId" name="business_id"> 
+        <input type="hidden" id="menuId" name="id" value="<?= !isset($menu) ? '' : $menu['id'] ?>">
+
     </form>
 </template>

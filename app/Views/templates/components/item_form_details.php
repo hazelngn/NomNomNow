@@ -43,6 +43,17 @@
                     <label class="font-bold" for="item_img">Image</label>
                     <input type="file" id="item_img" name="item_img" class="file-input file-input-bordered file-input-accent w-full max-w-xs file-input-sm lg:file-input-md" />
                 </div>
+                <div class="form-control">
+                    <p class="font-bold">Special diet preference</p>
+                    <section class="flex justify-evenly">
+                        <?php foreach ($prefs as $pref): ?>
+                            <label class="cursor-pointer label flex gap-3 basis-auto">
+                                <span class="label-text"><?= $pref['name'] ?></span>
+                                <input type="checkbox" name="diet_pr_id" class="checkbox checkbox-accent" value="<?= $pref['id'] ?>"/>
+                            </label>
+                        <?php endforeach; ?>
+                    </section>
+                </div>
                 <!-- Add some context where this shows and not, using aria-label,.... -->
                 <input id="submitBtn" class="btn btn-accent" type="submit" value="Save">
                 <input type="hidden" id="id" name="id">

@@ -23,7 +23,7 @@
                 <a class="btn btn-ghost text-3xl font-header" 
                 href="
                 <?= 
-                    base_url(session()->get("usertype") == "admin" ? "admin" : (session()->get("isLoggedIn") ?  session()->get('userId') : "")); 
+                    base_url(session()->get("usertype") == "admin" ? "admin" : (session()->get("isLoggedIn") ? session()->get('userId') : "")); 
                 ?>"
                 
                 >NomNomNow</a>

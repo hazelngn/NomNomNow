@@ -21,7 +21,10 @@
     </div>
     <div class="flex flex-col gap-2">
         <label for="logo">Logo of your business</label>
-        <input type="file" id="logo" name="logo" class="file-input file-input-bordered file-input-accent w-full max-w-xs file-input-sm lg:file-input-md"value="<?= $business['logo'] ?>" disabled/>
+        <?php if (!empty($business['logo'])): ?>
+            <p class="text-success md:text-sm italic text-xs">A file has been uploaded</p>
+        <?php endif; ?>
+        <input type="file" id="logo" name="logo" class="file-input file-input-bordered file-input-accent w-full max-w-xs file-input-sm lg:file-input-md" disabled/>
     </div>
     <div class="flex flex-col gap-2">
         <label for="address">Your business's address</label>

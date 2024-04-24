@@ -2,7 +2,6 @@
 
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
-use App\Models\EducationModel;
 
 class MenuItems extends ResourceController
 {
@@ -20,7 +19,12 @@ class MenuItems extends ResourceController
 
         // Filter the data by user_id if provided, otherwise retrieve all entries.
         $data = $menuItemId ? $model->where('id', $menuItemId)->findAll() : $model->findAll();
-
+        foreach($data as &$elem) {
+            if ($elem['item_img']) {
+                $imagePath = WRITEPATH . 'uploads/' . $elem['item_img'];
+                $elem['item_img'] = base64_encode(file_get_contents($imagePath));
+            }
+        }
         // Use HTTP 200 to return data.
         return $this->respond($data);
     }

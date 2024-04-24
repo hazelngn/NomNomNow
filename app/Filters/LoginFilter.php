@@ -17,7 +17,7 @@ class LoginFilter implements FilterInterface
             $response = Services::response();
             $response->setStatusCode(200); // You can set this to 401 if it's an unauthorized access
             $response->setBody('Not logged In');
-            return redirect()->to('/login'); // Return the response object with the message
+            return redirect()->to('login'); // Return the response object with the message
         }
     }
 

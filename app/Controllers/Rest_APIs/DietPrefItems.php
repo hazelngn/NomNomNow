@@ -44,4 +44,53 @@ class DietPrefItems extends ResourceController
         
     }
 
+    /**
+     * Handle POST requests to create a new education entry.
+     */
+    public function create()
+    {
+        $model = new \App\Models\DietaryPrefItemModel();
+        $data = $this->request->getJSON(true);  // Ensure the received data is an array.
+
+        // Validate input data before insertion.
+        if (empty($data)) {
+            return $this->failValidationErrors('No data provided.');
+        }
+
+        // Insert data and check for success.
+        $inserted = $model->insert($data);
+        // inserted is 0 when successful??
+        // if ($inserted) {
+        //     return $this->respondCreated($data, 'User data created successfully.');
+        // } else {
+        //     return $this->failServerError('Failed to create user data.');
+        // }
+    }
+
+    /**
+     * Handle PUT requests to update an existing education entry by its ID.
+     */
+    public function update($id = null)
+    {
+        $model = new \App\Models\DietaryPrefItemModel();
+        // update based on item_id
+        $data = $this->request->getJSON(true);  // Ensure the received data is an array.
+
+        // Check if the record exists before attempting update.
+        if (!$model->where('item_id', $id)->findAll()) {
+            return $this->failNotFound("No Users entry found with ID: {$id}");
+        }
+
+        // Update the record and handle the response.
+        if ($model
+        ->where('item_id', $id)
+        ->set(['diet_pr_id' => $data['diet_pr_id']])
+        ->update()) {
+            return $this->respondUpdated($data, 'User data updated successfully.');
+        } else {
+            return $this->failServerError('Failed to update user data.');
+        }
+    }
+
 }
+

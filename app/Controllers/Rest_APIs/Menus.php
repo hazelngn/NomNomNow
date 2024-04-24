@@ -2,7 +2,6 @@
 
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
-use App\Models\EducationModel;
 
 class Menus extends ResourceController
 {
@@ -20,6 +19,8 @@ class Menus extends ResourceController
 
         // Filter the data by user_id if provided, otherwise retrieve all entries.
         $data = $menuId ? $model->where('id', $$menuId)->findAll() : $model->findAll();
+        log_message('debug', 'JSON data: ' . json_encode($data));
+
 
         // Use HTTP 200 to return data.
         return $this->respond($data);

@@ -11,6 +11,7 @@ class NomNomController extends BaseController
         // available to all views in the PortfolioController
         helper('url'); 
         $this->session = session();
+       
     }
 
     public function index($id = null)
@@ -57,8 +58,14 @@ class NomNomController extends BaseController
         $menuModel = new \App\Models\MenuModel();
         $menuItemModel = new \App\Models\MenuItemModel();
         $categoryModel = new \App\Models\CategoryModel();
-        $DietaryPreferencesModel = new \App\Models\DietaryPreferencesModel();
-        $DietaryPrefItemModel = new \App\Models\DietaryPrefItemModel();
+        $dietaryPreferencesModel = new \App\Models\DietaryPreferencesModel();
+        $dietaryPrefItemModel = new \App\Models\DietaryPrefItemModel();
+
+        $userId = $this->session->get('userId');
+        $business = $businessModel->where('user_id', $userId)->first();
+        $prefs = $dietaryPreferencesModel->findAll();
+        $data['business'] = $business;
+        $data['prefs'] = $prefs;
 
 
         if ($menuId != null) {

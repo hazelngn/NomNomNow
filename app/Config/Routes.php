@@ -26,6 +26,8 @@ $routes->group('signup', function($routes) {
     $routes->get('(:num)', 'NomNomController::signup/$1');
 });
 
+$routes->post('/upload', 'FileUploadController::upload');
+
 $routes->get('menu', 'NomNomController::menu', ['filter' => 'login']);
 
 // (:num) is restaurant id == 1 (test data)
@@ -45,9 +47,6 @@ $routes->get('/google_login/google_callback', 'Auth::google_callback');  // Call
 $routes->get('/google_logout', 'Auth::logout');
 
 
-$routes->group('/', ['filter' => 'login'], function($routes) {
-    // once the db is implemented, checking which business will not be done via url any more (security)
-    $routes->get('(:alphanum)', 'NomNomController::index/$1');
-});
+$routes->get('/(:num)', 'NomNomController::index/$1', ['filter' => 'login']);
 
 $routes->get('/', 'NomNomController::index');

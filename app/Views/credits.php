@@ -13,5 +13,6 @@
         <a href="https://www.flaticon.com/free-icons/alcohol" title="alcohol icons">Alcohol icons created by Freepik - Flaticon</a>
         <a href="https://www.flaticon.com/free-icons/soda" title="soda icons">Soda icons created by Chanut-is-Industries - Flaticon</a>
         <a href="https://www.flaticon.com/free-icons/qr-code" title="qr code icons">Qr code icons created by Freepik - Flaticon</a>
+        <a href="https://www.flaticon.com/free-icons/abstract-shape" title="abstract shape icons">Abstract shape icons created by Freepik - Flaticon</a>
     </section>
 <?= $this->endSection() ?>

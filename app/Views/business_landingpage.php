@@ -150,10 +150,21 @@
             if (businessForm.reportValidity()) {
                 const formData = new FormData(businessForm);
                 const data = Object.fromEntries(formData.entries());
-                // placeholder image
-                data['logo'] = null;
+                const file = businessFormModal.querySelector("#logo").files[0];
+
+                const uploadFile = new FormData();
+                uploadFile.append('file', file)
+
+                await fetch("<?= base_url('upload/') ?>", {
+                    method: "POST",
+                    body: uploadFile
+                })
+                .then(res => res.json())
+                .then(json => data['logo'] = json['data'])
+
                 await update("businesses", data)
                 .then(data => result = data);
+
 
                 businessFormModal.close();
             };
