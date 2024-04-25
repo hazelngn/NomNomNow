@@ -29,8 +29,32 @@
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
         <h3 class="font-bold mb-5 text-accent text-xl">Your cart</h3>
-        <section id="cartItems" class="flex flex-col gap-3 md:text-lg md:flex-row md:flex-wrap">
-            
+        <section id="cartItems" class="flex flex-col gap-3 md:text-lg md:flex-wrap">
+            <section class="flex flex-1 text-neutral-content">
+                <section class="basis-1/2">
+                    Product
+                </section>
+                <section class="basis-1/4 text-right">
+                    Quantity
+                </section>
+                <section class="basis-1/4 text-right">
+                    Price
+                </section>
+            </section>
+
+            <template id="cartItemTemplate">
+                <section class="flex flex-1 text-neutral-content">
+                    <section id="product" class="basis-1/2">
+                        Product
+                    </section>
+                    <section id="quantity" class="basis-1/4 text-right">
+                        Quantity
+                    </section>
+                    <section id="price" class="basis-1/4 text-right">
+                        Price
+                    </section>
+                </section>
+            </template>
         </section>
         <div class="flex flex-row items-center justify-between mt-5">
             <p class="text-lg text-accent">Total: $<span id="total">0</span></p>
@@ -227,22 +251,22 @@
         let totalPrice = 0;
 
         orderItems.forEach(async item => {
-            const itemContainer = document.createElement("div");
-            itemContainer.className = "flex flex-1 justify-between";
-            const itemName = document.createElement("p");
-            const quantity = document.createElement("p");
-            const price = document.createElement("p");
+            const itemContainer = cartItemTemplate.content.cloneNode(true).children[0];
+            itemContainer.classList.remove('text-neutral-content')
+            const product = itemContainer.querySelector("#product");
+            const quantity = itemContainer.querySelector("#quantity");
+            const price = itemContainer.querySelector("#price");
 
             const itemDetail = await get("menu_items", item.menu_item_id);
 
-            itemName.innerText = itemDetail.name;
+            product.innerText = itemDetail.name;
             quantity.innerText = item.quantity;
             price.innerText = `$${itemDetail.price}`;
 
             totalPrice += itemDetail.price * item.quantity;
 
             total.innerText = totalPrice;
-            itemContainer.append(itemName, quantity, price);
+            console.log(itemContainer)
             cartItems.appendChild(itemContainer);
         })
 
@@ -250,16 +274,21 @@
     }
 
     async function checkout() {
-        if (orderItems.length > 0) {
-            const data = new FormData();
-            
+        const data = [
+            {
+                businessId: <?= $business['id'] ?>,
+                menuId: <?= $menu['id'] ?>
+            },
+            ...orderItems,
+        ]
 
-            console.log("clicked")
-            // await fetch("<?= base_url("checkout") ?>", {
-            //     method: "POST",
-            //     body: JSON.stringify(data)
-            // })
-            // .then(data => console.log(data));
+        if (orderItems.length > 0) {
+
+            await fetch("<?= base_url("checkout") ?>", {
+                method: "POST",
+                body: JSON.stringify(data)
+            })
+            .then(data => location.replace("<?= base_url("checkout") ?>"));
         }
 
         

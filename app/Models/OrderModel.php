@@ -10,5 +10,5 @@ class OrderModel extends Model
     protected $primaryKey = 'id';
     protected $allowedFields = ['customer_id', 'payment_type', 'table_num', 'status', 'total', 'order_at']; 
     protected $returnType = 'array'; 
-    protected $useTimestamps = true;
+    protected $useTimestamps = false;
 }

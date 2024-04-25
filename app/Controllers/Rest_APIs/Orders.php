@@ -60,6 +60,8 @@ class Orders extends ResourceController
 
         // Insert data and check for success.
         $inserted = $model->insert($data);
+        $id = $model->getInsertID();
+        $data = $model->find($id);
         if ($inserted) {
             return $this->respondCreated($data, 'User data created successfully.');
         } else {
@@ -80,6 +82,7 @@ class Orders extends ResourceController
             return $this->failNotFound("No Users entry found with ID: {$id}");
         }
 
+        
         // Update the record and handle the response.
         if ($model->update($id, $data)) {
             return $this->respondUpdated($data, 'User data updated successfully.');

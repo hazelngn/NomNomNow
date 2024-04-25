@@ -114,16 +114,30 @@ class NomNomController extends BaseController
     public function checkout() {
 
         if ($this->request->getMethod() === 'post') {
-            $postData = $this->request->getPost();
-            log_message("debug", "post data: " . json_encode($postData));
-            
+            $postData = $this->request->getJSON();
+
+            $this->session->set(['order_items' => json_encode($postData)]);
             return $this->response->setJSON(['success' => $postData]);
         }
 
         $businessModel = new \App\Models\BusinessModel();
-        $business = $businessModel->find(3);
-        $data['business'] = $business;
+        if ($this->session->get('order_items')) {
+            $orderItems = json_decode($this->session->get('order_items'), true);
+            foreach($orderItems as $item) {
+                if (isset($item['businessId'])) {
+                    $businessId = $item['businessId'];
+                    $menuId = $item['menuId'];
+                }
+            };
+            $business = $businessModel->find($businessId);
+            $data['menuId'] =  $menuId;
+            $data['business'] = $business;
+            $data['checkout'] = TRUE;
+            return view('checkout', $data);    
+        } else {
+            return redirect()->to(('/'));
+        }
         
-        return view('checkout', $data);    
+        
     }
 }

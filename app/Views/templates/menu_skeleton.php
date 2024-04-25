@@ -65,13 +65,10 @@
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
                 if (!menuId) {
-                    await add("menus", data)
-                    .then(data => result = data);
+                    result = await add("menus", data)
                 } else {
-                    await update("menus", data)
-                    .then(data => result = data);
+                    result = await update("menus", data)
                 }
-                console.log(result);
                 window.location.replace(`<?= base_url("menu/addedit") ?>/${result ? result.id : menuId}/${step + 1}`);
                 return;
             } else {

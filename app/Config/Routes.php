@@ -29,6 +29,7 @@ $routes->group('signup', function($routes) {
 $routes->post('/upload', 'FileUploadController::upload');
 
 $routes->post('/checkout', 'NomNomController::checkout');
+$routes->get('/checkout', 'NomNomController::checkout');
 
 // (:num) is menu id
 $routes->get('menu/(:num)', 'NomNomController::menu/$1', ['filter' => 'login']);

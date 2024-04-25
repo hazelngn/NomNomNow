@@ -60,6 +60,8 @@ class Customers extends ResourceController
 
         // Insert data and check for success.
         $inserted = $model->insert($data);
+        $id = $model->getInsertID();
+        $data = $model->find($id);
         if ($inserted) {
             return $this->respondCreated($data, 'User data created successfully.');
         } else {

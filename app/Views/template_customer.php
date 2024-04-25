@@ -20,14 +20,16 @@
         <!-- Code snippets from daisy UI https://daisyui.com/components/navbar/ -->
         <div class="navbar bg-base-100">
             <div class="flex-1">
-                <a class="btn btn-ghost text-3xl font-header" href="<?= base_url("onlineorder/1") ?>"><?= $business['name'] ?></a>
+                <a class="btn btn-ghost text-3xl font-header" href="<?= base_url("onlineorder/") . (isset($menuId) ? $menuId : $menu['id']) ?>"><?= $business['name'] ?></a>
             </div>
-            <div class="indicator mr-4">
-                <span class="indicator-item badge badge-accent badge-sm md:badge-sm" id="totalQuantity">0</span> 
-                <button onclick="showCart()">
-                    <i class="text-2xl fa-solid fa-cart-shopping md:text-3xl"></i>
-                </button>
-            </div>
+            <?php if (!isset($checkout)): ?>
+                <div class="indicator mr-4">
+                    <span class="indicator-item badge badge-accent badge-sm md:badge-sm" id="totalQuantity">0</span> 
+                    <button onclick="showCart()">
+                        <i class="text-2xl fa-solid fa-cart-shopping md:text-3xl"></i>
+                    </button>
+                </div>
+            <?php endif; ?>
             
         </div>
     </header>
