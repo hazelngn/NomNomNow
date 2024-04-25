@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $business['name'] ?></title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.9.0/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <style>
+        #debug-bar div:nth-child(n + 2) {
+            height: 50vh !important;
+        }
+    </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,9 +23,9 @@
                 <a class="btn btn-ghost text-3xl font-header" href="<?= base_url("onlineorder/1") ?>"><?= $business['name'] ?></a>
             </div>
             <div class="indicator mr-4">
-                <span class="indicator-item badge badge-accent badge-sm">0</span> 
-                <button onclick="cart.showModal()">
-                    <i class="text-2xl fa-solid fa-cart-shopping"></i>
+                <span class="indicator-item badge badge-accent badge-sm md:badge-sm" id="totalQuantity">0</span> 
+                <button onclick="showCart()">
+                    <i class="text-2xl fa-solid fa-cart-shopping md:text-3xl"></i>
                 </button>
             </div>
             

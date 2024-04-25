@@ -80,11 +80,22 @@ class NomNomController extends BaseController
         return view('menu_addedit', $data);
     }
 
-    public function customer_view($resId) {
-        $json = file_get_contents("content.json");
-        $data = json_decode($json, true);
-        $data['preview'] = TRUE;
+    public function customer_view($menuId) {
+        $businessModel = new \App\Models\BusinessModel();
+        $menuModel = new \App\Models\MenuModel();
+
+        $menu = $menuModel->find($menuId);
+        if (!$menu) {
+            // Should redirect to no page found
+            return redirect()->to("/");
+        }
+        $business = $businessModel->find($menu['business_id']);
+        $data['menu'] = $menu;
+        $data['business'] = $business;
+
         $data['customer_view']= TRUE;
+        $data['menu_viewing'] = TRUE;
+
         return view('customer_view', $data);    
     }
 
@@ -98,5 +109,21 @@ class NomNomController extends BaseController
         $json = file_get_contents("content.json");
         $data = json_decode($json, true);
         return view('admin', $data);    
+    }
+
+    public function checkout() {
+
+        if ($this->request->getMethod() === 'post') {
+            $postData = $this->request->getPost();
+            log_message("debug", "post data: " . json_encode($postData));
+            
+            return $this->response->setJSON(['success' => $postData]);
+        }
+
+        $businessModel = new \App\Models\BusinessModel();
+        $business = $businessModel->find(3);
+        $data['business'] = $business;
+        
+        return view('checkout', $data);    
     }
 }

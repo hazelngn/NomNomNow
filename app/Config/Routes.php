@@ -28,11 +28,15 @@ $routes->group('signup', function($routes) {
 
 $routes->post('/upload', 'FileUploadController::upload');
 
+$routes->post('/checkout', 'NomNomController::checkout');
+
 // (:num) is menu id
 $routes->get('menu/(:num)', 'NomNomController::menu/$1', ['filter' => 'login']);
 
 // (:num) is restaurant id == 1 (test data)
 $routes->get('onlineorder/(:num)', 'NomNomController::customer_view/$1');
+$routes->post('onlineorder/(:num)', 'NomNomController::customer_view/$1');
+
 $routes->get('ordersystem', 'NomNomController::order_system');
 
 $routes->get('admin', 'NomNomController::admin', ['filter' => 'admin']);
