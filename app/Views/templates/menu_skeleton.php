@@ -108,6 +108,7 @@
                 const emptyText = document.querySelector("#empty_text");
                 if (emptyText) emptyText.remove();
                 menuItems.forEach(item => {
+                    // duplication menu_view
                     const itemCard = document.querySelector("#item-card").content.cloneNode(true).children[0];
                     const imageSrc = item.item_img ? `data:image/jpeg;base64,${item.item_img}` : placeholderImg;
                     itemCard.id = item.id;
@@ -262,12 +263,10 @@
 
             if (!id) {
                 // add
-                await add("menu_items", data)
-                .then(data => result = data);
+                result = await add("menu_items", data)
             } else {
                 // edit
-                await update("menu_items", data)
-                .then(data => result = data)
+                result = await update("menu_items", data)
             }
 
             itemDetail.close();

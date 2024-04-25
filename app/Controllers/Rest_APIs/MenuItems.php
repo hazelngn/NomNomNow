@@ -41,6 +41,10 @@ class MenuItems extends ResourceController
 
         // Check if data was found.
         if ($data) {
+            if ($data['item_img']) {
+                $imagePath = WRITEPATH . 'uploads/' . $data['item_img'];
+                $data['item_img'] = base64_encode(file_get_contents($imagePath));
+            }
             return $this->respond($data);
         } else {
             // Return a 404 error if no data is found.

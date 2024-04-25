@@ -28,7 +28,8 @@ $routes->group('signup', function($routes) {
 
 $routes->post('/upload', 'FileUploadController::upload');
 
-$routes->get('menu', 'NomNomController::menu', ['filter' => 'login']);
+// (:num) is menu id
+$routes->get('menu/(:num)', 'NomNomController::menu/$1', ['filter' => 'login']);
 
 // (:num) is restaurant id == 1 (test data)
 $routes->get('onlineorder/(:num)', 'NomNomController::customer_view/$1');

@@ -45,10 +45,10 @@ class NomNomController extends BaseController
         return view('signup', $data);
     }
 
-    public function menu() {
-        $json = file_get_contents("content.json");
-        $data = json_decode($json, true);
-        $data['preview'] = TRUE;
+    public function menu($menuId) {
+        $menuModel = new \App\Models\MenuModel();
+        $data['menu'] = $menuModel->find($menuId);
+        $data['menu_viewing'] = TRUE;
         return view('menu_view', $data);
     }
 
@@ -56,10 +56,7 @@ class NomNomController extends BaseController
     {
         $businessModel = new \App\Models\BusinessModel();
         $menuModel = new \App\Models\MenuModel();
-        $menuItemModel = new \App\Models\MenuItemModel();
-        $categoryModel = new \App\Models\CategoryModel();
         $dietaryPreferencesModel = new \App\Models\DietaryPreferencesModel();
-        $dietaryPrefItemModel = new \App\Models\DietaryPrefItemModel();
 
         $userId = $this->session->get('userId');
         $business = $businessModel->where('user_id', $userId)->first();

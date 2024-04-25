@@ -139,7 +139,6 @@
 
             dialog.appendChild(modalContainer);
             businessInfo.appendChild(dialog);
-            console.log(dialog)
         }
 
         async function editForm(e) {
@@ -167,6 +166,8 @@
 
 
                 businessFormModal.close();
+                // client side rendering not implemented
+                location.reload();
             };
         }
             
