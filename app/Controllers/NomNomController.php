@@ -47,8 +47,15 @@ class NomNomController extends BaseController
 
     public function menu($menuId) {
         $menuModel = new \App\Models\MenuModel();
-        $data['menu'] = $menuModel->find($menuId);
+        $businessModel = new \App\Models\BusinessModel();
+
+        $menu = $menuModel->find($menuId);
+        $businessId = $menu['business_id'];
+        $business = $businessModel->find($businessId);
+
         $data['menu_viewing'] = TRUE;
+        $data['menu'] = $menu;
+        $data['business'] = $business;
         return view('menu_view', $data);
     }
 
