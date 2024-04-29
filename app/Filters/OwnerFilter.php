@@ -5,7 +5,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\Filters\FilterInterface;
 use CodeIgniter\Config\Services;
 
-class StaffFilter implements FilterInterface
+class OwnerFilter implements FilterInterface
 {
     public function before(RequestInterface $request, $arguments = null)
     {

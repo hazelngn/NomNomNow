@@ -27,6 +27,10 @@ class Filters extends BaseConfig
         'login' => \App\Filters\LoginFilter::class,
         'admin' => \App\Filters\AdminFilter::class,
         'owner' => \App\Filters\OwnerFilter::class,
+        'login,owner' => [
+            \App\Filters\LoginFilter::class,
+            \App\Filters\OwnerFilter::class,
+        ]
     ];
 
     /**

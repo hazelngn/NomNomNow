@@ -64,7 +64,6 @@
     </section>
 </template>
 
-<?php include __DIR__ . '/../helpers/api_calls.php' ?>
 <script>
     let categoryTemplate, categoriesContainer, itemContainerTemplate, itemDetailModalTemplate, menuCategories;
     let orderItems = [];
@@ -103,6 +102,7 @@
             img.alt = `${cat.name}`;
             categoryName.innerText = `${cat.name}`;
 
+            console.log(categoryClone)
             categoriesContainer.appendChild(categoryClone)
         })
 

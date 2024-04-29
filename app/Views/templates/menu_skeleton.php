@@ -28,7 +28,6 @@
     
 </section>
 
-<?php include __DIR__ . '/../helpers/api_calls.php' ?>
 <script>
     const mainContent = document.querySelector('#main_content');
     const prevBtn = document.querySelector("#prevBtn");

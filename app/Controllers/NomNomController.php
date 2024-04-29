@@ -36,14 +36,9 @@ class NomNomController extends BaseController
         return view('login');
     }
 
-    public function signup($step = null)
+    public function business_signup()
     {
-        if ($step === null) {
-            $data['step'] = 1;
-        } else {
-            $data['step'] = intval($step);
-        }
-        return view('signup', $data);
+        return view('signup');
     }
 
     public function menu($menuId) {

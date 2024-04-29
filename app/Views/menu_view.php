@@ -10,6 +10,5 @@
 
     <?php include 'templates/menu_temp.php' ?>
     
-    
 <?= $this->endSection(); ?>
 

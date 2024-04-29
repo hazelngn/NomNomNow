@@ -21,10 +21,8 @@ $routes->resource('customers', ["controller" => "Rest_APIs\Customers"]);
 $routes->get('login', 'NomNomController::login');
 // $routes->get('signup/(:num)', 'NomNomController::signup/$1');
 
-$routes->group('signup', function($routes) {
-    $routes->get('/', 'NomNomController::signup');
-    $routes->get('(:num)', 'NomNomController::signup/$1');
-});
+// Filter in here, this url is only accessible when user doesn't have their business ID
+$routes->get('business_signup', 'NomNomController::business_signup', ['filter' => 'login,owner']);
 
 $routes->post('/upload', 'FileUploadController::upload');
 
@@ -32,17 +30,17 @@ $routes->post('/checkout', 'NomNomController::checkout');
 $routes->get('/checkout', 'NomNomController::checkout');
 
 // (:num) is menu id
-$routes->get('menu/(:num)', 'NomNomController::menu/$1', ['filter' => 'login']);
+$routes->get('menu/(:num)', 'NomNomController::menu/$1', ['filter' => 'login,owner']);
 
 // (:num) is restaurant id == 1 (test data)
 $routes->get('onlineorder/(:num)', 'NomNomController::customer_view/$1');
 $routes->post('onlineorder/(:num)', 'NomNomController::customer_view/$1');
 
-$routes->get('ordersystem', 'NomNomController::order_system');
+$routes->get('ordersystem', 'NomNomController::order_system',  ['filter' => 'login']);
 
 $routes->get('admin', 'NomNomController::admin', ['filter' => 'admin']);
 
-$routes->group('menu/addedit', ['filter' => 'login'], function($routes) {
+$routes->group('menu/addedit', ['filter' => 'login,owner'], function($routes) {
     $routes->get('', 'NomNomController::menu_addedit'); // add
     $routes->get('(:num)', 'NomNomController::menu_addedit/$1'); // edit
     $routes->get('(:num)/(:num)', 'NomNomController::menu_addedit/$1/$2');
@@ -53,6 +51,6 @@ $routes->get('/google_login/google_callback', 'Auth::google_callback');  // Call
 $routes->get('/google_logout', 'Auth::logout');
 
 
-$routes->get('/(:num)', 'NomNomController::index/$1', ['filter' => 'login']);
+$routes->get('/(:num)', 'NomNomController::index/$1', ['filter' => 'login,owner']);
 
 $routes->get('/', 'NomNomController::index');

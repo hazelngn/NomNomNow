@@ -1,6 +1,5 @@
 <?= $this->extend('template') ?>
 <?= $this->section('content') ?>
-    
     <section class="flex flex-col lg:flex-row flex-wrap justify-evenly mt-5 ">
         <div class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12">
             <input type="radio" name="my-accordion-2" checked="checked" /> 
@@ -98,7 +97,6 @@
     </dialog>
 
     
-    <?php include "helpers/api_calls.php" ?>
     <script>
         const businessInfo = document.querySelector("#business_info")
         const businessFormTemplate = document.querySelector("#business_form");
@@ -112,11 +110,11 @@
             dialog.id = "businessFormModal";
 
             const formHeader = businessForm.querySelector("h4");
-            formHeader.classList.add("text-center", "text-accent", "text-xl", "md:text-2xl");
+            formHeader.className = "text-center font-sub-header text-accent text-xl md:text-2xl";
             formHeader.innerText = "Edit your business information";
 
             const modalContainer = document.createElement("div");
-            modalContainer.classList.add("modal-box", "md:6/1", "md:max-w-xl", "lg:w-8/12", "lg:max-w-3xl", "p-7");
+            modalContainer.className = "modal-box md:6/1 md:max-w-xl lg:w-8/12 lg:max-w-3xl p-7";
 
             const saveBtn = document.createElement("input");
             saveBtn.id = "saveBtn";
@@ -143,7 +141,6 @@
 
         async function editForm(e) {
             e.preventDefault();
-            let result = undefined;
             const businessFormModal = document.querySelector("#businessFormModal");
 
             if (businessForm.reportValidity()) {
@@ -151,19 +148,22 @@
                 const data = Object.fromEntries(formData.entries());
                 const file = businessFormModal.querySelector("#logo").files[0];
 
-                const uploadFile = new FormData();
-                uploadFile.append('file', file)
+                if (file) {
+                    const uploadFile = new FormData();
+                    uploadFile.append('file', file)
 
-                await fetch("<?= base_url('upload/') ?>", {
-                    method: "POST",
-                    body: uploadFile
-                })
-                .then(res => res.json())
-                .then(json => data['logo'] = json['data'])
+                    await fetch("<?= base_url('upload/') ?>", {
+                        method: "POST",
+                        body: uploadFile
+                    })
+                    .then(res => res.json())
+                    .then(json => data['logo'] = json['data'])
+                } else {
+                    delete data['logo']
+                }
 
-                await update("businesses", data)
-                .then(data => result = data);
-
+                const result = await update("businesses", data)
+                console.log(result);
 
                 businessFormModal.close();
                 // client side rendering not implemented

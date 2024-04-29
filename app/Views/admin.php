@@ -52,7 +52,6 @@
         <p class="basis-1/12 grow-0">User ID</p>
     </template>
 
-    <?php include "helpers/api_calls.php" ?>
     <script>
         async function listUserDetails() {
             const parentTemplate = document.getElementById("userDetailsTemplate");

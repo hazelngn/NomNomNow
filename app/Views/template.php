@@ -39,15 +39,19 @@
                             <details>
                                 <summary class="text-base md:text-xl">
                                     <?php if (session()->get('isLoggedIn')): ?>
-                                        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-                                            <div class="w-10 rounded-full">
-                                                <img 
-                                                    id = "business_logo"
-                                                    alt="The logo of <?= $business['name'] ?>" 
-                                                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" 
-                                                />
+                                        <?php  if (isset($business)): ?>
+                                            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                                                <div class="w-10 rounded-full">
+                                                    <img 
+                                                        id = "business_logo"
+                                                        alt="The logo of <?= $business['name'] ?>" 
+                                                        src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" 
+                                                    />
+                                                </div>
                                             </div>
-                                        </div>
+                                        <?php else: ?>
+                                            <?= session()->get('name') ?>
+                                        <?php endif; ?>
                                     <?php else: ?>
                                         Account
                                     <?php endif; ?>
@@ -100,7 +104,7 @@
     <script>
         const smallScreenSize = window.matchMedia("(max-width: 768px)");
         const stepElements = document.getElementsByClassName("steps");
-        const businessId =  <?= isset($business['id']) ? $business['id'] : "" ?>;
+        const businessId =  "<?= isset($business['id']) ? $business['id'] : null ?>";
 
         if (window.innerWidth > 768) {
             /* the viewport is more than 600 pixels wide */
@@ -122,7 +126,7 @@
             }
         };
 
-        window.onload = () => {
+        function updateAvatar() {
             if (businessId) {
                 get('businesses', businessId)
                 .then(
@@ -133,10 +137,7 @@
                 )
             }
         }
-        
 
-    </script>
-    <script>
         tailwind.config = {
             daisyui: {
                 themes: ["light", "dracula", "retro", "night", "sunset"],
@@ -151,6 +152,8 @@
                 },
             }
         }
+
+        updateAvatar();
 
     </script>
 </body>
