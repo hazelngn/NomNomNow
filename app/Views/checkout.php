@@ -1,10 +1,10 @@
-<?= $this->extend('template_customer'); ?>
+<?= $this->extend('template'); ?>
 <?= $this->section('content'); ?>
    <h1 class="text-xl md:text-3xl text-accent text-center mt-11 mb-11">Check Out</h1>
    <section class="flex flex-col md:flex-row mt-3 md:w-4/6 m-auto gap-10 p-5">
       <section class="md:w-2/3">
          <form id="customerDetails" class="flex flex-col gap-2">
-            <h3 class="text-accent text-xl md:text-2xl mb-2">Continue as Guest</h3>
+            <h3 class="text-accent text-xl md:text-2xl mb-2 font-bold">Continue as Guest</h3>
             <section class="flex flex-col gap-2">
                <label for="name" class="text-accent">Your name</label>
                <input type="text" id="name" name="name" class="p-2 rounded-lg bg-neutral" required>
@@ -176,7 +176,6 @@
          } else {
                return;
          }
-
       }
 
    </script>

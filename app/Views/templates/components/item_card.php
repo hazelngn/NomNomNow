@@ -5,7 +5,7 @@
         </section>
         <section class="flex flex-col gap-3 w-full md:text-lg">
             <section class="flex flex-row items-baseline justify-between">
-                <h2 class="flex justify-between font-bold text-md md:mt-5 gap-2">
+                <h2 class="flex justify-between font-bold text-md md:mt-5 gap-2 flex-col">
                     <p id="item-name"></p>
                     <?php if (!isset($menu_viewing)): ?>
                         <i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square self-baseline"></i>

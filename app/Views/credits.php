@@ -14,5 +14,7 @@
         <a href="https://www.flaticon.com/free-icons/soda" title="soda icons">Soda icons created by Chanut-is-Industries - Flaticon</a>
         <a href="https://www.flaticon.com/free-icons/qr-code" title="qr code icons">Qr code icons created by Freepik - Flaticon</a>
         <a href="https://www.flaticon.com/free-icons/abstract-shape" title="abstract shape icons">Abstract shape icons created by Freepik - Flaticon</a>
+        <a href="https://www.flaticon.com/free-icons/ramen" title="ramen icons">Ramen icons created by justicon - Flaticon</a>
+        <a href="https://www.flaticon.com/free-icons/fried-chicken" title="fried chicken icons">Fried chicken icons created by Freepik - Flaticon</a>
     </section>
 <?= $this->endSection() ?>

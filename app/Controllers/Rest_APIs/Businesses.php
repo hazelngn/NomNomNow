@@ -37,6 +37,10 @@ class Businesses extends ResourceController
 
         // Check if data was found.
         if ($data) {
+            if ($data['logo']) {
+                $imagePath = WRITEPATH . 'uploads/' . $data['logo'];
+                $data['logo'] = base64_encode(file_get_contents($imagePath));
+            }
             return $this->respond($data);
         } else {
             // Return a 404 error if no data is found.

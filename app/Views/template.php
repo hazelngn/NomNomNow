@@ -20,50 +20,73 @@
         <!-- Code snippets from daisy UI https://daisyui.com/components/navbar/ -->
         <div class="navbar bg-base-100 flex-wrap">
             <div class="flex-1">
-                <a class="btn btn-ghost text-3xl font-header" 
-                href="
-                <?= 
-                    base_url(session()->get("usertype") == "admin" ? "admin" : (session()->get("isLoggedIn") ? session()->get('userId') : "")); 
-                ?>"
-                
-                >NomNomNow</a>
+                <?php if (!isset($customer_view)): ?>
+                    <a 
+                        class="btn btn-ghost text-3xl font-header" 
+                        href="
+                            <?= 
+                                base_url(session()->get("usertype") == "admin" ? "admin" : (session()->get("isLoggedIn") ? session()->get('userId') : "")); 
+                            ?>"
+                    >NomNomNow</a>
+                <?php else: ?>
+                    <a class="btn btn-ghost text-3xl font-header" href="<?= base_url("onlineorder/") . (isset($menuId) ? $menuId : $menu['id']) ?>"><?= $business['name'] ?></a>
+                <?php endif; ?>
             </div>
-            <div class="flex-none">
-                <ul class="menu menu-horizontal px-1">
-                    <li>
-                        <details>
-                            <summary class="text-base md:text-xl">
-                                <?= session()->get('isLoggedIn') ? session()->get('name') : 'Account' ?>
-                            </summary>
-                            <ul class="p-2 bg-base-100 rounded-t-none">
-                                <?php if (session()->get('isLoggedIn')): ?>
-                                    <li class="text-sm md:text-md hover:bg-accent hover:text-base-100 hover:rounded-md">
-                                        <a href="<?= base_url("google_logout") ?>">Logout</a>
-                                    </li>
-                                <?php else: ?>
-                                    <li class="text-sm md:text-md lg:text-lg hover:bg-accent hover:text-base-100 hover:rounded-md">
-                                        <a href="<?= base_url("login") ?>">Login</a>
-                                    </li>
-                                    <li class="text-sm md:text-md lg:text-lg hover:bg-accent hover:text-base-100 hover:rounded-md">
-                                        <a href="<?= base_url("signup") ?>">Sign Up</a>
-                                    </li>
-                                <?php endif; ?>
-                                
-                            </ul>
-                        </details>
-                    </li>
-                </ul>
-            </div>
-            
+            <?php if (!isset($customer_view) && !isset($checkout)): ?>
+                <div class="flex-none">
+                    <ul class="menu menu-horizontal px-1">
+                        <li>
+                            <details>
+                                <summary class="text-base md:text-xl">
+                                    <?php if (session()->get('isLoggedIn')): ?>
+                                        <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                                            <div class="w-10 rounded-full">
+                                                <img 
+                                                    id = "business_logo"
+                                                    alt="The logo of <?= $business['name'] ?>" 
+                                                    src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" 
+                                                />
+                                            </div>
+                                        </div>
+                                    <?php else: ?>
+                                        Account
+                                    <?php endif; ?>
+                                </summary>
+                                <ul class="p-2 bg-base-100 rounded-t-none">
+                                    <?php if (session()->get('isLoggedIn')): ?>
+                                        <li class="text-sm md:text-md hover:bg-accent hover:text-base-100 hover:rounded-md">
+                                            <a href="<?= base_url("google_logout") ?>">Logout</a>
+                                        </li>
+                                    <?php else: ?>
+                                        <li class="text-sm md:text-md lg:text-lg hover:bg-accent hover:text-base-100 hover:rounded-md">
+                                            <a href="<?= base_url("login") ?>">Login</a>
+                                        </li>
+                                        <li class="text-sm md:text-md lg:text-lg hover:bg-accent hover:text-base-100 hover:rounded-md">
+                                            <a href="<?= base_url("signup") ?>">Sign Up</a>
+                                        </li>
+                                    <?php endif; ?>
+                                    
+                                </ul>
+                            </details>
+                        </li>
+                    </ul>
+                </div>
+            <?php elseif (!isset($checkout)): ?>
+                <div class="indicator mr-4">
+                    <span class="indicator-item badge badge-accent badge-sm md:badge-sm" id="totalQuantity">0</span> 
+                    <button onclick="showCart()">
+                        <i class="text-2xl fa-solid fa-cart-shopping md:text-3xl"></i>
+                    </button>
+                </div>
+            <?php endif; ?>         
         </div>
     </header>
 
     <main class="grow shrink-0 basis-auto mb-5 flex items-stretch">
-        <section class="grow <?= service('router')->getMatchedRoute()[0] == 'login' ? 'place-content-center' : ''; ?>" href="<?= base_url("admin"); ?> md:place-content-center">
+        <section class="grow <?= service('router')->getMatchedRoute()[0] == 'login' ? 'place-content-center' : ''; ?>">
             <?= $this->renderSection('content'); ?>
         </section>
     </main>
-
     <!-- Code snippet sourced from daisy UI https://daisyui.com/components/footer/ -->
     <footer class="footer footer-center p-4 bg-base-300 text-base-content shrink-0">
         <aside>
@@ -71,10 +94,13 @@
         </aside>
     </footer>
 
+    <?php include __DIR__ . '/helpers/api_calls.php' ?>
+
     <script src="https://kit.fontawesome.com/fbc01cbf45.js" crossorigin="anonymous"></script>
     <script>
         const smallScreenSize = window.matchMedia("(max-width: 768px)");
         const stepElements = document.getElementsByClassName("steps");
+        const businessId =  <?= isset($business['id']) ? $business['id'] : "" ?>;
 
         if (window.innerWidth > 768) {
             /* the viewport is more than 600 pixels wide */
@@ -95,6 +121,20 @@
                 }
             }
         };
+
+        window.onload = () => {
+            if (businessId) {
+                get('businesses', businessId)
+                .then(
+                    data => 
+                        data.logo ? 
+                        document.querySelector("#business_logo").src = `data:image/jpeg;base64,${data.logo}` :
+                        ''
+                )
+            }
+        }
+        
+
     </script>
     <script>
         tailwind.config = {
@@ -111,6 +151,7 @@
                 },
             }
         }
+
     </script>
 </body>
 </html>

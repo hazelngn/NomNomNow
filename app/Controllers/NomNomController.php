@@ -9,9 +9,12 @@ class NomNomController extends BaseController
         // Load the URL helper, it will be useful in the next steps
         // Adding this within the __construct() function will make it 
         // available to all views in the PortfolioController
+        $businessModel = new \App\Models\BusinessModel();
         helper('url'); 
         $this->session = session();
-       
+        $this->userId = $this->session->get('userId');
+        // At the moment, every owner only has 1 business
+        $this->business = $businessModel->where('user_id', $this->userId)->first();
     }
 
     public function index($id = null)
@@ -19,13 +22,11 @@ class NomNomController extends BaseController
         if ($id == null && !$this->session->get('isLoggedIn')){
             return view('landingpage');
         } else {
-            $userId = $this->session->get('userId');
-            $businessModel = new \App\Models\BusinessModel();
+            // $userId = $this->session->get('userId');
             $menuModel = new \App\Models\MenuModel();
-            $business = $businessModel->where('user_id', $userId)->first();
-            $menus = $menuModel->where('business_id', $business['id'])->findAll();
+            $menus = $menuModel->where('business_id', $this->business['id'])->findAll();
             $data['menus'] = $menus;
-            $data['business'] = $business;
+            $data['business'] = $this->business;
             return view('business_landingpage', $data);
         }
     }
@@ -47,28 +48,21 @@ class NomNomController extends BaseController
 
     public function menu($menuId) {
         $menuModel = new \App\Models\MenuModel();
-        $businessModel = new \App\Models\BusinessModel();
-
         $menu = $menuModel->find($menuId);
-        $businessId = $menu['business_id'];
-        $business = $businessModel->find($businessId);
 
         $data['menu_viewing'] = TRUE;
         $data['menu'] = $menu;
-        $data['business'] = $business;
+        $data['business'] = $this->business;
         return view('menu_view', $data);
     }
 
     public function menu_addedit($menuId = null, $step = null)
     {
-        $businessModel = new \App\Models\BusinessModel();
         $menuModel = new \App\Models\MenuModel();
         $dietaryPreferencesModel = new \App\Models\DietaryPreferencesModel();
 
-        $userId = $this->session->get('userId');
-        $business = $businessModel->where('user_id', $userId)->first();
         $prefs = $dietaryPreferencesModel->findAll();
-        $data['business'] = $business;
+        $data['business'] = $this->business;
         $data['prefs'] = $prefs;
 
 
@@ -88,18 +82,16 @@ class NomNomController extends BaseController
     }
 
     public function customer_view($menuId) {
-        $businessModel = new \App\Models\BusinessModel();
         $menuModel = new \App\Models\MenuModel();
-
         $menu = $menuModel->find($menuId);
+
         if (!$menu) {
             // Should redirect to no page found
             return redirect()->to("/");
         }
-        $business = $businessModel->find($menu['business_id']);
-        $data['menu'] = $menu;
-        $data['business'] = $business;
 
+        $data['menu'] = $menu;
+        $data['business'] = $this->business;
         $data['customer_view']= TRUE;
         $data['menu_viewing'] = TRUE;
 
@@ -127,18 +119,19 @@ class NomNomController extends BaseController
             return $this->response->setJSON(['success' => $postData]);
         }
 
-        $businessModel = new \App\Models\BusinessModel();
+        // $businessModel = new \App\Models\BusinessModel();
         if ($this->session->get('order_items')) {
             $orderItems = json_decode($this->session->get('order_items'), true);
             foreach($orderItems as $item) {
-                if (isset($item['businessId'])) {
-                    $businessId = $item['businessId'];
+                if (isset($item['menuId'])) {
+                    // $businessId = $item['businessId'];
                     $menuId = $item['menuId'];
                 }
             };
-            $business = $businessModel->find($businessId);
+
+            // $business = $businessModel->find($businessId);
             $data['menuId'] =  $menuId;
-            $data['business'] = $business;
+            $data['business'] = $this->business;
             $data['checkout'] = TRUE;
             return view('checkout', $data);    
         } else {

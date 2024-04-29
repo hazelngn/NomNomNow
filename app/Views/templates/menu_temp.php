@@ -29,7 +29,7 @@
             <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
         </form>
         <h3 class="font-bold mb-5 text-accent text-xl">Your cart</h3>
-        <section id="cartItems" class="flex flex-col gap-3 md:text-lg md:flex-wrap">
+        <section class="flex flex-col gap-3 md:text-lg md:flex-wrap">
             <section class="flex flex-1 text-neutral-content">
                 <section class="basis-1/2">
                     Product
@@ -41,20 +41,7 @@
                     Price
                 </section>
             </section>
-
-            <template id="cartItemTemplate">
-                <section class="flex flex-1 text-neutral-content">
-                    <section id="product" class="basis-1/2">
-                        Product
-                    </section>
-                    <section id="quantity" class="basis-1/4 text-right">
-                        Quantity
-                    </section>
-                    <section id="price" class="basis-1/4 text-right">
-                        Price
-                    </section>
-                </section>
-            </template>
+            <section id="cartItems"></section>
         </section>
         <div class="flex flex-row items-center justify-between mt-5">
             <p class="text-lg text-accent">Total: $<span id="total">0</span></p>
@@ -62,6 +49,20 @@
         </div>
     </div>
 </dialog>
+
+<template id="cartItemTemplate">
+    <section class="flex flex-1 text-neutral-content">
+        <section id="product" class="basis-1/2">
+            Product
+        </section>
+        <section id="quantity" class="basis-1/4 text-right">
+            Quantity
+        </section>
+        <section id="price" class="basis-1/4 text-right">
+            Price
+        </section>
+    </section>
+</template>
 
 <?php include __DIR__ . '/../helpers/api_calls.php' ?>
 <script>
@@ -249,6 +250,7 @@
         const cartItems = document.querySelector("#cartItems");
         const total = document.querySelector("#total");
         let totalPrice = 0;
+        cartItems.innerHTML = "";
 
         orderItems.forEach(async item => {
             const itemContainer = cartItemTemplate.content.cloneNode(true).children[0];
@@ -266,7 +268,6 @@
             totalPrice += itemDetail.price * item.quantity;
 
             total.innerText = totalPrice;
-            console.log(itemContainer)
             cartItems.appendChild(itemContainer);
         })
 
@@ -276,7 +277,6 @@
     async function checkout() {
         const data = [
             {
-                businessId: <?= $business['id'] ?>,
                 menuId: <?= $menu['id'] ?>
             },
             ...orderItems,
