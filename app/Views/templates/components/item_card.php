@@ -1,7 +1,7 @@
 <template id="item-card">
-    <section class="flex flex-row p-3 md:p-4 rounded-3xl bg-neutral items-center md:flex-col md:w-5/12 lg:w-4/12 md:grow-0" >
+    <section class="flex flex-row p-3 gap-3 md:p-4 rounded-3xl bg-neutral items-center md:flex-col md:w-5/12 lg:w-4/12 md:grow-0" >
         <section class="w-6/12 h-fit md:w-full sm:p-3">
-            <img id="item-img" class="w-2/3 m-auto lg:w-2/5" alt="">
+            <img id="item-img" class="w-full m-auto" alt="">
         </section>
         <section class="flex flex-col gap-3 w-full md:text-lg">
             <section class="flex flex-row items-baseline justify-between">

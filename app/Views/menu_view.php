@@ -5,7 +5,7 @@
         <h3 class="text-lg md:text-2xl">
             View menu <?= $menu['name'] ?>
         </h3>
-        <a href="<?= base_url("menu/addedit/1") ?>"><i class="text-accent text-lg md:text-2xl fa-solid fa-pen-to-square"></i></a>
+        <a href="<?= base_url("menu/addedit/" . $menu['id']) ?>"><i class="text-accent text-lg md:text-2xl fa-solid fa-pen-to-square"></i></a>
     </section>
 
     <?php include 'templates/menu_temp.php' ?>

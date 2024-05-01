@@ -246,12 +246,18 @@
                 const uploadFile = new FormData();
                 uploadFile.append('file', file)
 
-                await fetch("<?= base_url('upload/') ?>", {
+                if (file.size < 1000000) {
+                    await fetch("<?= base_url('upload/') ?>", {
                     method: "POST",
                     body: uploadFile
-                })
-                .then(res => res.json())
-                .then(json => data['item_img'] = json['data'])
+                    })
+                    .then(res => res.json())
+                    .then(json => data['item_img'] = json['data'])
+                } else {
+                    alert('File is too big, make sure file size is less than 1MB. Thank you :)')
+                    delete data['item_img']
+                }
+                
             } else {
                 delete data['item_img']
             }

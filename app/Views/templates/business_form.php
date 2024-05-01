@@ -3,7 +3,7 @@
         <button id="close_modal" class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
     </form>
 </template>
-<form id="business_form" class="flex flex-col gap-5">
+<form id="business_form" class="flex flex-col gap-5" action="POST">
     <!-- Add some context where this shows and not, using aria-label,.... -->
     <h4></h4>
     <div class="flex flex-col gap-2">
@@ -16,8 +16,13 @@
     </div>
     <div class="flex flex-col gap-2">
         <label for="description">Short description of your business</label>
-        <textarea id="description" name="description" class="textarea textarea-accent" placeholder="Desription"  <?= isset($business) ? 'disabled' : '' ?> ><?= isset($business) ? $business['description'] : "" ?>
-        </textarea>
+        <textarea 
+            id="description" 
+            name="description" 
+            class="textarea textarea-accent" 
+            placeholder="Desription"  
+            <?= isset($business) ? 'disabled' : '' ?>
+        ><?= isset($business) ? $business['description'] : "" ?></textarea>
     </div>
     <div class="flex flex-col gap-2">
         <label for="logo">Logo of your business</label>

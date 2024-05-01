@@ -59,6 +59,8 @@ class Auth extends BaseController
 
         if (!$user) {
             // If the user doesn't exist, create a new user with the info from Google
+            $newUser = TRUE;
+
             $newData = [
                 'username' => 'google user',
                 'password' => 'google password',
@@ -85,6 +87,9 @@ class Auth extends BaseController
         if (session()->get('usertype') == 'admin') {
             return redirect()->to('/admin');
         } else {
+            if (isset($newUser)) { 
+                return redirect()->to('business_signup');
+            } 
             return redirect()->to('/' . session()->get('userId') . '/');
         }
     }

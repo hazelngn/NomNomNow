@@ -34,7 +34,7 @@ class FileUploadController extends Controller
 
             return $this->response->setJSON(['data' => $newName]);
         } else {
-            return $this->response->setJSON(['data' => false]);
+            return $this->response->setJSON(['success' => false, 'message' => 'File too big']);
         }
     }
 }
