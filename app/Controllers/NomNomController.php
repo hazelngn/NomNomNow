@@ -13,7 +13,7 @@ class NomNomController extends BaseController
         helper('url'); 
         $this->session = session();
         $this->userId = $this->session->get('userId');
-        // At the moment, every owner only has 1 business
+        // At the moment, every owner only has 1 business, this is only used when user is owner
         $this->business = $businessModel->where('user_id', $this->userId)->first();
     }
 
@@ -78,15 +78,20 @@ class NomNomController extends BaseController
 
     public function customer_view($menuId) {
         $menuModel = new \App\Models\MenuModel();
+        $businessModel = new \App\Models\BusinessModel();
+
         $menu = $menuModel->find($menuId);
+        $businessId = $menu['business_id'];
+        $business = $businessModel->find($businessId);
 
         if (!$menu) {
             // Should redirect to no page found
             return redirect()->to("/");
         }
 
+
         $data['menu'] = $menu;
-        $data['business'] = $this->business;
+        $data['business'] = $business;
         $data['customer_view']= TRUE;
         $data['menu_viewing'] = TRUE;
 
@@ -107,6 +112,10 @@ class NomNomController extends BaseController
 
     public function checkout() {
 
+        $businessModel = new \App\Models\BusinessModel();
+        $menuModel = new \App\Models\MenuModel();
+
+
         if ($this->request->getMethod() === 'post') {
             $postData = $this->request->getJSON();
 
@@ -121,13 +130,18 @@ class NomNomController extends BaseController
                 if (isset($item['menuId'])) {
                     // $businessId = $item['businessId'];
                     $menuId = $item['menuId'];
+                    $businessId = $item['businessId'];
                 }
             };
 
             // $business = $businessModel->find($businessId);
-            $data['menuId'] =  $menuId;
-            $data['business'] = $this->business;
+
+            $menu = $menuModel->find($menuId);
+            $data['menu'] =  $menu;
+            $business = $businessModel->find($businessId);
+            $data['business'] = $business;
             $data['checkout'] = TRUE;
+            $data['customer_view'] = TRUE;
             return view('checkout', $data);    
         } else {
             return redirect()->to(('/'));

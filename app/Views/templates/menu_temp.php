@@ -277,7 +277,8 @@
     async function checkout() {
         const data = [
             {
-                menuId: <?= $menu['id'] ?>
+                menuId: <?= $menu['id'] ?>,
+                businessId: <?= $business['id'] ?>
             },
             ...orderItems,
         ]

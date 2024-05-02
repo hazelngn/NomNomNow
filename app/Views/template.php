@@ -29,7 +29,7 @@
                             ?>"
                     >NomNomNow</a>
                 <?php else: ?>
-                    <a class="btn btn-ghost text-3xl font-header" href="<?= base_url("onlineorder/") . (isset($menuId) ? $menuId : $menu['id']) ?>"><?= $business['name'] ?></a>
+                    <a class="btn btn-ghost text-3xl font-header" href="<?= base_url("onlineorder/") . $menu['id'] ?>"><?= $business['name'] ?></a>
                 <?php endif; ?>
             </div>
             <?php if (!isset($customer_view) && !isset($checkout)): ?>
@@ -105,6 +105,7 @@
         const smallScreenSize = window.matchMedia("(max-width: 768px)");
         const stepElements = document.getElementsByClassName("steps");
         const businessId =  "<?= isset($business['id']) ? $business['id'] : null ?>";
+        const customer_view = "<?= isset($customer_view) ?  $customer_view : null ?>";
 
         if (window.innerWidth > 768) {
             /* the viewport is more than 600 pixels wide */
@@ -152,8 +153,10 @@
                 },
             }
         }
-
-        updateAvatar();
+        
+        if (!customer_view) {
+            updateAvatar();
+        }
 
     </script>
 </body>

@@ -1,6 +1,6 @@
 <?= $this->extend('template'); ?>
 <?= $this->section('content'); ?>
-   <h1 class="text-xl md:text-3xl text-accent text-center mt-11 mb-11">Check Out</h1>
+   <h1 class="text-xl md:text-3xl text-accent text-center mt-5 mb-5 md:mt-11 md:mb-11">Check Out</h1>
    <section class="flex flex-col md:flex-row mt-3 md:w-4/6 m-auto gap-10 p-5">
       <section class="md:w-2/3">
          <form id="customerDetails" class="flex flex-col gap-2">
@@ -15,7 +15,7 @@
             </section>
             <section class="flex flex-col gap-2">
                <label for="phone" class="text-accent">Your phone number</label>
-               <input type="text" id="phone" name="phone" class="p-2 rounded-lg bg-neutral" required>
+               <input type="number" id="phone" name="phone" class="p-2 rounded-lg bg-neutral" required>
             </section>
             <section>
                <h3 class="text-accent">Choose your payment type</h3>
