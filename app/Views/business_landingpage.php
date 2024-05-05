@@ -47,20 +47,9 @@
                 <h3 class="text-xl lg:text-3xl">QR Codes</h3>
             </div>
             <div class="collapse-content bg-neutral"> 
-                <ul>
-                    <div class="flex flex-row justify-between items-center pt-3">
-                        <li>Table 1</li>
-                        <i onclick="qr.showModal()" class="cursor-pointer text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center"></i>
-                    </div>
-                    <div class="flex flex-row justify-between items-center pt-3">
-                        <li>Table 2</li>
-                        <i onclick="qr.showModal()" class="cursor-pointer text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center"></i>
-                    </div>
-                    <div class="flex flex-row justify-between items-center pt-3">
-                        <li>Table 3</li>
-                        <i onclick="qr.showModal()" class="cursor-pointer text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center"></i>
-                    </div>
-                </ul>
+                <section id="qr-codes">
+                    <ul></ul>
+                </section>
             </div>
         </div>
         <div class="bg-base-200 lg:grow-0 lg:basis-5/12">
@@ -89,91 +78,26 @@
             <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             </form>
-            <h3>Table 1</h3>
+            <h3></h3>
             <section>
-                <?php 
-                    /**
-                     * GdImage output example
-                     *
-                     * @created      24.12.2017
-                     * @author       Smiley <smiley@chillerlan.net>
-                     * @copyright    2017 Smiley
-                     * @license      MIT
-                     */
-
-                    use chillerlan\QRCode\{QRCode, QROptions};
-                    use chillerlan\QRCode\Data\QRMatrix;
-                    use chillerlan\QRCode\Output\QRGdImagePNG;
-
-                    // require_once __DIR__.'/../vendor/autoload.php';
-
-                    $options = new QROptions;
-
-                    $options->version             = 7;
-                    $options->outputInterface     = QRGdImagePNG::class;
-                    $options->scale               = 20;
-                    $options->outputBase64        = false;
-                    $options->bgColor             = [200, 150, 200];
-                    $options->imageTransparent    = true;
-                    #$options->transparencyColor   = [233, 233, 233];
-                    $options->drawCircularModules = true;
-                    $options->drawLightModules    = true;
-                    $options->circleRadius        = 0.4;
-                    $options->keepAsSquare        = [
-                        QRMatrix::M_FINDER_DARK,
-                        QRMatrix::M_FINDER_DOT,
-                        QRMatrix::M_ALIGNMENT_DARK,
-                    ];
-                    $options->moduleValues        = [
-                        // finder
-                        QRMatrix::M_FINDER_DARK    => [0, 63, 255], // dark (true)
-                        QRMatrix::M_FINDER_DOT     => [0, 63, 255], // finder dot, dark (true)
-                        QRMatrix::M_FINDER         => [233, 233, 233], // light (false), white is the transparency color and is enabled by default
-                        // alignment
-                        QRMatrix::M_ALIGNMENT_DARK => [255, 0, 255],
-                        QRMatrix::M_ALIGNMENT      => [233, 233, 233],
-                        // timing
-                        QRMatrix::M_TIMING_DARK    => [255, 0, 0],
-                        QRMatrix::M_TIMING         => [233, 233, 233],
-                        // format
-                        QRMatrix::M_FORMAT_DARK    => [67, 159, 84],
-                        QRMatrix::M_FORMAT         => [233, 233, 233],
-                        // version
-                        QRMatrix::M_VERSION_DARK   => [62, 174, 190],
-                        QRMatrix::M_VERSION        => [233, 233, 233],
-                        // data
-                        QRMatrix::M_DATA_DARK      => [0, 0, 0],
-                        QRMatrix::M_DATA           => [233, 233, 233],
-                        // darkmodule
-                        QRMatrix::M_DARKMODULE     => [0, 0, 0],
-                        // separator
-                        QRMatrix::M_SEPARATOR      => [233, 233, 233],
-                        // quietzone
-                        QRMatrix::M_QUIETZONE      => [233, 233, 233],
-                        // logo (requires a call to QRMatrix::setLogoSpace()), see QRImageWithLogo
-                        QRMatrix::M_LOGO           => [233, 233, 233],
-                    ];
-
-                    $data = base_url('onlineorder/31');
-
-                    $out = (new QRCode($options))->render($data);
-
-                    header('Content-type: image/png');
-
-                    echo $out;
-
-
-                ?>
+                
             </section>
         </div>
     </dialog>
+
+    <?php include 'test.php'; ?>
 
     
     <script>
         const businessInfo = document.querySelector("#business_info")
         const businessFormTemplate = document.querySelector("#business_form");
         const businessForm = businessFormTemplate.cloneNode(true);
+        const pageNum = 1;
         businessForm.id = "businessForEdit";
+
+        window.onload = () => {
+            renderQrCodes();
+        }
         
 
         function renderModal() {
@@ -242,7 +166,42 @@
                 location.reload();
             };
         }
+
+        async function renderQrCodes() {
+            const qrCodeContainer = document.querySelector('#qr-codes>ul')
+            const businessId = <?= $business['id'] ?>;
+            const business = await get('businesses', 3);
+            const tableNum = business.table_num;
+            let count = 1;
+
             
+            while (count <= tableNum) {
+                const qrcodeHTML = 
+                    `<div class="flex flex-row justify-between items-center pt-3">
+                        <li>Table ${count}</li>
+                        <i onclick="renderQRcodeModal(${count})" class="cursor-pointer text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center"></i>
+                    </div>`
+
+                count += 1;
+                qrCodeContainer.innerHTML += qrcodeHTML;
+            }
+            
+        }
+
+        function renderQRcodeModal(tableNum) {
+            const qrDialog = document.querySelector('#qr');
+            const qrCodeContainer = qrDialog.querySelector('section');
+
+            // Modal header
+            qrDialog.querySelector("h3").innerText = `Table ${tableNum}`;
+
+            const qrCodeSVG = `<?= generateQRcode(31, 1) ?>`;
+
+
+            console.log(qrCodeSVG)
+            // onclick="qr.showModal()" 
+        }
+
         renderModal();
         
 
