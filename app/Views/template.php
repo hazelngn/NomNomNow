@@ -29,7 +29,7 @@
                             ?>"
                     >NomNomNow</a>
                 <?php else: ?>
-                    <a class="btn btn-ghost text-3xl font-header" href="<?= base_url("onlineorder/") . $menu['id'] ?>"><?= $business['name'] ?></a>
+                    <a class="btn btn-ghost text-3xl font-header" href="<?= base_url("onlineorder/") . $menu['id']. '/' . $tableNum ?>"><?= $business['name'] ?></a>
                 <?php endif; ?>
             </div>
             <?php if (!isset($customer_view) && !isset($checkout)): ?>

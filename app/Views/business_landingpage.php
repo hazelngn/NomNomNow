@@ -47,6 +47,37 @@
                 <h3 class="text-xl lg:text-3xl">QR Codes</h3>
             </div>
             <div class="collapse-content bg-neutral"> 
+                <section class="pt-3 flex flex-col gap-5">
+                    <?php if (isset($menus)): ?>
+                        <section>
+                            <label class="pt-3 font-bold" for="menuId">Choose menu to generate QR code</label>
+                            <select class="block w-1/2 text-center p-2 rounded-lg bg-neutral-content/20 text-accent mt-2" name="menuId" id="menuId">
+                                    <?php foreach ($menus as $menu): ?>
+                                        <option value="<?= $menu['id'] ?>"><?= $menu['name'] ?></option>
+                                    <?php endforeach; ?>
+                                
+                            </select>
+                        </section>
+                        
+                        <section>
+                            <label for="tableNum" class="pt-3 font-bold">Table number</label>
+                            <input name="tableNum" id="tableNum" type="number" min="1" class="block w-1/2 text-center p-2 rounded-lg bg-neutral-content/20 text-accent mt-2">
+                        </section>
+
+                        <section>
+                            <button id="getQRCodeBtn" class="btn w-full btn-sm btn-accent">
+                                Get QR code for 1 table
+                            </button>
+                            or ...
+                            <button id="getAllQrCodesBtn" class="btn w-full btn-sm btn-accent">
+                                Get all QR codes for this menu
+                            </button>
+                        </section>
+
+                    <?php else: ?>
+                        <p>No menus created.</p>
+                    <?php endif; ?>
+                </section>
                 <section id="qr-codes">
                     <ul></ul>
                 </section>
@@ -78,10 +109,11 @@
             <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             </form>
-            <h3></h3>
-            <section>
-                
+            <section class="flex justify-between ">
+                <h3>Table</h3>
+                <i class="fa-solid fa-print text-lg md:text-2xl"></i>
             </section>
+            <section id="qrcode"></section>
         </div>
     </dialog>
 
@@ -96,7 +128,7 @@
         businessForm.id = "businessForEdit";
 
         window.onload = () => {
-            renderQrCodes();
+            // renderQrCodes();
         }
         
 
@@ -188,18 +220,39 @@
             
         }
 
-        function renderQRcodeModal(tableNum) {
+        function renderQRcodeModal(menuId,tableNum) {
             const qrDialog = document.querySelector('#qr');
-            const qrCodeContainer = qrDialog.querySelector('section');
+            const qrCodeContainer = qrDialog.querySelector('#qrcode');
+            const print = qrDialog.querySelector("i");
+            
+            qrCodeContainer.innerHTML = "";
 
             // Modal header
             qrDialog.querySelector("h3").innerText = `Table ${tableNum}`;
 
-            const qrCodeSVG = `<?= generateQRcode(31, 1) ?>`;
+            fetch(`<?= base_url('qrcode_gen/') ?>${menuId}/${tableNum}`)
+            .then(data => data.text())
+            .then(elem => qrCodeContainer.innerHTML += elem);
 
+            print.onclick = () => {
+                window.print();
+            }
 
-            console.log(qrCodeSVG)
-            // onclick="qr.showModal()" 
+            qr.showModal();
+        }
+
+        document.querySelector("#getQRCodeBtn").onclick = () => {
+            const menuId = document.querySelector("#menuId").value;
+            const tableNum = document.querySelector("#tableNum").value;
+            if (tableNum > <?= $business['table_num'] ?>) {
+                alert("This business only has <?= $business['table_num'] ?> tables")
+            } else {
+                tableNum ? renderQRcodeModal(menuId, tableNum) : alert('Please enter table number');
+            }
+        }
+
+        document.querySelector("#getAllQrCodesBtn").onclick = () => {
+            // this will direct to a page containing only qr codes
         }
 
         renderModal();

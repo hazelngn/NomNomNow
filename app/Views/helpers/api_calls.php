@@ -78,13 +78,12 @@
     }
 
     async function deleteItem(name, id) {
-        const baseUrl = `<?= base_url(); ?>/${name}/${data.id}`;
+        const url = `<?= base_url(); ?>/${name}/${id}`;
         let result = undefined;
 
         await fetch(url, {
             method: 'DELETE',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(data)
         })
         .then(response => {
             if (response.ok) {

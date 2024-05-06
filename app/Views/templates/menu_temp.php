@@ -278,7 +278,8 @@
         const data = [
             {
                 menuId: <?= $menu['id'] ?>,
-                businessId: <?= $business['id'] ?>
+                businessId: <?= $business['id'] ?>,
+                tableNum: <?= $tableNum ?>
             },
             ...orderItems,
         ]

@@ -76,7 +76,7 @@ class NomNomController extends BaseController
         return view('menu_addedit', $data);
     }
 
-    public function customer_view($menuId) {
+    public function customer_view($menuId, $tableNumber) {
         $menuModel = new \App\Models\MenuModel();
         $businessModel = new \App\Models\BusinessModel();
 
@@ -94,6 +94,7 @@ class NomNomController extends BaseController
         $data['business'] = $business;
         $data['customer_view']= TRUE;
         $data['menu_viewing'] = TRUE;
+        $data['tableNum'] = $tableNumber;
 
         return view('customer_view', $data);    
     }
@@ -131,6 +132,7 @@ class NomNomController extends BaseController
                     // $businessId = $item['businessId'];
                     $menuId = $item['menuId'];
                     $businessId = $item['businessId'];
+                    $tableNum = $item['tableNum'];
                 }
             };
 
@@ -142,6 +144,8 @@ class NomNomController extends BaseController
             $data['business'] = $business;
             $data['checkout'] = TRUE;
             $data['customer_view'] = TRUE;
+            $data['tableNum'] = $tableNum;
+
             return view('checkout', $data);    
         } else {
             return redirect()->to(('/'));

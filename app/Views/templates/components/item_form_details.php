@@ -37,7 +37,7 @@
                 </div>
                 <div class="flex flex-col gap-2">
                     <label class="font-bold" for="price">Price</label>
-                    <input type="number" min="0" name="price" id="price" class="p-2 rounded-lg" required>
+                    <input type="number" min="0" step="any" name="price" id="price" class="p-2 rounded-lg" required>
                 </div>
                 <div class="flex flex-col gap-2">
                     <label class="font-bold" for="item_img">Image</label>

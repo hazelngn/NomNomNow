@@ -111,7 +111,15 @@
                     itemCard.querySelector("#item-img").src = imageSrc;
                     itemCard.querySelector("#item-name").innerText = item.name;
                     itemCard.querySelector("#item-price").innerText = `$${item.price}`;
-                    itemCard.querySelector("#item-name").nextElementSibling.addEventListener("click", () => showItemDetails(item.id));
+                    itemCard.querySelector("#editBtn").addEventListener("click", () => showItemDetails(item.id));
+                    itemCard.querySelector("#deleteBtn").addEventListener("click", async () => {
+                        if (window.confirm(`Delete ${item.name}?`)) {
+                            await deleteItem("menu_items", item.id)
+                            .then(data => displayItems())
+                            .catch(err => console.log(err))
+                        }
+
+                    });
                     itemsContainer.append(itemCard);
                 })
             }

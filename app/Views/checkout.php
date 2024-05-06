@@ -144,7 +144,7 @@
                   customer_id: customer.id,
                   payment_type: payment_type,
                   // table is by default
-                  table_num: 1,
+                  table_num: <?= $tableNum ?>,
                   status: status,
                   order_at: new Date().toISOString(),
                   total: totalPrice
@@ -169,7 +169,7 @@
 
                setTimeout(() => {
                   <?php session()->remove(['order_items']); ?>
-                  location.replace(`<?= base_url("onlineorder/")?>${details.menuId}`)
+                  location.replace(`<?= base_url("onlineorder/")?>${details.menuId}/<?= $tableNum ?>`)
                }, 2000);
                
 
