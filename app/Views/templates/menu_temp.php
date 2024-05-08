@@ -279,7 +279,7 @@
             {
                 menuId: <?= $menu['id'] ?>,
                 businessId: <?= $business['id'] ?>,
-                tableNum: <?= $tableNum ?>
+                tableNum: "<?= isset($tableNum) ? $tableNum : null ?>"
             },
             ...orderItems,
         ]

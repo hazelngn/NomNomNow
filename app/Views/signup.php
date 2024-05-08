@@ -46,7 +46,16 @@
                 }
 
                 const result = await add("businesses", data)
-                console.log(result);
+                
+                // update business_id in users table
+                const user = await get("users", <?= session()->get("userId") ?>);
+                const updatedUserData = {
+                    ...user,
+                    business_id: result.id
+                }
+                await update('users', updatedUserData)
+
+                console.log(updatedUserData);
 
                 // client side rendering not implemented
                 location.replace("<?= base_url('/') ?>");

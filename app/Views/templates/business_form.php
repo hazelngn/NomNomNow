@@ -45,6 +45,5 @@
         <label for="weekend_hours">Your business's weekend working hours</label>
         <input type="text" name="weekend_hours" id="weekend_hours" class="p-2 rounded-lg" placeholder="HH:mm-HH:mm"required value="<?= isset($business) ? $business['weekend_hours'] : "" ?>" <?= isset($business) ? 'disabled' : '' ?> >
     </div>
-    <input type="hidden" id="userId" name="user_id" value="<?= session()->get('userId') ?>">
     <input type="hidden" id="businessId" name="id" value="<?= isset($business) ? $business['id']: ""?>">
 </form>

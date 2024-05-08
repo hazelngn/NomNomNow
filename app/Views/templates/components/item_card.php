@@ -14,8 +14,8 @@
             </section>
             <?php if (!isset($menu_viewing)): ?>
                 <section class="flex gap-2 md:place-content-center">
-                        <i id="editBtn" class="text-cyan-400 text-base lg:text-xl fa-solid fa-pen-to-square"></i>
-                        <i id="deleteBtn" class="text-red-500 text-base lg:text-xl fa-solid fa-trash-can"></i>
+                        <i id="editBtn" class="cursor-pointer text-cyan-400 text-base lg:text-xl fa-solid fa-pen-to-square"></i>
+                        <i id="deleteBtn" class="cursor-pointer text-red-500 text-base lg:text-xl fa-solid fa-trash-can"></i>
                 </section>
             <?php endif; ?>
             <?php if (isset($customer_view)): ?>

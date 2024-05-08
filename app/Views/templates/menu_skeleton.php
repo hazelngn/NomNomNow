@@ -9,8 +9,8 @@
         </section>
 
         <div class="flex flex-row justify-evenly mt-5">
-            <i id="prevBtn" class="text-accent text-3xl fa-solid fa-circle-arrow-left <?= $step - 1 <= 0 ? 'text-neutral pointer-events-none' : '' ?>" ></i>
-            <i id="nextBtn" class="text-accent text-3xl fa-solid fa-circle-arrow-right" ></i>
+            <i id="prevBtn" class="text-accent text-3xl fa-solid fa-circle-arrow-left cursor-pointer <?= $step - 1 <= 0 ? 'text-neutral pointer-events-none' : '' ?>" ></i>
+            <i id="nextBtn" class="text-accent text-3xl fa-solid fa-circle-arrow-right cursor-pointer" ></i>
         </div>   
     </section>
     <?php 
@@ -145,7 +145,8 @@
                     itemCard.querySelector("#item-img").src = imageSrc;
                     itemCard.querySelector("#item-name").innerText = item.name;
                     itemCard.querySelector("#item-price").innerText = `$${item.price}`;
-                    itemCard.querySelector("#item-name").nextElementSibling.remove();
+                    itemCard.querySelector("#editBtn").remove();
+                    itemCard.querySelector("#deleteBtn").remove();
                     tabPanel.append(itemCard);
                 })
                 tablist.append(input);

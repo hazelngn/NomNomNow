@@ -65,6 +65,8 @@ class Businesses extends ResourceController
         // Insert data and check for success.
         $inserted = $model->insert($data);
         if ($inserted) {
+            $id = $model->getInsertID();
+            $data = $model->find($id);
             return $this->respondCreated($data, 'User data created successfully.');
         } else {
             return $this->failServerError('Failed to create user data.');

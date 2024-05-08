@@ -17,9 +17,16 @@ class Users extends ResourceController
 
         // Retrieve 'user_id' from query parameters if provided.
         $userId = $this->request->getGet('user_id');
+        $businessId = $this->request->getGet('business_id');
+        $page = $this->request->getGet('page')??1;
 
         // Filter the data by user_id if provided, otherwise retrieve all entries.
-        $data = $userId ? $model->where('id', $userId)->findAll() : $model->findAll();
+        $data = $userId ? $model->find('id', $userId) : $model->paginate(5, 'default', $page);
+        if ($businessId ){
+            $businessModel = new \App\Models\BusinessModel();
+            // $businessUsers = $businessModel->where('user_id', )
+            
+        }
 
         // Use HTTP 200 to return data.
         return $this->respond($data);

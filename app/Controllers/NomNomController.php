@@ -10,11 +10,16 @@ class NomNomController extends BaseController
         // Adding this within the __construct() function will make it 
         // available to all views in the PortfolioController
         $businessModel = new \App\Models\BusinessModel();
+        $userModel = new \App\Models\UserModel();
         helper('url'); 
         $this->session = session();
+        // $this->session->destroy();
         $this->userId = $this->session->get('userId');
+        if ($this->userId) {
+            $this->user = $userModel->find($this->userId);
+            $this->business = $businessModel->find($this->user['business_id']);
+        }
         // At the moment, every owner only has 1 business, this is only used when user is owner
-        $this->business = $businessModel->where('user_id', $this->userId)->first();
     }
 
     public function index($id = null)
@@ -24,6 +29,7 @@ class NomNomController extends BaseController
         } else {
             // $userId = $this->session->get('userId');
             $menuModel = new \App\Models\MenuModel();
+            log_message('info', 'test: ' . json_encode($this->business));
             $menus = $menuModel->where('business_id', $this->business['id'])->findAll();
             $data['menus'] = $menus;
             $data['business'] = $this->business;

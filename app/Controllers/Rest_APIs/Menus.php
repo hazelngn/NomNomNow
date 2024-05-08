@@ -16,10 +16,10 @@ class Menus extends ResourceController
 
         // Retrieve 'user_id' from query parameters if provided.
         $menuId = $this->request->getGet('menu_id');
+        $page = $this->request->getGet('page')??1;
 
         // Filter the data by user_id if provided, otherwise retrieve all entries.
-        $data = $menuId ? $model->where('id', $$menuId)->findAll() : $model->findAll();
-        log_message('debug', 'JSON data: ' . json_encode($data));
+        $data = $menuId ? $model->find($menuId) : $model->paginate(3, 'default', $page);
 
 
         // Use HTTP 200 to return data.

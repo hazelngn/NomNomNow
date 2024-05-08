@@ -17,9 +17,10 @@ class Orders extends ResourceController
 
         // Retrieve 'user_id' from query parameters if provided.
         $orderId = $this->request->getGet('order_id');
+        $page = $this->request->getGet('page')??1;
 
         // Filter the data by user_id if provided, otherwise retrieve all entries.
-        $data = $orderId ? $model->where('id', $orderId)->findAll() : $model->findAll();
+        $data = $orderId ? $model->where('id', $orderId)->paginate(10, 'default', $page) : $model->paginate(10, 'default', $page);
 
         // Use HTTP 200 to return data.
         return $this->respond($data);
