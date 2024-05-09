@@ -38,7 +38,8 @@
                         <li>
                             <details>
                                 <summary class="text-base md:text-xl">
-                                    <?php if (session()->get('isLoggedIn')): ?>
+                                    <!-- check admin to make it easier for testing, IRL admin wouldn't have a business -->
+                                    <?php if (session()->get('isLoggedIn')) : ?>
                                         <?php  if (isset($business)): ?>
                                             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                                                 <div class="w-10 rounded-full">

@@ -67,6 +67,7 @@ class Auth extends BaseController
                 'usertype' => 'owner',
                 'email' => $google_account_info->email,
                 'name' => $google_account_info->name,
+                'status' => '1',
                 'phone' => 'google', // Default new user as not an admin
             ];
             $userModel->insert($newData);

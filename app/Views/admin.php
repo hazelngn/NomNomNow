@@ -1,6 +1,6 @@
 <?= $this->extend('template') ?>
 <?= $this->section('content') ?>
-    <section class="md:w-4/6 m-auto flex flex-col">
+    <section id="main-content" class="md:w-4/6 m-auto flex flex-col">
         <h3 class="text-3xl font-body mt-5 text-center font-bold">Administration</h3>
         <form method="get" action="<?= base_url(); ?>">
             <section class="flex justify-center items-center mt-5 gap-2">
@@ -22,16 +22,16 @@
                             <th>Business name</th>
                             <th>Business ID</th>
                             <th>Status</th>
-                            <th>Delete</th>
                             <th>Edit</th>
+                            <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody id="usersList">
                         <!-- Users data will be here -->
                         <template id="userDetailsTemplate">
                             <tr>
+                                <td><i id="editBtn" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-square-pen"></i></td>
                                 <td><i class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-trash-can"></i></td>
-                                <td><i class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-square-pen"></i></td>
                             </tr>
                         </template>
                     </tbody>
@@ -52,7 +52,16 @@
         <p class="basis-1/12 grow-0">User ID</p>
     </template>
 
+    <?php include 'templates/admin_form.php'; ?>
+
     <script>
+        let adminFormTemplate;
+
+        window.onload = () => {
+            listUserDetails();
+            adminFormTemplate = document.querySelector("#adminFormTemplate");
+        }
+
         async function listUserDetails() {
             const parentTemplate = document.getElementById("userDetailsTemplate");
             const usersList = document.getElementById("usersList");
@@ -61,12 +70,16 @@
             details.forEach(detail => {
                 const parent = parentTemplate.content.cloneNode(true).children[0];
                 const beforePoint = parent.children[0];
+
                 parent.id = detail.user_id;
                 for (const [key,value] of Object.entries(detail)) {
                     const td = document.createElement('td');
                     td.innerText = value;
                     parent.insertBefore(td, beforePoint);
                 }
+
+                //edit 
+                parent.querySelector("#editBtn").onclick =  () => addEditUser(detail.user_id);
                 
                 usersList.append(parent);
             });
@@ -77,7 +90,7 @@
             const users = await get("users");
             const neededStructure = Promise.all(users.map(async user => {
                 let business = await get("businesses");
-                business = business.filter(busi => busi.user_id == user.id)[0];
+                business = business.filter(busi => busi.id == user.business_id)[0];
 
 
                 const result = {
@@ -85,7 +98,7 @@
                     username: user.username,
                     businessName: business ? business.name : "N.A",
                     businessID: business ? business.id : "N.A",
-                    status: user.status ? "active" : "not active",
+                    status: user.status == '1' ? "active" : "not active",
                 }
                 
                 return result;
@@ -94,7 +107,33 @@
             return neededStructure;
         }
 
-        listUserDetails();
+        async function addEditUser(id) {
+            // modals
+            const adminForm = adminFormTemplate.content.cloneNode(true).children[0];
+            const mainContent = document.querySelector("#main-content");
+            mainContent.append(adminForm);
+
+            const name = adminForm.querySelector("input#username");
+            const businessName = adminForm.querySelector("input#businessName");
+            const status = adminForm.querySelector("#status");
+            const userId = adminForm.querySelector("#id");
+
+            if (id) {
+                const user = await get("users", id);
+                const business = await get("businesses", user.business_id);
+                console.log(user, business)
+                name.value = user.username;
+                businessName.value = business.name;
+                status.value = user.status == '1' ? "active" : "not active";
+            }
+
+
+            adminForm.querySelector("#close_modal").addEventListener("click", () => adminForm.remove())
+            
+            admin_modal.showModal();
+        }
+
+        
 
     </script>
 

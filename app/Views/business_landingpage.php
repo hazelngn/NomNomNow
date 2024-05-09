@@ -15,7 +15,10 @@
                                 <li><a href="<?= base_url("menu/") . $menu['id'] ?>">
                                     <?= $menu['name'] ?>
                                 </a></li>
-                                <a href="<?= base_url("menu/addedit/") . $menu['id'] ?>"><i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i></a>
+                                <section class="flex gap-2 md:place-content-center items-baseline">
+                                    <a href="<?= base_url("menu/addedit/") . $menu['id'] ?>"><i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i></a>
+                                    <i onclick="deleteMenu(<?= $menu['id'] ?>)" class="cursor-pointer text-red-500 text-base lg:text-xl fa-solid fa-trash-can"></i>
+                                </section>
                             </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -241,6 +244,18 @@
             qr.showModal();
         }
 
+        async function deleteMenu(id) {
+            if (confirm('Are you sure you want to delete this menu?')) {
+                await deleteItem('menus', id)
+                .then(data => { 
+                    alert("Menu deleted successfully");
+                    // client side rendering not implemented
+                    location.reload();
+                })
+                .catch(err => console.log(err))
+            }
+        }
+
         document.querySelector("#getQRCodeBtn").onclick = () => {
             const menuId = document.querySelector("#menuId").value;
             const tableNum = document.querySelector("#tableNum").value;
@@ -254,6 +269,8 @@
         document.querySelector("#getAllQrCodesBtn").onclick = () => {
             // this will direct to a page containing only qr codes
         }
+
+        
 
         renderModal();
         

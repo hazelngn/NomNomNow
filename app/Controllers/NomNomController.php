@@ -112,9 +112,7 @@ class NomNomController extends BaseController
     }
 
     public function admin() {
-        $json = file_get_contents("content.json");
-        $data = json_decode($json, true);
-        return view('admin', $data);    
+        return view('admin');    
     }
 
     public function checkout() {
