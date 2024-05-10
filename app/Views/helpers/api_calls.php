@@ -1,11 +1,12 @@
 <script>
     // name: table to fetch from
-    async function get(name, id) {
+    async function get(name, id, pageNum) {
         const baseUrl = `<?= base_url(); ?>/${name}`
         const url = id ? `${baseUrl}/${id}` : baseUrl;
+        const pagedUrl = pageNum ? `${url}?page=${pageNum}` : url;
         let result = [];
 
-        await fetch(url, {
+        await fetch(pagedUrl, {
             method: 'GET',
             headers: {'Content-Type': 'application/json'},
         })

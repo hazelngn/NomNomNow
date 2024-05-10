@@ -1,6 +1,6 @@
 <?= $this->extend('template') ?>
 <?= $this->section('content') ?>
-    <section id="main-content" class="md:w-4/6 m-auto flex flex-col">
+    <section id="main-content" class="md:w-5/6 m-auto flex flex-col">
         <h3 class="text-3xl font-body mt-5 text-center font-bold">Administration</h3>
         <form method="get" action="<?= base_url(); ?>">
             <section class="flex justify-center items-center mt-5 gap-2">
@@ -19,33 +19,42 @@
                         <tr>
                             <th>User ID</th>
                             <th>Name</th>
+                            <th>User Type</th>
+                            <th>Email</th>
+                            <th>Phone</th>
                             <th>Business name</th>
                             <th>Business ID</th>
-                            <th>Status</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody id="usersList">
                         <!-- Users data will be here -->
-                        <template id="userDetailsTemplate">
-                            <tr>
-                                <td><i id="editBtn" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-square-pen"></i></td>
-                                <td><i class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-trash-can"></i></td>
-                            </tr>
-                        </template>
+                        
                     </tbody>
+                    <template id="userDetailsTemplate">
+                        <tr>
+                            <td><i id="editBtn" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-square-pen"></i></td>
+                            <td><i id="deleteBtn" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-trash-can"></i></td>
+                        </tr>
+                    </template>
                 </table>
             </div>
         </section>
 
+        <button onclick="addEditUser()" class="btn btn-accent w-2/12 m-auto">Add a new user</button>
+        <div class="join grid grid-cols-2">
+            <button onclick="getPreviousPage()" class="join-item btn btn-outline">Previous page</button>
+            <button onclick="getNextPage()"  class="join-item btn btn-outline">Next</button>
+        </div>
+
         <!-- Pagination -->
-        <div class="join m-auto self-center">
+        <!-- <div class="join m-auto self-center">
             <input class="join-item btn btn-neutral btn-square " type="radio" name="options" aria-label="1" checked />
             <input class="join-item btn btn-neutral btn-square " type="radio" name="options" aria-label="2" />
             <input class="join-item btn btn-neutral btn-square " type="radio" name="options" aria-label="3" />
             <input class="join-item btn btn-neutral btn-square " type="radio" name="options" aria-label="4" />
-        </div>
+        </div> -->
     </section>
 
     <template id="childTemplate">
@@ -56,15 +65,29 @@
 
     <script>
         let adminFormTemplate;
+        let pageNum = 1;
 
         window.onload = () => {
             listUserDetails();
             adminFormTemplate = document.querySelector("#adminFormTemplate");
         }
 
+        function getPreviousPage() {
+            if (pageNum > 1) {
+                pageNum -= 1;
+                listUserDetails();
+            } 
+        }
+
+        function getNextPage() {
+            pageNum += 1;
+            listUserDetails();
+        }
+
         async function listUserDetails() {
             const parentTemplate = document.getElementById("userDetailsTemplate");
             const usersList = document.getElementById("usersList");
+            usersList.innerHTML = "";
             let details = await getNeededDetails();
 
             details.forEach(detail => {
@@ -80,6 +103,14 @@
 
                 //edit 
                 parent.querySelector("#editBtn").onclick =  () => addEditUser(detail.user_id);
+                parent.querySelector("#deleteBtn").onclick =  async () => {
+                    if (confirm(`Are you sure you want to delete user ${detail.name}?`)) {
+                        await deleteItem('users', detail.user_id)
+                        .then(data => alert(`User ${detail.name} has been successfully deleted`))
+                        .catch(err => console.log(err))
+                        listUserDetails();
+                    }
+                };
                 
                 usersList.append(parent);
             });
@@ -87,7 +118,7 @@
         }
 
         async function getNeededDetails() {
-            const users = await get("users");
+            const users = await get("users", null, pageNum);
             const neededStructure = Promise.all(users.map(async user => {
                 let business = await get("businesses");
                 business = business.filter(busi => busi.id == user.business_id)[0];
@@ -95,10 +126,12 @@
 
                 const result = {
                     user_id: user.id,
-                    username: user.username,
+                    name: user.name,
+                    user_type: user.usertype,
+                    email: user.email,
+                    phone: user.phone ? user.phone : "N.A",
                     businessName: business ? business.name : "N.A",
                     businessID: business ? business.id : "N.A",
-                    status: user.status == '1' ? "active" : "not active",
                 }
                 
                 return result;
@@ -113,22 +146,85 @@
             const mainContent = document.querySelector("#main-content");
             mainContent.append(adminForm);
 
-            const name = adminForm.querySelector("input#username");
+            const name = adminForm.querySelector("input#name");
             const businessName = adminForm.querySelector("input#businessName");
             const status = adminForm.querySelector("#status");
             const userId = adminForm.querySelector("#id");
+            const usertype = adminForm.querySelector("#usertype");
+            const header = adminForm.querySelector("h3>span");
 
             if (id) {
                 const user = await get("users", id);
                 const business = await get("businesses", user.business_id);
-                console.log(user, business)
-                name.value = user.username;
+                name.value = user.name;
                 businessName.value = business.name;
-                status.value = user.status == '1' ? "active" : "not active";
+                usertype.value = user.usertype;
+                header.innerText = "Edit"
+            } else {
+                header.innerText = "Add"
+                const username = `<div class="flex flex-col gap-2">
+                    <label class="font-bold" for="username">Username</label>
+                    <input type="text" name="username" id="username" class="p-2 rounded-lg" required>
+                </div>`;
+                const email = `<div class="flex flex-col gap-2">
+                    <label class="font-bold" for="email">Email</label>
+                    <input type="email" name="email" id="email" class="p-2 rounded-lg" required>
+                </div>`;
+                const phone = `<div class="flex flex-col gap-2">
+                    <label class="font-bold" for="phone">Phone</label>
+                    <input type="text" name="phone" id="phone" class="p-2 rounded-lg" required>
+                </div>`;
+                name.previousElementSibling.insertAdjacentHTML("beforebegin", username)
+                businessName.insertAdjacentHTML("afterend", email);
+                businessName.insertAdjacentHTML("afterend", phone);
+                
+                businessName.previousElementSibling.remove();
+                businessName.remove();
+            }
+
+            adminForm.querySelector("#submitBtn").onclick = async (e) => {
+                e.preventDefault();
+                if (adminForm.querySelector("#admin_form").reportValidity()) {
+                    const adminFormData = new FormData(adminForm.querySelector("#admin_form"));
+                    const data = Object.fromEntries(adminFormData.entries());
+
+                    if (id) {
+                        const user = await get("users", id);
+                        const business = await get("businesses", user.business_id);
+
+
+                        const updatedUserData = {
+                            ...user,
+                            name: data.name,
+                            usertype: data.usertype
+                        }
+
+                        const updatedBusinessData = {
+                            ...business,
+                            name: data.businessName,
+                        }
+
+
+                        await update("users", updatedUserData)
+                        .catch(err => console.log(err))
+
+                        await update("businesses", updatedBusinessData)
+                        .catch(err => console.log(err))
+                        
+                    } else {
+                        const result = await add('users', data);
+
+                    }
+
+                    listUserDetails();
+                    adminForm.remove();
+                }
+
+                
             }
 
 
-            adminForm.querySelector("#close_modal").addEventListener("click", () => adminForm.remove())
+            adminForm.querySelector("#close_modal").onclick = () => adminForm.remove()
             
             admin_modal.showModal();
         }

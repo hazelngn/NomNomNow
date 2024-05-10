@@ -21,7 +21,7 @@ class Users extends ResourceController
         $page = $this->request->getGet('page')??1;
 
         // Filter the data by user_id if provided, otherwise retrieve all entries.
-        $data = $userId ? $model->find('id', $userId) : $model->paginate(5, 'default', $page);
+        $data = $userId ? $model->find('id', $userId) : $model->paginate(1, 'default', $page);
         if ($businessId ){
             $businessModel = new \App\Models\BusinessModel();
             // $businessUsers = $businessModel->where('user_id', )
@@ -89,6 +89,7 @@ class Users extends ResourceController
 
         // Update the record and handle the response.
         if ($model->update($id, $data)) {
+            $data = $model->find($id);
             return $this->respondUpdated($data, 'User data updated successfully.');
         } else {
             return $this->failServerError('Failed to update user data.');
