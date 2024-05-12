@@ -11,11 +11,12 @@
             </section>
         </form>
             
-        <section  class="flex flex-col text-cente gap-5 p-3 mt-11 mb-11 md:text-lg">
+        <section  class="flex flex-col text-cente gap-5 p-3 mt-8 md:mt-11 md:mb-11 md:text-lg">
             <div class="overflow-x-auto">
-                <table class="table table-zebra">
+                <!-- Style of the table in movile size is adapted from https://css-tricks.com/making-tables-responsive-with-minimal-css/ -->
+                <table class="table table-zebra border-collapse">
                     <!-- head -->
-                    <thead>
+                    <thead class="hidden lg:table-header-group">
                         <tr>
                             <th>User ID</th>
                             <th>Name</th>
@@ -33,19 +34,27 @@
                         
                     </tbody>
                     <template id="userDetailsTemplate">
-                        <tr>
-                            <td><i id="editBtn" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-square-pen"></i></td>
-                            <td><i id="deleteBtn" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-trash-can"></i></td>
+                        <tr class="flex flex-wrap mb-8 md:mb-11 lg:mb-0 w-10/12 m-auto lg:w-full lg:table-row">
+                            <td class="hidden lg:table-cell">
+                                <i id="editBtn" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-square-pen"></i>
+                            </td>
+                            <td class="hidden lg:table-cell">
+                                <i id="deleteBtn" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-trash-can"></i>
+                            </td>
+                            <td class="relative w-1/2 pt-9 border-current border flex place-content-center gap-2 lg:hidden">
+                                <i id="editBtnMobile" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-2xl fa-solid fa-square-pen"></i>
+                                <i id="deleteBtnMobile" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-2xl fa-solid fa-trash-can"></i>
+                            </td>
                         </tr>
                     </template>
                 </table>
             </div>
         </section>
 
-        <button onclick="addEditUser()" class="btn btn-accent w-2/12 m-auto">Add a new user</button>
-        <div class="join grid grid-cols-2">
-            <button onclick="getPreviousPage()" class="join-item btn btn-outline">Previous page</button>
-            <button onclick="getNextPage()"  class="join-item btn btn-outline">Next</button>
+        <button onclick="addEditUser()" class="btn btn-accent btn-sm md:btn-md m-auto">Add a new user</button>
+        <div class="grid grid-cols-2 join m-auto mt-11 w-1/2 md:w-2/6">
+            <button onclick="getPreviousPage()" class="join-item btn btn-outline btn-sm md:btn-md">Previous</button>
+            <button onclick="getNextPage()"  class="join-item btn btn-outline btn-sm md:btn-md">Next</button>
         </div>
 
         <!-- Pagination -->
@@ -85,40 +94,70 @@
         }
 
         async function listUserDetails() {
-            const parentTemplate = document.getElementById("userDetailsTemplate");
-            const usersList = document.getElementById("usersList");
-            usersList.innerHTML = "";
+            const parentTemplate = document.querySelector("#userDetailsTemplate");
+            const usersList = document.querySelector("#usersList");
+            const tableHeaders = document.querySelectorAll("thead>tr>th");
             let details = await getNeededDetails();
 
-            details.forEach(detail => {
-                const parent = parentTemplate.content.cloneNode(true).children[0];
-                const beforePoint = parent.children[0];
+            if (details) {
+                usersList.innerHTML = "";
+                details.forEach(detail => {
+                    const parent = parentTemplate.content.cloneNode(true).children[0];
+                    const beforePoint = parent.children[0];
+                    let idx = 0;
 
-                parent.id = detail.user_id;
-                for (const [key,value] of Object.entries(detail)) {
-                    const td = document.createElement('td');
-                    td.innerText = value;
-                    parent.insertBefore(td, beforePoint);
-                }
-
-                //edit 
-                parent.querySelector("#editBtn").onclick =  () => addEditUser(detail.user_id);
-                parent.querySelector("#deleteBtn").onclick =  async () => {
-                    if (confirm(`Are you sure you want to delete user ${detail.name}?`)) {
-                        await deleteItem('users', detail.user_id)
-                        .then(data => alert(`User ${detail.name} has been successfully deleted`))
-                        .catch(err => console.log(err))
-                        listUserDetails();
+                    parent.id = detail.user_id;
+                    for (const [key,value] of Object.entries(detail)) {
+                        const td = document.createElement('td');
+                        td.className = 'relative w-1/2 pt-9 border-current border overflow-x-clip lg:pt-1 lg:border-0'
+                        const header = tableHeaders[idx].innerHTML;
+                        const mobileSpan = `<span class="lg:hidden bg-slate-500	font-bold uppercase absolute top-0 left-0 p-1">${header}</span>${value}`;
+                        td.innerHTML = mobileSpan;
+                        parent.insertBefore(td, beforePoint);
+                        idx += 1
                     }
-                };
-                
-                usersList.append(parent);
-            });
-            
+
+                    //button actions 
+                    parent.querySelector("#editBtn").onclick =  () => addEditUser(detail.user_id);
+                    parent.querySelector("#deleteBtn").onclick =  async () => {
+                        if (confirm(`Are you sure you want to delete user ${detail.name}?`)) {
+                            await deleteItem('users', detail.user_id)
+                            .then(data => {
+                                alert(`User ${detail.name} has been successfully deleted`);
+                                pageNum = 1;
+                            })
+                            .catch(err => console.log(err))
+                            listUserDetails();
+                        }
+                    };
+
+                    parent.querySelector("#editBtnMobile").onclick =  () => addEditUser(detail.user_id);
+                    parent.querySelector("#deleteBtnMobile").onclick =  async () => {
+                        if (confirm(`Are you sure you want to delete user ${detail.name}?`)) {
+                            await deleteItem('users', detail.user_id)
+                            .then(data => {
+                                alert(`User ${detail.name} has been successfully deleted`);
+                                pageNum = 1;
+                            })
+                            .catch(err => console.log(err))
+                            listUserDetails();
+                        }
+                    };
+                    
+                    usersList.append(parent);
+                });
+            }
         }
 
+
         async function getNeededDetails() {
+            console.log(pageNum)
             const users = await get("users", null, pageNum);
+            if (users.length == 0) {
+                pageNum -= 1;
+                return;
+            }
+
             const neededStructure = Promise.all(users.map(async user => {
                 let business = await get("businesses");
                 business = business.filter(busi => busi.id == user.business_id)[0];
@@ -159,7 +198,8 @@
                 name.value = user.name;
                 businessName.value = business.name;
                 usertype.value = user.usertype;
-                header.innerText = "Edit"
+                header.innerText = "Edit";
+
             } else {
                 header.innerText = "Add"
                 const username = `<div class="flex flex-col gap-2">
@@ -202,6 +242,7 @@
                         const updatedBusinessData = {
                             ...business,
                             name: data.businessName,
+                            logo: null
                         }
 
 
@@ -213,7 +254,6 @@
                         
                     } else {
                         const result = await add('users', data);
-
                     }
 
                     listUserDetails();

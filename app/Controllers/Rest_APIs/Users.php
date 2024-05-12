@@ -14,14 +14,19 @@ class Users extends ResourceController
     public function index()
     {
         $model = new \App\Models\UserModel();
+        $pager = \Config\Services::pager();
 
         // Retrieve 'user_id' from query parameters if provided.
         $userId = $this->request->getGet('user_id');
         $businessId = $this->request->getGet('business_id');
         $page = $this->request->getGet('page')??1;
 
+
         // Filter the data by user_id if provided, otherwise retrieve all entries.
-        $data = $userId ? $model->find('id', $userId) : $model->paginate(1, 'default', $page);
+        $data = $userId ? $model->find('id', $userId) : $model->paginate(3, 'default', $page);
+        if ($page > $model->pager->getPageCount()) {
+            $data = [];
+        }
         if ($businessId ){
             $businessModel = new \App\Models\BusinessModel();
             // $businessUsers = $businessModel->where('user_id', )

@@ -9,6 +9,7 @@
         #debug-bar div:nth-child(n + 2) {
             height: 50vh !important;
         }
+
     </style>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
