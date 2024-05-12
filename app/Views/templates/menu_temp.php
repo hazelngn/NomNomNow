@@ -5,10 +5,10 @@
             <div class="basis-1/5 md:basis-28 shrink-0 grow-0">
                 <input type="radio" name="categories" id="" value="" class="categories opacity-0 w-0 h-0"/>
                 <!-- opacity not working with peer-checked -->
-                <label class="cursor-pointer opacity-50 " for="">
+                <label class="cursor-pointer opacity-50 " for="" aria-label="Category">
                     <img class="w-4/6 m-auto mb-1" src=""  alt="">
                 </label>
-                <h5 class=""></h5>
+                <h5></h5>
             </div>
         </template>
     </div>
@@ -112,7 +112,6 @@
         const items = await get("menu_items");
         const menuItems = items.filter(item => item.menu_id == <?= $menu['id'] ?>);
         const itemsContainer = document.querySelector("#items");
-        const placeholderImg = "https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg";
 
         menuCategories.forEach(cat => {
             const itemContainer = itemContainerTemplate.content.cloneNode(true).children[0];
@@ -125,9 +124,10 @@
 
             // duplication menu_skeleton
             const itemCard = itemContainer.querySelector("#item-card").content.cloneNode(true).children[0];
-            const imageSrc = item.item_img ? `data:image/jpeg;base64,${item.item_img}` : placeholderImg;
+            const imageSrc = item.item_img ? `data:image/jpeg;base64,${item.item_img}` : "";
             itemCard.id = item.id;
             itemCard.querySelector("#item-img").src = imageSrc;
+            itemCard.querySelector("#item-img").alt = `An image of the dish ${item.name}`;
             itemCard.querySelector("#item-name").innerText = item.name;
             itemCard.querySelector("#item-price").innerText = `$${item.price}`;
             // itemCard.querySelector("#item-name").nextElementSibling.addEventListener("click", () => showItemDetails(item.id));
@@ -159,20 +159,6 @@
 
         const itemPrice = itemName.nextElementSibling;
         itemPrice.innerText = `$${item.price}`;
-
-        const prefsContainer = itemDetails.querySelector("#prefs");
-
-        const itemPrefs = await get("diet_pref_items", id);
-        if (itemPrefs) {
-            itemPrefs.forEach(async pref => {
-                const prefElem = document.createElement("div");
-                prefElem.className = "badge badge-accent badge-outline shrink-0 md:text-md md:p-3";
-                const prefDetail = await get("diet_pref", pref.diet_pr_id);
-                prefElem.innerText = prefDetail.name;
-
-                prefsContainer.appendChild(prefElem);
-            })
-        }
 
         const desc = itemDetails.querySelector("#desc");
         const itemDescription = document.createElement("p");

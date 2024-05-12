@@ -30,7 +30,7 @@
                             ?>"
                     >NomNomNow</a>
                 <?php else: ?>
-                    <a class="btn btn-ghost text-3xl font-header" href="<?= base_url("onlineorder/") . $menu['id']. '/' . $tableNum ?>"><?= $business['name'] ?></a>
+                    <a class="btn btn-ghost text-3xl font-header" href="<?= base_url("onlineorder/") . $menu['id']. '/' . $tableNum ?>"><?=esc($business['name']) ?></a>
                 <?php endif; ?>
             </div>
             <?php if (!isset($customer_view) && !isset($checkout)): ?>
@@ -44,7 +44,7 @@
                                         <?php  if (isset($business)): ?>
                                             <section>
                                                 <a 
-                                                    href="<?= base_url("admin/" . $business['id']) ?>"                                     
+                                                    href="<?= base_url("admin/" . esc($business['id'])) ?>"                                     
                                                     class="btn btn-accent"
                                                 >Admin page</a>
                                             </section>
@@ -52,13 +52,13 @@
                                                 <div class="w-10 rounded-full">
                                                     <img 
                                                         id = "business_logo"
-                                                        alt="The logo of <?= $business['name'] ?>" 
+                                                        alt="The logo of <?= esc($business['name']) ?>" 
                                                         src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" 
                                                     />
                                                 </div>
                                             </div>
                                         <?php else: ?>
-                                            <?= session()->get('name') ?>
+                                            <?= esc(session()->get('name')) ?>
                                         <?php endif; ?>
                                     <?php else: ?>
                                         Account
@@ -112,8 +112,8 @@
     <script>
         const smallScreenSize = window.matchMedia("(max-width: 768px)");
         const stepElements = document.getElementsByClassName("steps");
-        const businessId =  "<?= isset($business['id']) ? $business['id'] : null ?>";
-        const customer_view = "<?= isset($customer_view) ?  $customer_view : null ?>";
+        const businessId =  "<?= isset($business['id']) ? esc($business['id']) : null ?>";
+        const customer_view = "<?= isset($customer_view) ?  esc($customer_view) : null ?>";
 
         if (window.innerWidth > 768) {
             /* the viewport is more than 600 pixels wide */

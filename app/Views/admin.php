@@ -4,18 +4,16 @@
         <h3 class="text-3xl font-body mt-5 text-center font-bold">Administration</h3>
         <form method="get" action="<?= base_url(); ?>">
             <section class="flex justify-center items-center mt-5 gap-2">
-                <label class="input input-bordered flex items-center gap-2 w-8/12 md:w-6/12">
-                    <input type="text" placeholder="Search" />
+                <label class="input input-bordered flex items-center gap-2 w-8/12 md:w-6/12" aria-label="Search">
+                    <input type="text" placeholder="Search" aria-label="Search input">
                 </label>
-                <i class="text-accent md:text-xl fa-solid fa-magnifying-glass"></i>
+                <i class="text-accent md:text-xl fa-solid fa-magnifying-glass" aria-hidden="true"></i>
             </section>
         </form>
-            
-        <section  class="flex flex-col text-cente gap-5 p-3 mt-8 md:mt-11 md:mb-11 md:text-lg">
+
+        <section class="flex flex-col text-cente gap-5 p-3 mt-8 md:mt-11 md:mb-11 md:text-lg">
             <div class="overflow-x-auto">
-                <!-- Style of the table in movile size is adapted from https://css-tricks.com/making-tables-responsive-with-minimal-css/ -->
-                <table class="table table-zebra border-collapse">
-                    <!-- head -->
+                <table class="table table-zebra border-collapse" aria-label="User List">
                     <thead class="hidden lg:table-header-group">
                         <tr>
                             <th>User ID</th>
@@ -29,21 +27,21 @@
                             <th>Delete</th>
                         </tr>
                     </thead>
-                    <tbody id="usersList">
+                    <tbody id="usersList" aria-live="polite">
                         <!-- Users data will be here -->
-                        
+
                     </tbody>
                     <template id="userDetailsTemplate">
                         <tr class="flex flex-wrap mb-8 md:mb-11 lg:mb-0 w-10/12 m-auto lg:w-full lg:table-row">
                             <td class="hidden lg:table-cell">
-                                <i id="editBtn" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-square-pen"></i>
+                                <i id="editBtn" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-square-pen" aria-label="Edit User"></i>
                             </td>
                             <td class="hidden lg:table-cell">
-                                <i id="deleteBtn" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-trash-can"></i>
+                                <i id="deleteBtn" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-lg fa-solid fa-trash-can" aria-label="Delete User"></i>
                             </td>
                             <td class="relative w-1/2 pt-9 border-current border flex place-content-center gap-2 lg:hidden">
-                                <i id="editBtnMobile" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-2xl fa-solid fa-square-pen"></i>
-                                <i id="deleteBtnMobile" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-2xl fa-solid fa-trash-can"></i>
+                                <i id="editBtnMobile" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-2xl fa-solid fa-square-pen" aria-label="Edit User"></i>
+                                <i id="deleteBtnMobile" class="basis-1/12 grow-0 text-accent text-base cursor-pointer md:text-2xl fa-solid fa-trash-can" aria-label="Delete User"></i>
                             </td>
                         </tr>
                     </template>
@@ -51,19 +49,11 @@
             </div>
         </section>
 
-        <button onclick="addEditUser()" class="btn btn-accent btn-sm md:btn-md m-auto">Add a new user</button>
-        <section class="grid grid-cols-2 join m-auto mt-11 w-1/2 md:w-2/6">
+        <button onclick="addEditUser()" class="btn btn-accent btn-sm md:btn-md m-auto" aria-label="Add a new user">Add a new user</button>
+        <section class="grid grid-cols-2 join m-auto mt-11 w-1/2 md:w-2/6" aria-label="Pagination">
             <button onclick="getPreviousPage()" class="join-item btn btn-outline btn-sm md:btn-md">Previous</button>
-            <button onclick="getNextPage()"  class="join-item btn btn-outline btn-sm md:btn-md">Next</button>
+            <button onclick="getNextPage()" class="join-item btn btn-outline btn-sm md:btn-md">Next</button>
         </section>
-
-        <!-- Pagination -->
-        <!-- <div class="join m-auto self-center">
-            <input class="join-item btn btn-neutral btn-square " type="radio" name="options" aria-label="1" checked />
-            <input class="join-item btn btn-neutral btn-square " type="radio" name="options" aria-label="2" />
-            <input class="join-item btn btn-neutral btn-square " type="radio" name="options" aria-label="3" />
-            <input class="join-item btn btn-neutral btn-square " type="radio" name="options" aria-label="4" />
-        </div> -->
     </section>
 
     <template id="childTemplate">
@@ -152,8 +142,8 @@
 
         async function getNeededDetails() {
             let users = await get("users", null, pageNum);
-            const currentUser = await get("users", <?= session()->get('userId') ?>)
-            if ("<?= session()->get('usertype') ?>" == "owner") {
+            const currentUser = await get("users", <?= esc(session()->get('userId')) ?>)
+            if ("<?= esc(session()->get('usertype')) ?>" == "owner") {
                 let business = await get("businesses");
                 business = business.find(busi => busi.id == currentUser.business_id);
                 users = await get("users", null, pageNum, business.id);
@@ -223,8 +213,8 @@
                     <input type="text" name="phone" id="phone" class="p-2 rounded-lg" required>
                 </div>`;
 
-                if ("<?= session()->get('usertype') ?>" == "owner") {
-                    const user = await get("users", <?= session()->get('userId') ?>);
+                if ("<?= esc(session()->get('usertype')) ?>" == "owner") {
+                    const user = await get("users", <?= esc(session()->get('userId')) ?>);
                     const businessInput = `<input class="btn btn-accent mt-3" name="business_id" type="hidden" value=${user.business_id}>`;
                     usertype.insertAdjacentHTML("afterend", businessInput);
                 }
@@ -279,18 +269,12 @@
                     listUserDetails();
                     adminForm.remove();
                 }
-
-                
             }
-
 
             adminForm.querySelector("#close_modal").onclick = () => adminForm.remove()
             
             admin_modal.showModal();
         }
-
-        
-
     </script>
 
 <?= $this->endSection() ?>

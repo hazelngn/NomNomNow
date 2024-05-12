@@ -42,10 +42,9 @@
                         <section>
                             <label class="pt-3 font-bold" for="menuId">Choose menu to generate QR code</label>
                             <select class="block w-1/2 text-center p-2 rounded-lg bg-neutral-content/20 text-accent mt-2" name="menuId" id="menuId">
-                                    <?php foreach ($menus as $menu): ?>
-                                        <option value="<?= $menu['id'] ?>"><?= $menu['name'] ?></option>
-                                    <?php endforeach; ?>
-                                
+                                <?php foreach ($menus as $menu): ?>
+                                    <option value="<?= esc($menu['id']) ?>"><?= esc($menu['name']) ?></option>
+                                <?php endforeach; ?>
                             </select>
                         </section>
                         
@@ -107,9 +106,6 @@
         </div>
     </dialog>
 
-    <?php include 'test.php'; ?>
-
-    
     <script>
         const businessInfo = document.querySelector("#business_info")
         const businessFormTemplate = document.querySelector("#business_form");
@@ -118,13 +114,12 @@
         businessForm.id = "businessForEdit";
 
         window.onload = () => {
-            // renderQrCodes();
             renderMenus();
         }
 
         async function renderMenus() {
             const menusContainer = document.querySelector("#menus_container>section");
-            const menus = await get('menus', null, pageNum).catch(err => console.log(err));
+            const menus = await get('menus', null, pageNum).catch(err => console.log("An error occurred when fetching menus. Error: ", err));
 
             if (menus.length == 0) {
                 pageNum -= 1;
@@ -188,7 +183,6 @@
             saveBtn.type = "submit";
             saveBtn.value = "Save"
             saveBtn.addEventListener("click", (e) => editForm(e))
-            // <input id="submitBtn" class="btn btn-accent" type="submit" value="Save">
             businessForm.append(saveBtn);
 
             const closeModalForm = document.querySelector("#close_modal_form").content.cloneNode(true).children[0];
@@ -304,11 +298,8 @@
         document.querySelector("#getAllQrCodesBtn").onclick = () => {
             // this will direct to a page containing only qr codes
         }
-
         
-
         renderModal();
-        
 
     </script>
 <?= $this->endSection() ?>

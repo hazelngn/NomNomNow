@@ -5,28 +5,21 @@
     <input type="radio" name="order_status" role="tab" class="tab checked:[--tab-border-color:text-purple-400] checked:text-purple-400" aria-label="Not started" checked/>
     <div role="tabpanel" class="tab-content bg-base-100 border-purple-400 !col-span-3 rounded-box p-7 z-10">
         <section id="not-started" class="flex flex-col md:flex-row gap-1 flex-wrap justify-between">
-            <?php for ($i = 0; $i < 5; $i++): ?>
-                <?php include 'templates/components/order_item_card.php' ?>
-            <?php endfor; ?>
         </section>
     </div>
     <input type="radio" name="order_status" role="tab" class="tab checked:[--tab-border-color:text-purple-400] checked:text-purple-400" aria-label="In progress"/>
     <div role="tabpanel" class="tab-content bg-base-100 border-purple-400 !col-span-3 rounded-box p-7 z-10">
         <section id="in-progress"  class="flex flex-col md:flex-row gap-1 flex-wrap justify-between">
-            <?php for ($i = 0; $i < 3; $i++): ?>
-                <?php include 'templates/components/order_item_card.php' ?>
-            <?php endfor; ?>
         </section>
     </div>
     <input type="radio" name="order_status" role="tab" class="tab checked:[--tab-border-color:text-purple-400] checked:text-purple-400" aria-label="Complete"/>
     <div role="tabpanel" class="tab-content bg-base-100 border-purple-400 !col-span-3 rounded-box p-7 z-10">
         <section id="ready" class="flex flex-col md:flex-row gap-1 flex-wrap justify-between">
-            <?php for ($i = 0; $i < 6; $i++): ?>
-                <?php include 'templates/components/order_item_card.php' ?>
-            <?php endfor; ?>
         </section>
     </div>
 </div>
+
+<?php include 'templates/components/order_item_card.php' ?>
 
 <dialog id="status_md" class="modal">
     <div class="modal-box p-5">

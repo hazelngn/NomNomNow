@@ -1,24 +1,24 @@
-<section id="main_content" class="flex flex-row mt-3 md:flex-col md:w-4/6 lg:flex-col lg:w-4/6 m-auto">
-    <ul class="steps steps-vertical pl-5 overflow-hidden w-1/5 h-96 md:h-fit md:w-full md:mb-11 lg:w-full lg:mb-11">
-        <li class="step text-transparent md:text-current <?= $step >= 1 ? 'step-secondary' : '' ?> ">Menu Overview</li>
-        <li class="step text-transparent md:text-current <?= $step >= 2  ? 'step-secondary' : '' ?>">Adding Items</li>
-        <li class="step text-transparent md:text-current <?= $step >= 3 ? 'step-secondary' : '' ?>">Review</li>
+<section id="main_content" class="flex flex-row mt-3 md:flex-col md:w-4/6 lg:flex-col lg:w-4/6 m-auto" aria-label="Menu Creation">
+    <ul class="steps steps-vertical pl-5 overflow-hidden w-1/5 h-96 md:h-fit md:w-full md:mb-11 lg:w-full lg:mb-11" role="navigation" aria-label="Steps Navigation">
+        <li class="step <?= esc($step) >= 1 ? 'step-secondary' : '' ?>">Menu Overview</li>
+        <li class="step <?= esc($step) >= 2 ? 'step-secondary' : '' ?>">Adding Items</li>
+        <li class="step <?= esc($step) >= 3 ? 'step-secondary' : '' ?>">Review</li>
     </ul>
-    <section id="menu_creation" class="w-4/5 m-auto lg:w-10/12">
+    <section id="menu_creation" class="w-4/5 m-auto lg:w-10/12" aria-labelledby="menuCreationTitle">
         <section class="flex flex-col justify-between mb-3">
         </section>
 
-        <div class="flex flex-row justify-evenly mt-5">
-            <i id="prevBtn" class="text-accent text-3xl fa-solid fa-circle-arrow-left cursor-pointer <?= $step - 1 <= 0 ? 'text-neutral pointer-events-none' : '' ?>" ></i>
-            <i id="nextBtn" class="text-accent text-3xl fa-solid fa-circle-arrow-right cursor-pointer" ></i>
+        <div class="flex flex-row justify-evenly mt-5" role="navigation" aria-label="Navigation Buttons">
+            <i id="prevBtn" class="text-accent text-3xl fa-solid fa-circle-arrow-left cursor-pointer <?= esc($step) - 1 <= 0 ? 'text-neutral pointer-events-none' : '' ?>" aria-label="Previous Step" ></i>
+            <i id="nextBtn" class="text-accent text-3xl fa-solid fa-circle-arrow-right cursor-pointer" aria-label="Next Step"></i>
         </div>   
     </section>
     <?php 
-        if ($step == 1) {
+        if (esc($step) == 1) {
             include "menu_creation/step1.php";
-        } elseif ($step == 2) {
+        } elseif (esc($step) == 2) {
             include "menu_creation/step2.php";
-        } elseif ($step == 3) {
+        } elseif (esc($step) == 3) {
             include "menu_creation/step3.php";
             include "components/item_card.php";
         }
@@ -34,7 +34,7 @@
     const nextBtn = document.querySelector("#nextBtn");
     const menuId = "<?= isset($menu['id']) ? esc($menu['id']) : "" ?>";
     const menu = document.getElementById('menu_creation').children[0];
-    let step = <?= $step ?>;
+    let step = <?= esc($step) ?>;
     let stepTemplate, itemDetailsTemplate;
 
 
@@ -86,7 +86,6 @@
     async function displayItems() {
         
         const menuItems = await fetchItems();
-        const placeholderImg = "https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg";
 
         if (step == 2) {
             const itemsContainer = document.querySelector("#items");
@@ -106,9 +105,10 @@
                 menuItems.forEach(item => {
                     // duplication menu_view
                     const itemCard = document.querySelector("#item-card").content.cloneNode(true).children[0];
-                    const imageSrc = item.item_img ? `data:image/jpeg;base64,${item.item_img}` : placeholderImg;
+                    const imageSrc = item.item_img ? `data:image/jpeg;base64,${item.item_img}` : '';
                     itemCard.id = item.id;
                     itemCard.querySelector("#item-img").src = imageSrc;
+                    itemCard.querySelector("#item-img").alt = `Image of the dish ${item.name}`;
                     itemCard.querySelector("#item-name").innerText = item.name;
                     itemCard.querySelector("#item-price").innerText = `$${item.price}`;
                     itemCard.querySelector("#editBtn").addEventListener("click", () => showItemDetails(item.id));
@@ -160,23 +160,6 @@
         let menuItems = await get("menu_items");
 
         menuItems = menuItems.filter(item => item.menu_id == menuId);
-        menuItems = Promise.all(menuItems.map(async item => {
-            let dietIds = await get("diet_pref_items", item.id);
-            let dietaries = [];
-            const menuItem = {
-                ...item
-            }
-            if (dietIds) {
-                dietIds = dietIds.map(item => item.diet_pr_id);
-                dietIds.forEach(async dietId => {
-                    dietPref = await get("diet_pref", dietId);
-                    dietaries.push(dietPref.name);
-                });
-                menuItem['dietaries'] = dietaries;
-            }
-
-            return menuItem;
-        }))
 
         return menuItems;
     }
@@ -234,12 +217,12 @@
 
         itemDetail.querySelector("#close_modal").addEventListener("click", () => itemDetail.remove())
         
-        item_detail.showModal();
+        item_form_detail.showModal();
     }
 
     async function addEditItem(e,id) {
         e.preventDefault();
-        const itemDetail = document.querySelector("#item_detail");
+        const itemDetail = document.querySelector("#item_form_detail");
         const detailForm = document.querySelector("#detail_form");
         let result = undefined;
 
@@ -285,13 +268,6 @@
             displayItems();
         };
 
-    }
-
-    // let test = {
-    //     id: 7,
-    //     diet_pr_id: 3
-    // }
-    // update("diet_pref_items", test)
-    // .then(data => console.log(data))    
+    } 
 
 </script>
