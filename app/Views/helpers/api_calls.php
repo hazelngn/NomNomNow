@@ -1,9 +1,11 @@
 <script>
     // name: table to fetch from
-    async function get(name, id, pageNum) {
+    async function get(name, id, pageNum, businessId) {
         const baseUrl = `<?= base_url(); ?>/${name}`
         const url = id ? `${baseUrl}/${id}` : baseUrl;
-        const pagedUrl = pageNum ? `${url}?page=${pageNum}` : url;
+        let pagedUrl = pageNum ? `${url}?page=${pageNum}` : url;
+        // possible security concerns
+        pagedUrl = businessId ? `${pagedUrl}&business_id=${businessId}` : pagedUrl;
         let result = [];
 
         await fetch(pagedUrl, {

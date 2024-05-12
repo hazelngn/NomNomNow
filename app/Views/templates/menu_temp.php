@@ -269,7 +269,10 @@
 
             total.innerText = totalPrice;
             cartItems.appendChild(itemContainer);
+
+            console.log(totalPrice)
         })
+
 
         cart.showModal();
     }

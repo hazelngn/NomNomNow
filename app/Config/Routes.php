@@ -39,6 +39,7 @@ $routes->get('onlineorder/(:num)/(:num)', 'NomNomController::customer_view/$1/$2
 
 $routes->get('ordersystem', 'NomNomController::order_system',  ['filter' => 'login']);
 
+$routes->get('admin/(:num)', 'NomNomController::admin/$1', ['filter' => 'owner']);
 $routes->get('admin', 'NomNomController::admin', ['filter' => 'admin']);
 
 $routes->group('menu/addedit', ['filter' => 'login,owner'], function($routes) {

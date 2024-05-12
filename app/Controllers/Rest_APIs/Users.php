@@ -24,15 +24,14 @@ class Users extends ResourceController
 
         // Filter the data by user_id if provided, otherwise retrieve all entries.
         $data = $userId ? $model->find('id', $userId) : $model->paginate(3, 'default', $page);
+        if ($businessId){
+            $data = $model->where('business_id', $businessId)->paginate(3, 'default', $page);
+            // $businessUsers = $businessModel->where('user_id', )
+        }
+        
         if ($page > $model->pager->getPageCount()) {
             $data = [];
         }
-        if ($businessId ){
-            $businessModel = new \App\Models\BusinessModel();
-            // $businessUsers = $businessModel->where('user_id', )
-            
-        }
-
         // Use HTTP 200 to return data.
         return $this->respond($data);
     }

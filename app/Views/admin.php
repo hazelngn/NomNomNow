@@ -52,10 +52,10 @@
         </section>
 
         <button onclick="addEditUser()" class="btn btn-accent btn-sm md:btn-md m-auto">Add a new user</button>
-        <div class="grid grid-cols-2 join m-auto mt-11 w-1/2 md:w-2/6">
+        <section class="grid grid-cols-2 join m-auto mt-11 w-1/2 md:w-2/6">
             <button onclick="getPreviousPage()" class="join-item btn btn-outline btn-sm md:btn-md">Previous</button>
             <button onclick="getNextPage()"  class="join-item btn btn-outline btn-sm md:btn-md">Next</button>
-        </div>
+        </section>
 
         <!-- Pagination -->
         <!-- <div class="join m-auto self-center">
@@ -151,16 +151,24 @@
 
 
         async function getNeededDetails() {
-            console.log(pageNum)
-            const users = await get("users", null, pageNum);
+            let users = await get("users", null, pageNum);
+            const currentUser = await get("users", <?= session()->get('userId') ?>)
+            if ("<?= session()->get('usertype') ?>" == "owner") {
+                let business = await get("businesses");
+                business = business.find(busi => busi.id == currentUser.business_id);
+                users = await get("users", null, pageNum, business.id);
+            }
+             
             if (users.length == 0) {
                 pageNum -= 1;
                 return;
             }
 
+            
+
             const neededStructure = Promise.all(users.map(async user => {
                 let business = await get("businesses");
-                business = business.filter(busi => busi.id == user.business_id)[0];
+                business = business.find(busi => busi.id == user.business_id);
 
 
                 const result = {
@@ -214,12 +222,23 @@
                     <label class="font-bold" for="phone">Phone</label>
                     <input type="text" name="phone" id="phone" class="p-2 rounded-lg" required>
                 </div>`;
+
+                if ("<?= session()->get('usertype') ?>" == "owner") {
+                    const user = await get("users", <?= session()->get('userId') ?>);
+                    const businessInput = `<input class="btn btn-accent mt-3" name="business_id" type="hidden" value=${user.business_id}>`;
+                    usertype.insertAdjacentHTML("afterend", businessInput);
+                }
+
                 name.previousElementSibling.insertAdjacentHTML("beforebegin", username)
                 businessName.insertAdjacentHTML("afterend", email);
                 businessName.insertAdjacentHTML("afterend", phone);
                 
                 businessName.previousElementSibling.remove();
                 businessName.remove();
+            }
+
+            if ("<?= session()->get('usertype') ?>" == "owner") {
+                usertype.options[0].remove();
             }
 
             adminForm.querySelector("#submitBtn").onclick = async (e) => {
@@ -254,6 +273,7 @@
                         
                     } else {
                         const result = await add('users', data);
+                        console.log(result);
                     }
 
                     listUserDetails();

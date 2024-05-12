@@ -87,6 +87,8 @@ class Auth extends BaseController
         // Redirect user to the admin dashboard if they are an admin, otherwise to their resume page
         if (session()->get('usertype') == 'admin') {
             return redirect()->to('/admin');
+        } else if (session()->get('usertype') == 'staff') {
+            return redirect()->to('/ordersystem');
         } else {
             if (isset($newUser)) { 
                 return redirect()->to('business_signup');

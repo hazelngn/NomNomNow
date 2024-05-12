@@ -24,7 +24,7 @@ class NomNomController extends BaseController
 
     public function index($id = null)
     {
-        if ($id == null && !$this->session->get('isLoggedIn')){
+        if ($id == null && $this->session->get('usertype') != "owner"){
             return view('landingpage');
         } else {
             // $userId = $this->session->get('userId');
@@ -106,9 +106,7 @@ class NomNomController extends BaseController
     }
 
     public function order_system() {
-        $json = file_get_contents("content.json");
-        $data = json_decode($json, true);
-        return view('order_system', $data);    
+        return view('order_system');    
     }
 
     public function admin() {

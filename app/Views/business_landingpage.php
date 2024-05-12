@@ -8,21 +8,8 @@
                 <h3 class="text-xl lg:text-3xl">Menus</h3>
             </div>
             <div class="collapse-content bg-neutral"> 
-                <ul>
-                    <?php if (isset($menus)): ?>
-                        <?php foreach ($menus as $menu): ?>
-                            <div class="flex flex-row justify-between items-center pt-3">
-                                <li><a href="<?= base_url("menu/") . $menu['id'] ?>">
-                                    <?= $menu['name'] ?>
-                                </a></li>
-                                <section class="flex gap-2 md:place-content-center items-baseline">
-                                    <a href="<?= base_url("menu/addedit/") . $menu['id'] ?>"><i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i></a>
-                                    <i onclick="deleteMenu(<?= $menu['id'] ?>)" class="cursor-pointer text-red-500 text-base lg:text-xl fa-solid fa-trash-can"></i>
-                                </section>
-                            </div>
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                    
+                <ul id="menus_container">
+                    <section></section>
                     <!-- lg:tooltip doesn't work -->
                     <div class="w-full flex justify-center pt-3 tooltip tooltip-accent" data-tip="Add new menu">
                         <a href="<?= base_url("/menu/addedit") ?>">
@@ -67,12 +54,12 @@
                             <input name="tableNum" id="tableNum" type="number" min="1" class="block w-1/2 text-center p-2 rounded-lg bg-neutral-content/20 text-accent mt-2">
                         </section>
 
-                        <section>
-                            <button id="getQRCodeBtn" class="btn w-full btn-sm btn-accent">
+                        <section class="flex flex-col text-center">
+                            <button id="getQRCodeBtn" class="btn w-full btn-sm m-auto btn-accent md:w-8/12 md:btn-md">
                                 Get QR code for 1 table
                             </button>
                             or ...
-                            <button id="getAllQrCodesBtn" class="btn w-full btn-sm btn-accent">
+                            <button id="getAllQrCodesBtn" class="btn w-full btn-sm m-auto btn-accent md:w-8/12 md:btn-md">
                                 Get all QR codes for this menu
                             </button>
                         </section>
@@ -127,11 +114,59 @@
         const businessInfo = document.querySelector("#business_info")
         const businessFormTemplate = document.querySelector("#business_form");
         const businessForm = businessFormTemplate.cloneNode(true);
-        const pageNum = 1;
+        let pageNum = 1;
         businessForm.id = "businessForEdit";
 
         window.onload = () => {
             // renderQrCodes();
+            renderMenus();
+        }
+
+        async function renderMenus() {
+            const menusContainer = document.querySelector("#menus_container>section");
+            const menus = await get('menus', null, pageNum).catch(err => console.log(err));
+
+            if (menus.length == 0) {
+                pageNum -= 1;
+                return;
+            }
+
+            if (menus) {
+                menusContainer.innerHTML = "";
+                const businessMenus = menus.filter(menu => menu.business_id == <?= $business['id'] ?>)
+                console.log(businessMenus)
+
+                businessMenus.forEach(menu => {
+                    const menuElement = `<section class="flex flex-row justify-between items-center pt-3">
+                                            <li><a href="<?= base_url("menu/") ?>/${menu.id}">
+                                                ${menu.name}
+                                            </a></li>
+                                            <section class="flex gap-2 md:place-content-center items-baseline">
+                                                <a href="<?= base_url("menu/addedit/")?>/${menu.id}"><i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i></a>
+                                                <i onclick="deleteMenu(${menu.id})" class="cursor-pointer text-red-500 text-base lg:text-xl fa-solid fa-trash-can"></i>
+                                            </section>
+                                        </section>`
+                    menusContainer.innerHTML += menuElement;
+                })
+            }
+
+            const pagination = ` <section class="grid grid-cols-2 join m-auto mt-11 mb-5 w-1/2 md:w-2/6">
+                                    <button onclick="getPreviousPage()" class="join-item btn btn-outline btn-sm md:btn-md">Previous</button>
+                                    <button onclick="getNextPage()"  class="join-item btn btn-outline btn-sm md:btn-md">Next</button>
+                                </section>`;
+            menusContainer.innerHTML += pagination
+        }
+
+        function getPreviousPage() {
+            if (pageNum > 1) {
+                pageNum -= 1;
+                renderMenus();
+            } 
+        }
+
+        function getNextPage() {
+            pageNum += 1;
+            renderMenus();
         }
         
 
@@ -249,8 +284,8 @@
                 await deleteItem('menus', id)
                 .then(data => { 
                     alert("Menu deleted successfully");
-                    // client side rendering not implemented
-                    location.reload();
+                    pageNum = 1;
+                    renderMenus();
                 })
                 .catch(err => console.log(err))
             }

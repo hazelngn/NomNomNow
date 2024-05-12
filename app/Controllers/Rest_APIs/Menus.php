@@ -20,7 +20,9 @@ class Menus extends ResourceController
 
         // Filter the data by user_id if provided, otherwise retrieve all entries.
         $data = $menuId ? $model->find($menuId) : $model->paginate(3, 'default', $page);
-
+        if ($page > $model->pager->getPageCount()) {
+            $data = [];
+        }
 
         // Use HTTP 200 to return data.
         return $this->respond($data);

@@ -19,7 +19,7 @@
 <body class="font-body min-h-screen w-full bg-base-200 flex flex-col text-sm md:text-lg">
     <header class="sticky top-0 z-10" >
         <!-- Code snippets from daisy UI https://daisyui.com/components/navbar/ -->
-        <div class="navbar bg-base-100 flex-wrap">
+        <div class="navbar bg-base-100 flex-wrap justify-end">
             <div class="flex-1">
                 <?php if (!isset($customer_view)): ?>
                     <a 
@@ -42,6 +42,12 @@
                                     <!-- check admin to make it easier for testing, IRL admin wouldn't have a business -->
                                     <?php if (session()->get('isLoggedIn')) : ?>
                                         <?php  if (isset($business)): ?>
+                                            <section>
+                                                <a 
+                                                    href="<?= base_url("admin/" . $business['id']) ?>"                                     
+                                                    class="btn btn-accent"
+                                                >Admin page</a>
+                                            </section>
                                             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                                                 <div class="w-10 rounded-full">
                                                     <img 
