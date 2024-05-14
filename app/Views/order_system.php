@@ -1,40 +1,49 @@
 <?= $this->extend('template'); ?>
 <?= $this->section('content'); ?>
-<div role="tablist" class="tabs tabs-lifted mt-5 w-full md:w-4/6 m-auto overflow-x-hidden">
-    <!-- colors -->
-    <input type="radio" name="order_status" role="tab" class="tab checked:[--tab-border-color:text-purple-400] checked:text-purple-400" aria-label="Not started" checked/>
-    <div role="tabpanel" class="tab-content bg-base-100 border-purple-400 !col-span-3 rounded-box p-7 z-10">
+<section role="tablist" class="tabs tabs-lifted mt-5 w-full md:w-4/6 m-auto overflow-x-hidden">
+    <!-- Not started tab -->
+    <input type="radio" name="order_status" role="tab" id="not-started-tab" class="tab checked:[--tab-border-color:text-purple-400] checked:text-purple-400" aria-controls="not-started-panel" aria-label="Not started" checked/>
+    <section id="not-started-panel" role="tabpanel" class="tab-content bg-base-100 border-purple-400 !col-span-3 rounded-box p-7 z-10 md:p-10" aria-labelledby="not-started-tab">
         <section id="not-started" class="flex flex-col md:flex-row gap-1 flex-wrap justify-between">
+            <!-- Content for not started tab -->
         </section>
-    </div>
-    <input type="radio" name="order_status" role="tab" class="tab checked:[--tab-border-color:text-purple-400] checked:text-purple-400" aria-label="In progress"/>
-    <div role="tabpanel" class="tab-content bg-base-100 border-purple-400 !col-span-3 rounded-box p-7 z-10">
-        <section id="in-progress"  class="flex flex-col md:flex-row gap-1 flex-wrap justify-between">
+    </section>
+    
+    <!-- In progress tab -->
+    <input type="radio" name="order_status" role="tab" id="in-progress-tab" class="tab checked:[--tab-border-color:text-purple-400] checked:text-purple-400" aria-controls="in-progress-panel" aria-label="In progress"/>
+    <section id="in-progress-panel" role="tabpanel" class="tab-content bg-base-100 border-purple-400 !col-span-3 rounded-box p-7 z-10 md:p-10" aria-labelledby="in-progress-tab">
+        <section id="in-progress" class="flex flex-col md:flex-row gap-1 flex-wrap justify-between">
+            <!-- Content for in progress tab -->
         </section>
-    </div>
-    <input type="radio" name="order_status" role="tab" class="tab checked:[--tab-border-color:text-purple-400] checked:text-purple-400" aria-label="Complete"/>
-    <div role="tabpanel" class="tab-content bg-base-100 border-purple-400 !col-span-3 rounded-box p-7 z-10">
+    </section>
+    
+    <!-- Complete tab -->
+    <input type="radio" name="order_status" role="tab" id="complete-tab" class="tab checked:[--tab-border-color:text-purple-400] checked:text-purple-400" aria-controls="complete-panel" aria-label="Complete"/>
+    <section id="complete-panel" role="tabpanel" class="tab-content bg-base-100 border-purple-400 !col-span-3 rounded-box p-7 z-10 md:p-10" aria-labelledby="complete-tab">
         <section id="ready" class="flex flex-col md:flex-row gap-1 flex-wrap justify-between">
+            <!-- Content for complete tab -->
         </section>
-    </div>
-</div>
+    </section>
+</section>
 
-<?php include 'templates/components/order_item_card.php' ?>
-
-<dialog id="status_md" class="modal">
-    <div class="modal-box p-5">
+<dialog id="status_md" class="modal" aria-label="Update status modal">
+    <section class="modal-box p-5">
         <form method="dialog">
-        <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" aria-label="Close modal">x</button>
         </form>
         <h3 class="font-bold mb-5 text-accent text-xl">Update item status</h3>
         <p class="mb-5 text-secondary">Note: Some notes</p>
-        <div id="updateStatus" class="flex flex-row gap-2">
+        <p class="mb-5 text-content">Click on the below button to update item status</p>
+        <section id="updateStatus" class="flex flex-row gap-2 justify-center" role="group" aria-label="Update status">
             <button class="btn btn-sm btn-neutral">Not started</button>
             <button class="btn btn-sm btn-accent">In progress</button>
-            <button class="btn btn-sm btn-success">Complete</button>
-        </div>
-    </div>
+            <button class="btn btn-sm btn-success">Ready</button>
+        </section>
+    </section>
 </dialog>
+
+
+<?php include 'templates/components/order_item_card.php' ?>
 
 <script>
     let orderItemTemplate;
@@ -103,9 +112,7 @@
             orderItemClone.querySelector("#details").onclick = () => {
                 status_md.showModal();
                 const updateStatusBtns = status_md.querySelectorAll("#updateStatus>button")
-                const notStartedBtn = updateStatusBtns[0]
-                const inProgressBtn = updateStatusBtns[1]
-                const completeBtn = updateStatusBtns[2]
+                const [notStartedBtn, inProgressBtn, completeBtn] = updateStatusBtns
 
                 notStartedBtn.onclick = async () => {
                     data = {

@@ -19,8 +19,8 @@
 <body class="font-body min-h-screen w-full bg-base-200 flex flex-col text-sm md:text-lg">
     <header class="sticky top-0 z-10" >
         <!-- Code snippets from daisy UI https://daisyui.com/components/navbar/ -->
-        <div class="navbar bg-base-100 flex-wrap justify-end">
-            <div class="flex-1">
+        <section class="navbar bg-base-100 flex-wrap justify-end">
+            <section class="flex-1" aria-label="Name of the website section">
                 <?php if (!isset($customer_view)): ?>
                     <a 
                         class="btn btn-ghost text-3xl font-header" 
@@ -28,13 +28,18 @@
                             <?= 
                                 base_url(session()->get("usertype") == "admin" ? "admin" : (session()->get("isLoggedIn") ? session()->get('userId') : "")); 
                             ?>"
+                        aria-label="Website name NomNomNow"
                     >NomNomNow</a>
                 <?php else: ?>
-                    <a class="btn btn-ghost text-3xl font-header" href="<?= base_url("onlineorder/") . $menu['id']. '/' . $tableNum ?>"><?=esc($business['name']) ?></a>
+                    <a 
+                        class="btn btn-ghost text-3xl font-header" 
+                        href="<?= base_url("onlineorder/") . $menu['id']. '/' . $tableNum ?>"
+                        aria-label="Name of the business"
+                    ><?=esc($business['name']) ?></a>
                 <?php endif; ?>
-            </div>
+            </section>
             <?php if (!isset($customer_view) && !isset($checkout)): ?>
-                <div class="flex-none">
+                <section class="flex-none">
                     <ul class="menu menu-horizontal px-1">
                         <li>
                             <details>
@@ -47,18 +52,19 @@
                                                     <a 
                                                         href="<?= base_url("admin/" . esc(session()->get('userId'))) ?>"                                     
                                                         class="btn btn-accent"
+                                                        aria-label="Navigate to the admin page"
                                                     >Admin page</a>
                                                 </section>
                                             <?php endif; ?>
-                                            <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-                                                <div class="w-10 rounded-full">
+                                            <section tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
+                                                <section class="w-10 rounded-full">
                                                     <img 
                                                         id = "business_logo"
                                                         alt="The logo of <?= esc($business['name']) ?>" 
                                                         src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" 
                                                     />
-                                                </div>
-                                            </div>
+                                                </section>
+                                            </section>
                                         <?php else: ?>
                                             <?= esc(session()->get('name')) ?>
                                         <?php endif; ?>
@@ -66,47 +72,48 @@
                                         Account
                                     <?php endif; ?>
                                 </summary>
-                                <ul class="p-2 bg-base-100 rounded-t-none">
+                                <ul class="p-2 bg-base-100 rounded-t-none" role="menu" aria-label="Drop-down list">
                                     <?php if (session()->get('isLoggedIn')): ?>
-                                        <li class="text-sm md:text-md hover:bg-accent hover:text-base-100 hover:rounded-md">
+                                        <li class="text-sm md:text-md hover:bg-accent hover:text-base-100 hover:rounded-md" role="menuitem">
                                             <a href="<?= base_url("google_logout") ?>">Logout</a>
                                         </li>
                                     <?php else: ?>
-                                        <li class="text-sm md:text-md lg:text-lg hover:bg-accent hover:text-base-100 hover:rounded-md">
+                                        <li class="text-sm md:text-md lg:text-lg hover:bg-accent hover:text-base-100 hover:rounded-md" role="menuitem">
                                             <a href="<?= base_url("login") ?>">Login</a>
                                         </li>
-                                        <li class="text-sm md:text-md lg:text-lg hover:bg-accent hover:text-base-100 hover:rounded-md">
+                                        <li class="text-sm md:text-md lg:text-lg hover:bg-accent hover:text-base-100 hover:rounded-md" role="menuitem">
                                             <a href="<?= base_url("signup") ?>">Sign Up</a>
                                         </li>
                                     <?php endif; ?>
-                                    
                                 </ul>
                             </details>
                         </li>
                     </ul>
-                </div>
+                </section>
             <?php elseif (!isset($checkout)): ?>
-                <div class="indicator mr-4">
+                <section class="indicator mr-4" aria-label="Shopping Cart Indicator">
                     <span class="indicator-item badge badge-accent badge-sm md:badge-sm" id="totalQuantity">0</span> 
-                    <button onclick="showCart()">
+                    <button onclick="showCart()" aria-label="Open Cart">
                         <i class="text-2xl fa-solid fa-cart-shopping md:text-3xl"></i>
                     </button>
-                </div>
+                </section>
             <?php endif; ?>         
-        </div>
+        </section>
     </header>
 
-    <main class="grow shrink-0 basis-auto mb-5 flex items-stretch">
+    <main class="grow shrink-0 basis-auto mb-5 flex items-stretch" role="main">
         <section class="grow <?= service('router')->getMatchedRoute()[0] == 'login' ? 'place-content-center' : ''; ?>">
             <?= $this->renderSection('content'); ?>
         </section>
     </main>
+
     <!-- Code snippet sourced from daisy UI https://daisyui.com/components/footer/ -->
-    <footer class="footer footer-center p-4 bg-base-300 text-base-content shrink-0">
-        <aside>
-            <p>Copyright &copy; <?= date('Y') ?> - All right reserved by <span class="font-header">NomNomNow</span></p>
+    <footer class="footer footer-center p-4 bg-base-300 text-base-content shrink-0" role="footer">
+        <aside aria-label="Copyright statement from NomNomNow">
+            <p>Copyright &copy; <?= date('Y') ?> - All rights reserved by <span class="font-header">NomNomNow</span></p>
         </aside>
     </footer>
+
 
     <?php include __DIR__ . '/helpers/api_calls.php' ?>
 

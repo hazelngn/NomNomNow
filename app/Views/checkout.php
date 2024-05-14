@@ -1,91 +1,5 @@
 <?= $this->extend('template'); ?>
 <?= $this->section('content'); ?>
-   <!-- <h1 class="text-xl md:text-3xl text-accent text-center mt-5 mb-5 md:mt-11 md:mb-11">Check Out</h1>
-   <section class="flex flex-col md:flex-row mt-3 md:w-4/6 m-auto gap-10 p-5">
-      <section class="md:w-2/3">
-         <form id="customerDetails" class="flex flex-col gap-2">
-            <h3 class="text-accent text-xl md:text-2xl mb-2 font-bold">Continue as Guest</h3>
-            <section class="flex flex-col gap-2">
-               <label for="name" class="text-accent">Your name</label>
-               <input type="text" id="name" name="name" class="p-2 rounded-lg bg-neutral" required>
-            </section>
-            <section class="flex flex-col gap-2">
-               <label for="email" class="text-accent">Your email address</label>
-               <input type="email" id="email" name="email" class="p-2 rounded-lg bg-neutral" required>
-            </section>
-            <section class="flex flex-col gap-2">
-               <label for="phone" class="text-accent">Your phone number</label>
-               <input type="number" id="phone" name="phone" class="p-2 rounded-lg bg-neutral" required>
-            </section>
-            <section>
-               <h3 class="text-accent">Choose your payment type</h3>
-               <div class="form-control">
-                  <label class="label cursor-pointer">
-                     <span class="label-text">Card</span> 
-                     <input type="radio" name="payment_type" value="card" class="radio radio-accent" checked/>
-                  </label>
-               </div>
-               <div class="form-control">
-                  <label class="label cursor-pointer">
-                     <span class="label-text">Cash</span> 
-                     <input type="radio" name="payment_type" value="cash" class="radio radio-accent"/>
-                  </label>
-               </div>
-               <div class="form-control">
-                  <label class="label cursor-pointer">
-                     <span class="label-text">Voucher</span> 
-                     <input type="radio" name="payment_type" value="voucher" class="radio radio-accent"/>
-                  </label>
-               </div>
-            </section>
-            <input type="hidden" name="status" value="not started">
-         </form>
-      </section>
-
-      <section id="orderSummary" class="md:w-1/3">
-         <h3 class="font-bold mb-5 text-accent text-xl md:text-2xl">Order Summary</h3>
-         <section id="cartItems" class="flex flex-col gap-3 md:text-lg md:flex-wrap">
-            <section class="flex flex-1 text-neutral-content gap-2">
-                <section class="basis-1/2">
-                    Product
-                </section>
-                <section class="basis-1/4 text-right">
-                    Quantity
-                </section>
-                <section class="basis-1/4 text-right">
-                    Price
-                </section>
-            </section>
-
-            <template id="cartItemTemplate">
-                <section class="flex flex-1 text-neutral-content gap-2">
-                    <section id="product" class="basis-1/2">
-                        Product
-                    </section>
-                    <section id="quantity" class="basis-1/4 text-right">
-                        Quantity
-                    </section>
-                    <section id="price" class="basis-1/4 text-right">
-                        Price
-                    </section>
-                </section>
-            </template>
-        </section>
-        <div class="flex flex-row items-center justify-between mt-5 gap-2">
-            <p class="text-lg text-accent basis-1/2">Total: $<span id="total">0</span></p>
-            <button onclick="submitOrder()" class="btn btn-accent basis-1/3">Submit</button>
-        </div>
-      </section>
-      
-   </section>
-
-   <dialog id="orderSuccess" class="modal">
-      <div class="modal-box">
-         <h3 class="font-bold text-lg text-success">Thank you for your order</h3>
-         <p>Redirecting to the menu...</p>
-      </div>
-   </dialog> -->
-
    <h1 class="text-xl md:text-3xl text-accent text-center mt-5 mb-5 md:mt-11 md:mb-11">Check Out</h1>
 
    <section class="flex flex-col md:flex-row mt-3 md:w-4/6 m-auto gap-10 p-5" aria-labelledby="checkout-heading">
@@ -106,24 +20,24 @@
                </section>
                <section>
                   <h3 class="text-accent">Choose your payment type</h3>
-                  <div class="form-control">
+                  <section class="form-control">
                      <label class="label cursor-pointer">
                            <span class="label-text">Card</span> 
                            <input type="radio" name="payment_type" value="card" class="radio radio-accent" checked aria-checked="true">
                      </label>
-                  </div>
-                  <div class="form-control">
+                  </section>
+                  <section class="form-control">
                      <label class="label cursor-pointer">
                            <span class="label-text">Cash</span> 
                            <input type="radio" name="payment_type" value="cash" class="radio radio-accent">
                      </label>
-                  </div>
-                  <div class="form-control">
+                  </section>
+                  <section class="form-control">
                      <label class="label cursor-pointer">
                            <span class="label-text">Voucher</span> 
                            <input type="radio" name="payment_type" value="voucher" class="radio radio-accent">
                      </label>
-                  </div>
+                  </section>
                </section>
                <input type="hidden" name="status" value="not started">
          </form>
@@ -158,18 +72,18 @@
                 </section>
             </template>
         </section>
-         <div class="flex flex-row items-center justify-between mt-5 gap-2">
+         <section class="flex flex-row items-center justify-between mt-5 gap-2">
                <p class="text-lg text-accent basis-1/2">Total: $<span id="total">0</span></p>
                <button onclick="submitOrder()" class="btn btn-accent basis-1/3">Submit</button>
-         </div>
+         </section>
       </section>
    </section>
 
    <dialog id="orderSuccess" class="modal" aria-labelledby="order-success-heading">
-      <div class="modal-box">
+      <section class="modal-box">
          <h3 id="order-success-heading" class="font-bold text-lg text-success">Thank you for your order</h3>
          <p>Redirecting to the menu...</p>
-      </div>
+      </section>
    </dialog>
 
 

@@ -1,42 +1,42 @@
 <?= $this->extend('template') ?>
 <?= $this->section('content') ?>
     <section class="flex flex-col lg:flex-row flex-wrap justify-evenly mt-5 ">
-        <div class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12" role="tabpanel" aria-labelledby="menu-heading">
+        <section class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12" role="tabpanel" aria-labelledby="menu-heading">
             <input type="radio" name="my-accordion-2" id="menu-accordion" checked="checked" /> 
-            <div class="collapse-title text-xl font-medium flex flex-row gap-3" id="menu-heading">
+            <section class="collapse-title text-xl font-medium flex flex-row gap-3" id="menu-heading">
                 <i class="inline-block text-accent text-3xl fa-solid fa-book-open"></i>
                 <h3 class="text-xl lg:text-3xl">Menus</h3>
-            </div>
-            <div class="collapse-content bg-neutral"> 
+            </section>
+            <section class="collapse-content bg-neutral"> 
                 <ul id="menus_container">
                     <section></section>
                     <!-- lg:tooltip doesn't work -->
-                    <div class="w-full flex justify-center pt-3 tooltip tooltip-accent" data-tip="Add new menu">
+                    <section class="w-full flex justify-center pt-3 tooltip tooltip-accent" data-tip="Add new menu">
                         <a href="<?= base_url("/menu/addedit") ?>" aria-label="Add new menu">
                             <i class="text-accent text-lg lg:text-2xl fa-solid fa-circle-plus"></i>
                         </a>
-                    </div>
+                    </section>
                 </ul>
-            </div>
-        </div>
-        <div class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12" role="tabpanel" aria-labelledby="business-info-heading">
+            </section>
+        </section>
+        <section class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12" role="tabpanel" aria-labelledby="business-info-heading">
             <input type="radio" name="my-accordion-2" id="business-info-accordion" /> 
-            <div class="collapse-title text-xl font-medium flex flex-row gap-3 w-full" id="business-info-heading">
+            <section class="collapse-title text-xl font-medium flex flex-row gap-3 w-full" id="business-info-heading">
                 <i class="inline-block text-accent text-3xl fa-solid fa-circle-info"></i>
                 <h3 class="text-xl lg:text-3xl">Business Information</h3>
-            </div>
-            <div id="business_info" class="collapse-content  bg-neutral flex flex-col gap-3"> 
+            </section>
+            <section id="business_info" class="collapse-content  bg-neutral flex flex-col gap-3"> 
                 <i onclick="businessFormModal.showModal()" class="text-info text-base lg:text-xl fa-solid fa-pen-to-square text-end mt-3"></i>
                 <?php include "templates/business_form.php"; ?>
-            </div>
-        </div>
-        <div class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12" role="tabpanel" aria-labelledby="qr-codes-heading">
+            </section>
+        </section>
+        <section class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12" role="tabpanel" aria-labelledby="qr-codes-heading">
             <input type="radio" name="my-accordion-2" id="qr-codes-accordion" /> 
-            <div class="collapse-title text-xl font-medium flex flex-row gap-3 w-full" id="qr-codes-heading">
+            <section class="collapse-title text-xl font-medium flex flex-row gap-3 w-full" id="qr-codes-heading">
                 <i class="inline-block text-accent text-3xl fa-solid fa-qrcode"></i>
                 <h3 class="text-xl lg:text-3xl">QR Codes</h3>
-            </div>
-            <div class="collapse-content bg-neutral"> 
+            </section>
+            <section class="collapse-content bg-neutral"> 
                 <section class="pt-3 flex flex-col gap-5">
                     <?php if (isset($menus)): ?>
                         <section>
@@ -70,31 +70,31 @@
                 <section id="qr-codes">
                     <ul></ul>
                 </section>
-            </div>
-        </div>
-        <div class="bg-base-200 lg:grow-0 lg:basis-5/12">
-            <div class="collapse-title text-xl font-medium flex flex-row gap-3 w-full">
+            </section>
+        </section>
+        <section class="bg-base-200 lg:grow-0 lg:basis-5/12">
+            <section class="collapse-title text-xl font-medium flex flex-row gap-3 w-full">
                 <i class="inline-block text-accent text-3xl fa-solid fa-gears"></i>
                 <a href="<?= base_url('ordersystem') ?>" class="text-xl lg:text-3xl text-info underline underline-offset-4">Order System</a>
-            </div>
-        </div>
+            </section>
+        </section>
     </section>
     <section>
-        <div class="container md:w-4/6 m-auto mt-11 md:text-md">
+        <section class="container md:w-4/6 m-auto mt-11 md:text-md">
             <?php if (session()->getFlashdata('success')): ?>
-                <div role="alert" class="alert alert-success">
+                <section role="alert" class="alert alert-success">
                     <?= session()->getFlashdata('success') ?>
-                </div>
+                </section>
             <?php elseif (session()->getFlashdata('error')): ?>
-                <div role="alert"  class="alert alert-error">
+                <section role="alert"  class="alert alert-error">
                     <?= session()->getFlashdata('error') ?>
-                </div>
+                </section>
             <?php endif; ?>
-        </div>
+        </section>
     </section>
     <!-- You can open the modal using ID.showModal() method -->
     <dialog id="qr" class="modal" aria-labelledby="qr-heading">
-        <div class="modal-box p-10">
+        <section class="modal-box p-10">
             <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             </form>
@@ -103,7 +103,7 @@
                 <i class="fa-solid fa-print text-lg md:text-2xl"></i>
             </section>
             <section id="qrcode"></section>
-        </div>
+        </section>
     </dialog>
 
     <script>
@@ -179,7 +179,7 @@
             formHeader.className = "text-center font-sub-header text-accent text-xl md:text-2xl";
             formHeader.innerText = "Edit your business information";
 
-            const modalContainer = document.createElement("div");
+            const modalContainer = document.createElement("section");
             modalContainer.className = "modal-box md:6/1 md:max-w-xl lg:w-8/12 lg:max-w-3xl p-7";
 
             const saveBtn = document.createElement("input");

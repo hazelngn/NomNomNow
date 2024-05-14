@@ -12,7 +12,7 @@
         </form>
 
         <section class="flex flex-col text-cente gap-5 p-3 mt-8 md:mt-11 md:mb-11 md:text-lg">
-            <div class="overflow-x-auto">
+            <section class="overflow-x-auto">
                 <table class="table table-zebra border-collapse" aria-label="User List">
                     <thead class="hidden lg:table-header-group">
                         <tr>
@@ -46,7 +46,7 @@
                         </tr>
                     </template>
                 </table>
-            </div>
+            </section>
         </section>
 
         <button onclick="addEditUser()" class="btn btn-accent btn-sm md:btn-md m-auto" aria-label="Add a new user">Add a new user</button>
@@ -200,18 +200,18 @@
 
             } else {
                 header.innerText = "Add"
-                const username = `<div class="flex flex-col gap-2">
+                const username = `<section class="flex flex-col gap-2">
                     <label class="font-bold" for="username">Username</label>
                     <input type="text" name="username" id="username" class="p-2 rounded-lg" required>
-                </div>`;
-                const email = `<div class="flex flex-col gap-2">
+                </section>`;
+                const email = `<section class="flex flex-col gap-2">
                     <label class="font-bold" for="email">Email</label>
                     <input type="email" name="email" id="email" class="p-2 rounded-lg" required>
-                </div>`;
-                const phone = `<div class="flex flex-col gap-2">
+                </section>`;
+                const phone = `<section class="flex flex-col gap-2">
                     <label class="font-bold" for="phone">Phone</label>
                     <input type="text" name="phone" id="phone" class="p-2 rounded-lg" required>
-                </div>`;
+                </section>`;
 
                 if ("<?= esc(session()->get('usertype')) ?>" == "owner") {
                     const user = await get("users", <?= esc(session()->get('userId')) ?>);
