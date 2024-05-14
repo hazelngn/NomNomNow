@@ -236,6 +236,7 @@
                 if (adminForm.querySelector("#admin_form").reportValidity()) {
                     const adminFormData = new FormData(adminForm.querySelector("#admin_form"));
                     const data = Object.fromEntries(adminFormData.entries());
+                    // console.log(data)
 
                     if (id) {
                         const user = await get("users", id);
@@ -251,7 +252,7 @@
                         const updatedBusinessData = {
                             ...business,
                             name: data.businessName,
-                            logo: null
+                            logo: business.logoURL
                         }
 
 

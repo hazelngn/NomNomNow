@@ -29,7 +29,6 @@ class NomNomController extends BaseController
         } else {
             // $userId = $this->session->get('userId');
             $menuModel = new \App\Models\MenuModel();
-            log_message('info', 'test: ' . json_encode($this->business));
             $menus = $menuModel->where('business_id', $this->business['id'])->findAll();
             $data['menus'] = $menus;
             $data['business'] = $this->business;
@@ -109,7 +108,11 @@ class NomNomController extends BaseController
         return view('order_system');    
     }
 
-    public function admin() {
+    public function admin($userId) {
+        if ($userId) {
+            $data['business'] = $this->business;
+            return view('admin', $data);    
+        }
         return view('admin');    
     }
 

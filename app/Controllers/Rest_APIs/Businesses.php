@@ -39,6 +39,7 @@ class Businesses extends ResourceController
         if ($data) {
             if ($data['logo']) {
                 $imagePath = WRITEPATH . 'uploads/' . $data['logo'];
+                $data['logoURL'] = $data['logo'];
                 $data['logo'] = base64_encode(file_get_contents($imagePath));
             }
             return $this->respond($data);

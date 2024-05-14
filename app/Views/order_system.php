@@ -41,6 +41,7 @@
     
     window.onload = () => {
         orderItemTemplate = document.querySelector("#order-item");
+        renderItems()
         setInterval(() => {
             renderItems()
         }, 2000);

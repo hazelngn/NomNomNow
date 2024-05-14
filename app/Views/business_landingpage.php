@@ -1,9 +1,9 @@
 <?= $this->extend('template') ?>
 <?= $this->section('content') ?>
     <section class="flex flex-col lg:flex-row flex-wrap justify-evenly mt-5 ">
-        <div class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12">
-            <input type="radio" name="my-accordion-2" checked="checked" /> 
-            <div class="collapse-title text-xl font-medium flex flex-row gap-3">
+        <div class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12" role="tabpanel" aria-labelledby="menu-heading">
+            <input type="radio" name="my-accordion-2" id="menu-accordion" checked="checked" /> 
+            <div class="collapse-title text-xl font-medium flex flex-row gap-3" id="menu-heading">
                 <i class="inline-block text-accent text-3xl fa-solid fa-book-open"></i>
                 <h3 class="text-xl lg:text-3xl">Menus</h3>
             </div>
@@ -12,16 +12,16 @@
                     <section></section>
                     <!-- lg:tooltip doesn't work -->
                     <div class="w-full flex justify-center pt-3 tooltip tooltip-accent" data-tip="Add new menu">
-                        <a href="<?= base_url("/menu/addedit") ?>">
+                        <a href="<?= base_url("/menu/addedit") ?>" aria-label="Add new menu">
                             <i class="text-accent text-lg lg:text-2xl fa-solid fa-circle-plus"></i>
                         </a>
                     </div>
                 </ul>
             </div>
         </div>
-        <div class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12">
-            <input type="radio" name="my-accordion-2" /> 
-            <div class="collapse-title text-xl font-medium flex flex-row gap-3 w-full">
+        <div class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12" role="tabpanel" aria-labelledby="business-info-heading">
+            <input type="radio" name="my-accordion-2" id="business-info-accordion" /> 
+            <div class="collapse-title text-xl font-medium flex flex-row gap-3 w-full" id="business-info-heading">
                 <i class="inline-block text-accent text-3xl fa-solid fa-circle-info"></i>
                 <h3 class="text-xl lg:text-3xl">Business Information</h3>
             </div>
@@ -30,9 +30,9 @@
                 <?php include "templates/business_form.php"; ?>
             </div>
         </div>
-        <div class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12">
-            <input type="radio" name="my-accordion-2" /> 
-            <div class="collapse-title text-xl font-medium flex flex-row gap-3 w-full">
+        <div class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12" role="tabpanel" aria-labelledby="qr-codes-heading">
+            <input type="radio" name="my-accordion-2" id="qr-codes-accordion" /> 
+            <div class="collapse-title text-xl font-medium flex flex-row gap-3 w-full" id="qr-codes-heading">
                 <i class="inline-block text-accent text-3xl fa-solid fa-qrcode"></i>
                 <h3 class="text-xl lg:text-3xl">QR Codes</h3>
             </div>
@@ -93,13 +93,13 @@
         </div>
     </section>
     <!-- You can open the modal using ID.showModal() method -->
-    <dialog id="qr" class="modal">
+    <dialog id="qr" class="modal" aria-labelledby="qr-heading">
         <div class="modal-box p-10">
             <form method="dialog">
                 <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
             </form>
-            <section class="flex justify-between ">
-                <h3>Table</h3>
+            <section class="flex justify-between">
+                <h3 id="qr-heading">Table</h3>
                 <i class="fa-solid fa-print text-lg md:text-2xl"></i>
             </section>
             <section id="qrcode"></section>
@@ -132,22 +132,27 @@
                 console.log(businessMenus)
 
                 businessMenus.forEach(menu => {
-                    const menuElement = `<section class="flex flex-row justify-between items-center pt-3">
-                                            <li><a href="<?= base_url("menu/") ?>/${menu.id}">
-                                                ${menu.name}
-                                            </a></li>
+                    const menuElement = `<section class="flex flex-row justify-between items-center pt-3" role="listitem">
+                                            <li>
+                                                <a href="<?= base_url("menu/") ?>/${menu.id}" aria-label="View menu ${menu.name}">
+                                                    ${menu.name}
+                                                </a>
+                                            </li>
                                             <section class="flex gap-2 md:place-content-center items-baseline">
-                                                <a href="<?= base_url("menu/addedit/")?>/${menu.id}"><i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i></a>
-                                                <i onclick="deleteMenu(${menu.id})" class="cursor-pointer text-red-500 text-base lg:text-xl fa-solid fa-trash-can"></i>
+                                                <a href="<?= base_url("menu/addedit/")?>/${menu.id}" aria-label="Edit menu ${menu.name}">
+                                                    <i class="text-info text-base lg:text-xl fa-solid fa-pen-to-square"></i>
+                                                </a>
+                                                <i onclick="deleteMenu(${menu.id})" class="cursor-pointer text-red-500 text-base lg:text-xl fa-solid fa-trash-can" aria-label="Delete menu ${menu.name}"></i>
                                             </section>
                                         </section>`
+
                     menusContainer.innerHTML += menuElement;
                 })
             }
 
-            const pagination = ` <section class="grid grid-cols-2 join m-auto mt-11 mb-5 w-1/2 md:w-2/6">
-                                    <button onclick="getPreviousPage()" class="join-item btn btn-outline btn-sm md:btn-md">Previous</button>
-                                    <button onclick="getNextPage()"  class="join-item btn btn-outline btn-sm md:btn-md">Next</button>
+            const pagination = `<section class="grid grid-cols-2 join m-auto mt-11 mb-5 w-1/2 md:w-2/6">
+                                    <button onclick="getPreviousPage()" class="join-item btn btn-outline btn-sm md:btn-md" aria-label="Go to previous page">Previous</button>
+                                    <button onclick="getNextPage()"  class="join-item btn btn-outline btn-sm md:btn-md" aria-label="Go to next page">Next</button>
                                 </section>`;
             menusContainer.innerHTML += pagination
         }
@@ -241,10 +246,10 @@
             
             while (count <= tableNum) {
                 const qrcodeHTML = 
-                    `<div class="flex flex-row justify-between items-center pt-3">
-                        <li>Table ${count}</li>
-                        <i onclick="renderQRcodeModal(${count})" class="cursor-pointer text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center"></i>
-                    </div>`
+                    `<section class="flex flex-row justify-between items-center pt-3">
+                        <h5 aria-label="Table number ${count}">Table ${count}</h5>
+                        <i onclick="renderQRcodeModal(${count})" class="cursor-pointer text-info text-base lg:text-xl fa-solid fa-up-right-and-down-left-from-center" aria-label="Open QR code modal for table ${count}"></i>
+                    </section>`
 
                 count += 1;
                 qrCodeContainer.innerHTML += qrcodeHTML;

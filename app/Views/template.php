@@ -42,12 +42,14 @@
                                     <!-- check admin to make it easier for testing, IRL admin wouldn't have a business -->
                                     <?php if (session()->get('isLoggedIn')) : ?>
                                         <?php  if (isset($business)): ?>
-                                            <section>
-                                                <a 
-                                                    href="<?= base_url("admin/" . esc($business['id'])) ?>"                                     
-                                                    class="btn btn-accent"
-                                                >Admin page</a>
-                                            </section>
+                                            <?php if (esc(session()->get('usertype')) != 'staff'): ?>
+                                                <section>
+                                                    <a 
+                                                        href="<?= base_url("admin/" . esc(session()->get('userId'))) ?>"                                     
+                                                        class="btn btn-accent"
+                                                    >Admin page</a>
+                                                </section>
+                                            <?php endif; ?>
                                             <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                                                 <div class="w-10 rounded-full">
                                                     <img 
