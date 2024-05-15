@@ -205,7 +205,7 @@ class NomNomController extends BaseController
      *                  to their business admin page
      * @return View Returns a view for the admin page.
      */
-    public function admin($userId) {
+    public function admin($userId = null) {
         if ($userId) {
             $businessModel = new \App\Models\BusinessModel();
             $userModel = new \App\Models\UserModel();

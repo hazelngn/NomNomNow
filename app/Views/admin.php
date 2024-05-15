@@ -2,14 +2,6 @@
 <?= $this->section('content') ?>
     <section id="main-content" class="md:w-5/6 m-auto flex flex-col">
         <h3 class="text-3xl font-body mt-5 text-center font-bold">Administration</h3>
-        <form method="get" action="<?= base_url(); ?>">
-            <section class="flex justify-center items-center mt-5 gap-2">
-                <label class="input input-bordered flex items-center gap-2 w-8/12 md:w-6/12" aria-label="Search">
-                    <input type="text" placeholder="Search" aria-label="Search input">
-                </label>
-                <i class="text-accent md:text-xl fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-            </section>
-        </form>
 
         <section class="flex flex-col text-cente gap-5 p-3 mt-8 md:mt-11 md:mb-11 md:text-lg">
             <section class="overflow-x-auto">
@@ -198,6 +190,11 @@
                 usertype.value = user.usertype;
                 header.innerText = "Edit";
 
+                if ("<?= esc(session()->get('usertype')) ?>" == "admin" && "<?= esc(session()->get('userId')) ?>" == id) {
+                    usertype.previousElementSibling.remove();
+                    usertype.remove()
+                }
+
             } else {
                 header.innerText = "Add"
                 const username = `<section class="flex flex-col gap-2">
@@ -254,7 +251,6 @@
                             name: data.businessName,
                             logo: business.logoURL
                         }
-
 
                         await update("users", updatedUserData)
                         .catch(err => console.log(err))
