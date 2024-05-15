@@ -25,8 +25,16 @@
                     <a 
                         class="btn btn-ghost text-3xl font-header" 
                         href="
-                            <?= 
-                                base_url(session()->get("usertype") == "admin" ? "admin" : (session()->get("isLoggedIn") ? session()->get('userId') : "")); 
+                            <?php  
+                                if (session()->get("usertype") == "admin") {
+                                    echo base_url("admin");
+                                } else if (session()->get("usertype") == "staff") {
+                                    echo base_url("ordersystem/");
+                                } else if (session()->get("isLoggedIn")) {
+                                    echo base_url(session()->get('userId'));
+                                } else {
+                                    echo base_url("");
+                                }
                             ?>"
                         aria-label="Website name NomNomNow"
                     >NomNomNow</a>

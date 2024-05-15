@@ -57,10 +57,6 @@
                             <button id="getQRCodeBtn" class="btn w-full btn-sm m-auto btn-accent md:w-8/12 md:btn-md">
                                 Get QR code for 1 table
                             </button>
-                            or ...
-                            <button id="getAllQrCodesBtn" class="btn w-full btn-sm m-auto btn-accent md:w-8/12 md:btn-md">
-                                Get all QR codes for this menu
-                            </button>
                         </section>
 
                     <?php else: ?>
@@ -117,11 +113,17 @@
             renderMenus();
         }
 
+        /**
+         * Fetches and renders the menus for the current business
+         * as well as loading the pagination
+         */
         async function renderMenus() {
             const menusContainer = document.querySelector("#menus_container>section");
             const menus = await get('menus', null, pageNum).catch(err => console.log("An error occurred when fetching menus. Error: ", err));
 
             if (menus.length == 0) {
+                // When the page required goes over the total number
+                // of page available
                 pageNum -= 1;
                 return;
             }
@@ -131,6 +133,7 @@
                 const businessMenus = menus.filter(menu => menu.business_id == <?= $business['id'] ?>)
                 console.log(businessMenus)
 
+                // Populate the menu exists
                 businessMenus.forEach(menu => {
                     const menuElement = `<section class="flex flex-row justify-between items-center pt-3" role="listitem">
                                             <li>
@@ -157,6 +160,9 @@
             menusContainer.innerHTML += pagination
         }
 
+        /**
+         * Navigates to the previous page and renders the menus.
+         */
         function getPreviousPage() {
             if (pageNum > 1) {
                 pageNum -= 1;
@@ -164,12 +170,18 @@
             } 
         }
 
+        /**
+         * Navigates to the next page and renders the menus.
+         */
         function getNextPage() {
             pageNum += 1;
             renderMenus();
         }
         
 
+        /**
+         * Renders a modal for editing business information.
+         */
         function renderModal() {
             const dialog = document.createElement("dialog");
             dialog.classList.add("modal");
@@ -204,6 +216,11 @@
             businessInfo.appendChild(dialog);
         }
 
+        /**
+         * Handles the submission of the business edit form.
+         * 
+         * @param {Event} e - The form submission event.
+         */
         async function editForm(e) {
             e.preventDefault();
             const businessFormModal = document.querySelector("#businessFormModal");
@@ -214,6 +231,8 @@
                 const file = businessFormModal.querySelector("#logo").files[0];
 
                 if (file) {
+                    // if user uploads a file, upload it and use the filename 
+                    // to put into the database
                     const uploadFile = new FormData();
                     uploadFile.append('file', file)
 
@@ -224,6 +243,7 @@
                     .then(res => res.json())
                     .then(json => data['logo'] = json['data'])
                 } else {
+                    // otherwise, remove that field
                     delete data['logo']
                 }
 
@@ -231,7 +251,8 @@
                 console.log(result);
 
                 businessFormModal.close();
-                // client side rendering not implemented
+                // client side rendering not implemented so reload
+                // the webpage to update the data
                 location.reload();
             };
         }
@@ -257,6 +278,9 @@
             
         }
 
+        /**
+         * Renders QR codes modal for each table in the business.
+         */
         function renderQRcodeModal(menuId,tableNum) {
             const qrDialog = document.querySelector('#qr');
             const qrCodeContainer = qrDialog.querySelector('#qrcode');
@@ -278,11 +302,16 @@
             qr.showModal();
         }
 
+        /**
+         * Deletes a menu by its ID and refreshes the menu list.
+         * @param {number} menuId - The ID of the menu to delete.
+         */
         async function deleteMenu(id) {
             if (confirm('Are you sure you want to delete this menu?')) {
                 await deleteItem('menus', id)
                 .then(data => { 
                     alert("Menu deleted successfully");
+                    // Going back to the first page
                     pageNum = 1;
                     renderMenus();
                 })
@@ -291,6 +320,7 @@
         }
 
         document.querySelector("#getQRCodeBtn").onclick = () => {
+            // Get the QR code input and render the QR code modal for that table
             const menuId = document.querySelector("#menuId").value;
             const tableNum = document.querySelector("#tableNum").value;
             if (tableNum > <?= $business['table_num'] ?>) {
@@ -298,10 +328,6 @@
             } else {
                 tableNum ? renderQRcodeModal(menuId, tableNum) : alert('Please enter table number');
             }
-        }
-
-        document.querySelector("#getAllQrCodesBtn").onclick = () => {
-            // this will direct to a page containing only qr codes
         }
         
         renderModal();

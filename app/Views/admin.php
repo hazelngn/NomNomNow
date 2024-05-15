@@ -56,6 +56,7 @@
 
     <script>
         let adminFormTemplate;
+        // Determines the current page number for pagination
         let pageNum = 1;
 
         window.onload = () => {
@@ -63,6 +64,9 @@
             adminFormTemplate = document.querySelector("#adminFormTemplate");
         }
 
+        /**
+         * Decrements the page number and fetches the user details for the previous page.
+         */
         function getPreviousPage() {
             if (pageNum > 1) {
                 pageNum -= 1;
@@ -70,11 +74,17 @@
             } 
         }
 
+        /**
+         * Increments the page number and fetches the user details for the next page.
+         */
         function getNextPage() {
             pageNum += 1;
             listUserDetails();
         }
 
+        /**
+         * Fetches and displays the user details based on the current page number.
+         */
         async function listUserDetails() {
             const parentTemplate = document.querySelector("#userDetailsTemplate");
             const usersList = document.querySelector("#usersList");
@@ -84,6 +94,7 @@
             if (details) {
                 usersList.innerHTML = "";
                 details.forEach(detail => {
+                    // Populate each row of the table with each user
                     const parent = parentTemplate.content.cloneNode(true).children[0];
                     const beforePoint = parent.children[0];
                     let idx = 0;
@@ -113,6 +124,7 @@
                         }
                     };
 
+                    // Button actions but only on mobile
                     parent.querySelector("#editBtnMobile").onclick =  () => addEditUser(detail.user_id);
                     parent.querySelector("#deleteBtnMobile").onclick =  async () => {
                         if (confirm(`Are you sure you want to delete user ${detail.name}?`)) {
@@ -132,26 +144,37 @@
         }
 
 
+        /**
+         * Fetches the necessary details for displaying user information.
+         * Filters users based on the current user's type and business association 
+         * if the user is a business owner.
+         * 
+         * @returns {Array} An array of user details with the needed structure.
+         */
         async function getNeededDetails() {
             let users = await get("users", null, pageNum);
             const currentUser = await get("users", <?= esc(session()->get('userId')) ?>)
+
             if ("<?= esc(session()->get('usertype')) ?>" == "owner") {
+                // If this is the admin page for the business owner, they should only 
+                // be able to see the users linked to their business.
                 let business = await get("businesses");
                 business = business.find(busi => busi.id == currentUser.business_id);
                 users = await get("users", null, pageNum, business.id);
             }
              
             if (users.length == 0) {
+                // This is reached when the page number goes over 
+                // the total number of pages available
                 pageNum -= 1;
                 return;
             }
 
-            
-
+            // Create an array of user objects containing all the fields required
+            // for each table row.
             const neededStructure = Promise.all(users.map(async user => {
                 let business = await get("businesses");
                 business = business.find(busi => busi.id == user.business_id);
-
 
                 const result = {
                     user_id: user.id,
@@ -169,8 +192,12 @@
             return neededStructure;
         }
 
+        /**
+         * Opens the add/edit user modal and handles the form submission.
+         * 
+         * @param {number} id - The ID of the user to edit (optional).
+         */
         async function addEditUser(id) {
-            // modals
             const adminForm = adminFormTemplate.content.cloneNode(true).children[0];
             const mainContent = document.querySelector("#main-content");
             mainContent.append(adminForm);
@@ -183,6 +210,8 @@
             const header = adminForm.querySelector("h3>span");
 
             if (id) {
+                // Edit if id is provided
+                // Populate data to the modal
                 const user = await get("users", id);
                 const business = await get("businesses", user.business_id);
                 name.value = user.name;
@@ -191,11 +220,13 @@
                 header.innerText = "Edit";
 
                 if ("<?= esc(session()->get('usertype')) ?>" == "admin" && "<?= esc(session()->get('userId')) ?>" == id) {
+                    // Admin can't change their user type
                     usertype.previousElementSibling.remove();
                     usertype.remove()
                 }
 
             } else {
+                // Adding more fields needed to add user to the database
                 header.innerText = "Add"
                 const username = `<section class="flex flex-col gap-2">
                     <label class="font-bold" for="username">Username</label>
@@ -211,6 +242,7 @@
                 </section>`;
 
                 if ("<?= esc(session()->get('usertype')) ?>" == "owner") {
+                    // If the user is the owner, include the business ID
                     const user = await get("users", <?= esc(session()->get('userId')) ?>);
                     const businessInput = `<input class="btn btn-accent mt-3" name="business_id" type="hidden" value=${user.business_id}>`;
                     usertype.insertAdjacentHTML("afterend", businessInput);
@@ -225,6 +257,7 @@
             }
 
             if ("<?= session()->get('usertype') ?>" == "owner") {
+                // When admin is a business owner, they can't set users as "admin" (highest privilege)
                 usertype.options[0].remove();
             }
 
@@ -233,9 +266,9 @@
                 if (adminForm.querySelector("#admin_form").reportValidity()) {
                     const adminFormData = new FormData(adminForm.querySelector("#admin_form"));
                     const data = Object.fromEntries(adminFormData.entries());
-                    // console.log(data)
 
                     if (id) {
+                        // Edit
                         const user = await get("users", id);
                         const business = await get("businesses", user.business_id);
 
@@ -259,8 +292,8 @@
                         .catch(err => console.log(err))
                         
                     } else {
+                        // Add
                         const result = await add('users', data);
-                        console.log(result);
                     }
 
                     listUserDetails();
