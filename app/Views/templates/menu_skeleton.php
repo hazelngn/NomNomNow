@@ -37,7 +37,7 @@
     let step = <?= esc($step) ?>;
     let stepTemplate, itemDetailsTemplate;
 
-
+    // Waiting for all PHP files are loaded before calling the functions
     window.onload = (event) => {
         // Deciding which PHP template of the menu creation process to include
         itemDetailsTemplate = document.querySelector('#itemFormTemplate');

@@ -46,6 +46,7 @@
                 </div>
                 <input id="submitBtn" class="btn btn-accent" type="submit" value="Save" aria-label="Save Button">
                 <input type="hidden" id="id" name="id">
+                <?= csrf_field() ?>
             </form>
         </div>
     </dialog>

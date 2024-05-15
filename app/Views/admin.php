@@ -59,6 +59,7 @@
         // Determines the current page number for pagination
         let pageNum = 1;
 
+        // Waiting for all PHP files are loaded before calling the functions
         window.onload = () => {
             listUserDetails();
             adminFormTemplate = document.querySelector("#adminFormTemplate");

@@ -28,7 +28,7 @@
         return result
     }
 
-    async function update(name, data) {
+    async function update(name, data, token) {
         const url = `<?= base_url(); ?>/${name}/${data.id}`;
         let result = undefined;
 

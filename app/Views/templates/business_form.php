@@ -46,4 +46,5 @@
         <input type="text" name="weekend_hours" id="weekend_hours" class="p-2 rounded-lg" placeholder="HH:mm-HH:mm" required value="<?= isset($business) ? esc($business['weekend_hours']) : "" ?>" <?= isset($business) ? 'disabled' : '' ?> aria-label="Weekend Working Hours">
     </div>
     <input type="hidden" id="businessId" name="id" value="<?= isset($business) ? esc($business['id']) : ""?>" aria-hidden="true">
+    <?= csrf_field() ?>
 </form>

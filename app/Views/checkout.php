@@ -40,6 +40,7 @@
                   </section>
                </section>
                <input type="hidden" name="status" value="not started">
+               <?= csrf_field() ?>
          </form>
       </section>
 
@@ -91,10 +92,14 @@
 
    <script>
 
+      // Waiting for all PHP files are loaded before calling the functions
       window.onload = () => {
          renderCart();
       }
 
+      /**
+       * Renders the items in the cart and calculates the total price.
+       */
       function renderCart() {
          const cart = document.querySelector("#cart");
          const cartItems = document.querySelector("#cartItems");
@@ -104,6 +109,7 @@
          let totalPrice = 0;
 
          orderItems.forEach(async item => {
+               // Populate the ordered items in the check out cart
                const itemContainer = cartItemTemplate.content.cloneNode(true).children[0];
                itemContainer.classList.remove('text-neutral-content')
                const product = itemContainer.querySelector("#product");
@@ -130,6 +136,9 @@
 
       }
 
+      /**
+       * Submits the order along with customer details.
+       */
       async function submitOrder() {
          const customerDetails = document.querySelector("#customerDetails");
          const total = document.querySelector("#total");
@@ -144,12 +153,13 @@
                const status = userDetails.status;
                delete userDetails.payment_type;
                const totalPrice = total.innerText;
+               
+               // Add a new customer to the database to get customer_id
                const customer = await add('customers', userDetails);
 
                const order = {
                   customer_id: customer.id,
                   payment_type: payment_type,
-                  // table is by default
                   table_num: <?= $tableNum ?>,
                   status: status,
                   order_at: new Date().toISOString(),
@@ -158,6 +168,7 @@
 
                const resultedOrder = await add('orders', order);
 
+               // Once we have order ID, add each item to order_items table
                orderItems.forEach(async item => {
                   const data = {
                      order_id: resultedOrder.id,
@@ -170,13 +181,13 @@
                   .catch(error => console.log(error))
                })
 
+               // Display success message and navigate to the menu after 2 seconds
                orderSuccess.showModal();
 
                setTimeout(() => {
                   <?php session()->remove(['order_items']); ?>
                   location.replace(`<?= base_url("onlineorder/")?>${details.menuId}/<?= $tableNum ?>`)
                }, 2000);
-               
 
          } else {
                return;

@@ -23,6 +23,7 @@
                     </select>
                 </div>
                 <input id="submitBtn" class="btn btn-accent mt-3" type="submit" value="Save" aria-label="Save Button">
+                <?= csrf_field() ?>
             </form>
         </div>
     </dialog>

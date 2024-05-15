@@ -48,39 +48,52 @@
 <script>
     let orderItemTemplate;
 
-    let todayDate = new Date();
-    todayDate.setHours(00,00);
+    // let todayDate = new Date();
+    // todayDate.setHours(00,00);
     
+    // Waiting for all PHP files are loaded before calling the functions
     window.onload = () => {
         orderItemTemplate = document.querySelector("#order-item");
+        // Render items and re-render every 2 seconds 
+        // This is to ensure live updates of order status
         renderItems()
         setInterval(() => {
             renderItems()
         }, 2000);
-        
     }
 
+    /**
+     * Render items based on their status.
+     * 
+     * Fetches necessary data for the current user, menus, menu items, orders, and order items.
+     * Filters and displays order items in appropriate sections based on their status.
+     */
     async function renderItems() {
+        // Get the staff's details
         const staff = await get('users', <?= session()->get('userId') ?>).catch(err => console.log("An error occurred when fetching staff details"));
 
-
+        // Fetch only the menus associated with the business this staff is in
         let menus = await get("menus").catch(err => console.log("An error occurred when fetching menus"));
         menus = menus.filter(menu => menu.business_id == staff.business_id);
         menuIds = menus.map(menu => menu.id)
 
+        // Fetch all menu items' IDs that belongs to the associated menus
         let menuItems = await get('menu_items').catch(err => console.log("An error occurred when fetching menu items"));
         menuItemIds = menuItems.filter(item => menuIds.includes(item.menu_id)).map(item => item.id)
 
-        // get all orders
+        // Fetch all orders placed today from 00:00
         let orders = await get('orders').catch(err => console.log("An error occurred when fetching orders"));
-        orders = orders.filter(order => {
-            let orderDate = new Date(order.order_at);
-            return todayDate < orderDate;
-        })
+        // orders = orders.filter(order => {
+        //     let orderDate = new Date(order.order_at);
+        //     return todayDate < orderDate;
+        // })
 
         let orderItems = await get('order_items').catch(err => console.log("An error occurred when fetching order items"));
+        // Fetch all the order items that it the items in the current menus
         orderItems = orderItems.filter(item => menuItemIds.includes(item.menu_item_id))
                                 .map(item => {
+                                    // Adding menu item's details in with the order items for ease of use 
+                                    // on the later step
                                     return {
                                         ...menuItems.find(menuItem => menuItem.id == item.menu_item_id),
                                         ...item
@@ -105,7 +118,15 @@
         renderItemOnStatus(readySection, readyOrders, orderItems)
     }
 
+    /**
+     * Render items based on their status.
+     * 
+     * @param {HTMLElement} section - The section element to append items to.
+     * @param {Array} orders - The list of orders filtered by status.
+     * @param {Array} orderItems - The list of order items associated with the orders.
+     */
     async function renderItemOnStatus(section, orders, orderItems) {
+        // Get the order items with required status
         let orderIds = orders.map(order => order.id);
         let orderItemsOnStatus = orderItems.filter(item => orderIds.includes(item.order_id));
 
@@ -113,6 +134,7 @@
             const orderItemClone = orderItemTemplate.content.cloneNode(true).children[0];
             const order = orders.find(order => order.id == item.order_id)
 
+            // Populate the order item details
             orderItemClone.querySelector("h2").innerText = `${item.name} (${item.quantity})`;
             orderItemClone.querySelector("section>p").innerText = `Table ${order.table_num}`;
             orderItemClone.querySelector("span").innerText = `ID ${item.id}`;
@@ -121,10 +143,12 @@
                 const updateStatusBtns = status_md.querySelectorAll("#updateStatus>button")
                 const [notStartedBtn, inProgressBtn, completeBtn] = updateStatusBtns
 
+                // Update status depending on the button clicked
                 notStartedBtn.onclick = async () => {
                     data = {
                         ...order,
-                        status: 'not started'
+                        status: 'not started',
+                        "<?= csrf_token() ?>": "<?= csrf_hash() ?>"
                     }
                     await update("orders", data)
                     .then(data => console.log(data))
@@ -136,7 +160,8 @@
                 inProgressBtn.onclick = async () => {
                     data = {
                         ...order,
-                        status: 'in progress'
+                        status: 'in progress',
+                        "<?= csrf_token() ?>": "<?= csrf_hash() ?>"
                     }
                     await update("orders", data)
                     .then(data => console.log(data))
@@ -148,7 +173,8 @@
                 completeBtn.onclick = async () => {
                     data = {
                         ...order,
-                        status: 'ready'
+                        status: 'ready',
+                        "<?= csrf_token() ?>": "<?= csrf_hash() ?>"
                     }
                     await update("orders", data)
                     .then(data => console.log(data))

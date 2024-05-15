@@ -28,5 +28,6 @@
         <input type="hidden" value="<?= session()->get('userId') ?>" id="userId" name="last_edited_by">
         <input type="hidden" value="<?= $business['id'] ?>" id="businessId" name="business_id"> 
         <input type="hidden" id="menuId" name="id" value="<?= !isset($menu) ? '' : esc($menu['id']) ?>">
+        <?= csrf_field() ?>
     </form>
 </template>

@@ -109,6 +109,7 @@
         let pageNum = 1;
         businessForm.id = "businessForEdit";
 
+      // Waiting for all PHP files are loaded before calling the functions
         window.onload = () => {
             renderMenus();
         }

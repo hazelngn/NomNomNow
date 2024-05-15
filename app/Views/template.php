@@ -132,6 +132,9 @@
         const businessId =  "<?= isset($business['id']) ? esc($business['id']) : null ?>";
         const customer_view = "<?= isset($customer_view) ?  esc($customer_view) : null ?>";
 
+        // Manually removing "step-vertical" class to make the
+        // steps for sign up and menu creation/edit work properly
+        // on mobile and desktop size (Since it doesn't work for Daisy UI CDN)
         if (window.innerWidth > 768) {
             /* the viewport is more than 600 pixels wide */
             for (let i = 0; i < stepElements.length; i++) {
@@ -152,6 +155,11 @@
             }
         };
 
+        /**
+         * Update the business logo avatar.
+         * 
+         * Fetches the business details using the provided businessId and updates the logo image if available.
+         */
         function updateAvatar() {
             if (businessId) {
                 get('businesses', businessId)
