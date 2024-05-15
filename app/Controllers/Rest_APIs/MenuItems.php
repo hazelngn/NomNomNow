@@ -8,16 +8,16 @@ class MenuItems extends ResourceController
     use ResponseTrait;
 
     /**
-     * Handle GET requests to list education entries or filter by user_id.
+     * Handle GET requests to list menu item entries or filter by menu_item_id.
      */
     public function index()
     {
         $model = new \App\Models\MenuItemModel();
 
-        // Retrieve 'user_id' from query parameters if provided.
+        // Retrieve 'menu_item_id' from query parameters if provided.
         $menuItemId = $this->request->getGet('menu_item_id');
 
-        // Filter the data by user_id if provided, otherwise retrieve all entries.
+        // Filter the data by menu_item_id if provided, otherwise retrieve all entries.
         $data = $menuItemId ? $model->where('id', $menuItemId)->findAll() : $model->findAll();
         foreach($data as &$elem) {
             if ($elem['item_img']) {
@@ -30,13 +30,13 @@ class MenuItems extends ResourceController
     }
 
     /**
-     * Handle GET requests to retrieve a single education entry by its ID.
+     * Handle GET requests to retrieve a single menu item entry by its ID.
      */
     public function show($id = null)
     {
         $model = new \App\Models\MenuItemModel();
 
-        // Attempt to retrieve the specific education entry by ID.
+        // Attempt to retrieve the specific menu item entry by ID.
         $data = $model->find($id);
 
         // Check if data was found.
@@ -48,13 +48,13 @@ class MenuItems extends ResourceController
             return $this->respond($data);
         } else {
             // Return a 404 error if no data is found.
-            return $this->failNotFound("No Education entry found with ID: {$id}");
+            return $this->failNotFound("No menu item entry found with ID: {$id}");
         }
         
     }
 
     /**
-     * Handle POST requests to create a new education entry.
+     * Handle POST requests to create a new menu item entry.
      */
     public function create()
     {
@@ -69,14 +69,14 @@ class MenuItems extends ResourceController
         // Insert data and check for success.
         $inserted = $model->insert($data);
         if ($inserted) {
-            return $this->respondCreated($data, 'User data created successfully.');
+            return $this->respondCreated($data, 'Menu item entry created successfully.');
         } else {
-            return $this->failServerError('Failed to create user data.');
+            return $this->failServerError('Failed to create Menu item entry.');
         }
     }
 
     /**
-     * Handle PUT requests to update an existing education entry by its ID.
+     * Handle PUT requests to update an existing menu item entry by its ID.
      */
     public function update($id = null)
     {
@@ -85,19 +85,19 @@ class MenuItems extends ResourceController
 
         // Check if the record exists before attempting update.
         if (!$model->find($id)) {
-            return $this->failNotFound("No Users entry found with ID: {$id}");
+            return $this->failNotFound("No Menu item entry found with ID: {$id}");
         }
 
         // Update the record and handle the response.
         if ($model->update($id, $data)) {
-            return $this->respondUpdated($data, 'User data updated successfully.');
+            return $this->respondUpdated($data, 'Menu item entry updated successfully.');
         } else {
-            return $this->failServerError('Failed to update user data.');
+            return $this->failServerError('Failed to update Menu item entry.');
         }
     }
 
     /**
-     * Handle DELETE requests to remove an existing education entry by its ID.
+     * Handle DELETE requests to remove an existing menu item entry by its ID.
      */
     public function delete($id = null)
     {
@@ -105,14 +105,14 @@ class MenuItems extends ResourceController
 
         // Check if the record exists before attempting deletion.
         if (!$model->find($id)) {
-            return $this->failNotFound("No Users entry found with ID: {$id}");
+            return $this->failNotFound("No Menu item entry found with ID: {$id}");
         }
 
         // Attempt to delete the record.
         if ($model->delete($id)) {
-            return $this->respondDeleted(['id' => $id, 'message' => 'User data deleted successfully.']);
+            return $this->respondDeleted(['id' => $id, 'message' => 'Menu item entry deleted successfully.']);
         } else {
-            return $this->failServerError('Failed to delete user data.');
+            return $this->failServerError('Failed to delete Menu item entry.');
         }
     }
 }

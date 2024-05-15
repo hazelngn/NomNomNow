@@ -1,4 +1,5 @@
- <!-- Categories -->
+ <!-- A template to view items in a menu (for business owner) and to order items (for customer) -->
+<section  id="loading" class="fixed left-0 w-full h-full flex justify-center bg-base-100 z-10"><span class="loading loading-spinner text-accent loading-lg"></span></section>
 <section>
     <div id="categories" class="flex flex-row flex-nowrap gap-1 pb-3 text-center justify-evenly overflow-scroll md:overflow-hidden">
         <template id="categoryTemplate">
@@ -66,6 +67,8 @@
 
 <script>
     let categoryTemplate, categoriesContainer, itemContainerTemplate, itemDetailModalTemplate, menuCategories;
+    
+    // An array containing all menu_item objects that the customer has ordered
     let orderItems = [];
 
     window.onload = async (event) => {
@@ -76,10 +79,15 @@
         await displayCategories();
         await renderItems();
         styleCategories();
+        // Remove the loading thing when everything is fully renderred
+        document.querySelector("#loading").classList.add('hidden')
 
     };
 
 
+    /**
+     * Fetches categories and menu items, then displays categories.
+     */
     async function displayCategories() {
         const categories = await get("categories");
         const items = await get("menu_items");
@@ -102,19 +110,25 @@
             img.alt = `${cat.name}`;
             categoryName.innerText = `${cat.name}`;
 
-            console.log(categoryClone)
+            // console.log(categoryClone)
             categoriesContainer.appendChild(categoryClone)
         })
 
     }
 
+    /**
+     * Fetches menu items and renders them based on categories.
+     */
     async function renderItems() {
         const items = await get("menu_items");
         const menuItems = items.filter(item => item.menu_id == <?= $menu['id'] ?>);
         const itemsContainer = document.querySelector("#items");
 
         menuCategories.forEach(cat => {
+            // Create a containing containing all associated items for each category
             const itemContainer = itemContainerTemplate.content.cloneNode(true).children[0];
+
+            // This id allows us to know which container to show when a category is clicked
             itemContainer.id = `content-${cat.id}`;
             itemsContainer.appendChild(itemContainer)
         })
@@ -130,8 +144,8 @@
             itemCard.querySelector("#item-img").alt = `An image of the dish ${item.name}`;
             itemCard.querySelector("#item-name").innerText = item.name;
             itemCard.querySelector("#item-price").innerText = `$${item.price}`;
-            // itemCard.querySelector("#item-name").nextElementSibling.addEventListener("click", () => showItemDetails(item.id));
 
+            // When an item is clicked, open a modal containing the item details
             itemCard.addEventListener("click", () => showItemDetails(item.id));
 
             itemContainer.appendChild(itemCard);
@@ -139,8 +153,12 @@
 
     }
 
+    /**
+     * Displays details of a menu item in a modal.
+     * @param {number} id - The ID of the menu item.
+     */
     async function showItemDetails(id) {
-
+        // Populate the menu item data to the modal
         const itemDetails = itemDetailModalTemplate.content.cloneNode(true).children[0];
         document.querySelector("body").appendChild(itemDetails);
         const closeModalBtn = itemDetails.querySelector("#closeModal");
@@ -172,13 +190,17 @@
         ingre.after(itemIngredients);
 
         <?php if (isset($customer_view)):  ?>
+            // Handle the logic when adding an item to cart
             let quantity = 0;
             const quantityElem = itemDetails.querySelector("#quantity");
             const lessBtn = itemDetails.querySelector("#lessBtn");
             const moreBtn = itemDetails.querySelector("#moreBtn");
             const addToCartBtn = itemDetails.querySelector("#addCartBtn");
 
+            // Check if the item that is currently viewed has already existed in cart
             const itemOrdered = orderItems.find(i => i.menu_item_id == item.id);
+
+            // If it does, updates the quantity of the modal respectively
             if (itemOrdered) {
                 quantity = itemOrdered.quantity;
                 quantityElem.innerText = quantity;
@@ -196,28 +218,40 @@
                 quantityElem.innerText = quantity;
             }
 
-            addToCartBtn.onclick = () => addToCart(item.id, quantity);
+            addToCartBtn.onclick = () => {
+                addToCart(item.id, quantity)
+            };
 
         <?php endif;  ?>
 
         closeModalBtn.onclick = () => item_detail.remove();
+        console.log(itemDetails)
         item_detail.showModal();
 
     }
 
+    /**
+     * Adds or updates an item in the cart based on the given ID and quantity.
+     * @param {number} id - The ID of the menu item.
+     * @param {number} quantity - The quantity of the menu item to add or update.
+     */
     function addToCart(id, quantity) {
+        // The number above the cart for cart status
         const totalQuantity = document.querySelector("#totalQuantity");
 
+        // Create an order item object
         const orderItem = {
             menu_item_id: id,
-            quantity: quantity
+            quantity: quantity,
         }
 
         if (quantity > 0) {
-            const unchangedItems = orderItems.filter(item => item.menu_item_id != id);
+            // This item has been added to cart
+            const unchangedItems = orderItems.filter(item => item.menu_item_id != id );
 
             orderItems = [...unchangedItems, orderItem];
         } else {
+            // Removed from cart
             orderItems = orderItems.filter(item => item.menu_item_id != id);
         }
 
@@ -231,6 +265,10 @@
 
     }
 
+    /**
+     * Displays the cart with the list of items and their details.
+     * Calculates the total price of all items in the cart and displays it.
+     */
     function showCart() {
         const cart = document.querySelector("#cart");
         const cartItems = document.querySelector("#cartItems");
@@ -239,6 +277,7 @@
         cartItems.innerHTML = "";
 
         orderItems.forEach(async item => {
+            // Populate the cart
             const itemContainer = cartItemTemplate.content.cloneNode(true).children[0];
             itemContainer.classList.remove('text-neutral-content')
             const product = itemContainer.querySelector("#product");
@@ -256,15 +295,21 @@
             total.innerText = totalPrice;
             cartItems.appendChild(itemContainer);
 
-            console.log(totalPrice)
+            // console.log(totalPrice)
         })
 
 
         cart.showModal();
     }
 
+    /**
+     * Initiates the checkout process by sending the order items to the server.
+     * If there are order items, sends a POST request to the checkout endpoint with the order data.
+     * After successful submission, redirects the user to the checkout page.
+     */
     async function checkout() {
         const data = [
+            // Construct the needed IDs for the controller
             {
                 menuId: <?= $menu['id'] ?>,
                 businessId: <?= $business['id'] ?>,
@@ -274,7 +319,6 @@
         ]
 
         if (orderItems.length > 0) {
-
             await fetch("<?= base_url("checkout") ?>", {
                 method: "POST",
                 body: JSON.stringify(data)
@@ -285,9 +329,13 @@
         
     }
 
+    /**
+     * Styles the categories and controls the display of corresponding items based on user selection.
+     */
     function styleCategories() {
         let categoryInputs = categoriesContainer.querySelectorAll('.categories');
 
+        // tyles the categories and controls the display of corresponding items based on user selection.
         categoryInputs[0].checked = true;
         categoryInputs[0].nextSibling.nextElementSibling.style.opacity = 1;
         categoryInputs[0].nextElementSibling.nextElementSibling.classList.add("text-accent");
@@ -295,13 +343,17 @@
 
         for (let i = 0; i < categoryInputs.length; i++) {
             categoryInputs[i].addEventListener('change', function() {
+
                 if (categoryInputs[i].checked) {
+                    // Style the selected category and display its corresponding content
                     categoryInputs[i].nextSibling.nextElementSibling.style.opacity = 1;
                     document.getElementById(`content-${categoryInputs[i].id}`).style.display = 'flex';
                     categoryInputs[i].nextElementSibling.nextElementSibling.classList.add("text-accent");
                 }
                 for (let j = 0; j < categoryInputs.length; j++) {
+                    // Iterate over all category inputs to update styles based on user selection
                     if (i != j) {
+                        // Reset styles for unselected categories and hide their corresponding content
                         categoryInputs[j].nextSibling.nextElementSibling.style.opacity = 0.5;
                         document.getElementById(`content-${categoryInputs[j].id}`).style.display = 'none';
                         categoryInputs[j].nextElementSibling.nextElementSibling.classList.remove("text-accent");

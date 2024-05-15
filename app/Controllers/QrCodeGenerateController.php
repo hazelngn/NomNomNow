@@ -30,7 +30,20 @@ class QrCodeGenerateController extends Controller
 
     }
 
+
+    /**
+     * Generates a QR code for the given order ID and table number.
+     *
+     * This method generates a QR code containing the URL for the online order based on the provided order ID and table number.
+     * It utilizes the chillerlan/php-qrcode library to create the QR code.
+     * The QR code is returned as an SVG image.
+     *
+     * @param string $orderId The ID of the order.
+     * @param int $tableNum The table number associated with the order.
+     * @return string The SVG representation of the QR code.
+     */
     protected function generateQRcode($orderId, $tableNum) {
+        // Code sourced from https://github.com/chillerlan/php-qrcode/blob/main/examples/svg.php
 
         $baseUrl= getenv('app.baseURL');
         $data = $baseUrl . '/onlineorder' . '/' .  $orderId . '/' . $tableNum;
@@ -76,22 +89,22 @@ class QrCodeGenerateController extends Controller
         return $out;
     }
 
+    /**
+     * Generates a QR code element for the given order ID and table number.
+     *
+     * This method invokes the `generateQRcode` function to create a QR code SVG representation
+     * based on the provided order ID and table number.
+     * It then returns the SVG element as a string.
+     *
+     * @param string $orderId The ID of the order.
+     * @param int $tableNum The table number associated with the order.
+     * @return string The SVG element representing the QR code.
+     */
     public function generate($orderId, $tableNum)
     {
         $element = $this->generateQRcode($orderId, $tableNum);
         return $element;
 
-        // if ($file->isValid() && !$file->hasMoved()) {
-        //     $newName = $file->getRandomName();
-        //     $file->move(WRITEPATH . 'uploads', $newName);
-
-
-        //     // Store the file information in the database or perform other operations
-
-        //     return $this->response->setJSON(['data' => $newName]);
-        // } else {
-        //     return $this->response->setJSON(['success' => false, 'message' => 'File too big']);
-        // }
     }
     
 }

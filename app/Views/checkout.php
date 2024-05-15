@@ -23,7 +23,7 @@
                   <section class="form-control">
                      <label class="label cursor-pointer">
                            <span class="label-text">Card</span> 
-                           <input type="radio" name="payment_type" value="card" class="radio radio-accent" checked aria-checked="true">
+                           <input type="radio" name="payment_type" value="card" class="radio radio-accent">
                      </label>
                   </section>
                   <section class="form-control">
@@ -163,7 +163,6 @@
                      order_id: resultedOrder.id,
                      menu_item_id: item.menu_item_id,
                      quantity: item.quantity,
-                     note: null
                   }
 
                   await add('order_items', data)

@@ -9,18 +9,21 @@ class DietPrefItems extends ResourceController
     use ResponseTrait;
 
     /**
-     * Handle GET requests to list education entries or filter by user_id.
+     * Handle GET requests to list Dietary Preference Item entries or filter by user_id.
      */
     public function index()
     {
         $model = new \App\Models\DietaryPrefItemModel();
 
-        // Retrieve 'user_id' from query parameters if provided.
+        // Retrieve 'diet_pr_id' from query parameters if provided.
         $diet_pr_id = $this->request->getGet('diet_pr_id');
+        // Retrieve 'item_id' from query parameters if provided.
         $item_id = $this->request->getGet('item_id');
 
-        // Filter the data by user_id if provided, otherwise retrieve all entries.
+        // Filter the data by item_id if provided, otherwise retrieve all entries.
         $data = $item_id ? $model->where('item_id', $item_id)->findAll() : $model->findAll();
+        
+        // Filter the data by diet_pr_id if provided, otherwise retrieve all entries.
         $data = $diet_pr_id ? $model->where('diet_pr_id', $diet_pr_id)->findAll() : $model->findAll();
 
         // Use HTTP 200 to return data.
@@ -31,7 +34,7 @@ class DietPrefItems extends ResourceController
     {
         $model = new \App\Models\DietaryPrefItemModel();
 
-        // Attempt to retrieve the specific education entry by ID.
+        // Attempt to retrieve the specific Dietary Preference Item by ID.
         $data = $model->where('item_id', $item_id)->findAll();
 
         // Check if data was found.
@@ -39,13 +42,13 @@ class DietPrefItems extends ResourceController
             return $this->respond($data);
         } else {
             // Return a 404 error if no data is found.
-            return $this->failNotFound("No Education entry found with ID: {$id}");
+            return $this->failNotFound("No Dietary Preference Item found with ID: {$id}");
         }
         
     }
 
     /**
-     * Handle POST requests to create a new education entry.
+     * Handle POST requests to create a new Dietary Preference Item.
      */
     public function create()
     {
@@ -59,16 +62,10 @@ class DietPrefItems extends ResourceController
 
         // Insert data and check for success.
         $inserted = $model->insert($data);
-        // inserted is 0 when successful??
-        // if ($inserted) {
-        //     return $this->respondCreated($data, 'User data created successfully.');
-        // } else {
-        //     return $this->failServerError('Failed to create user data.');
-        // }
     }
 
     /**
-     * Handle PUT requests to update an existing education entry by its ID.
+     * Handle PUT requests to update an existing Dietary Preference Item by its ID.
      */
     public function update($id = null)
     {
@@ -78,7 +75,7 @@ class DietPrefItems extends ResourceController
 
         // Check if the record exists before attempting update.
         if (!$model->where('item_id', $id)->findAll()) {
-            return $this->failNotFound("No Users entry found with ID: {$id}");
+            return $this->failNotFound("No Dietary Preference Item entry found with ID: {$id}");
         }
 
         // Update the record and handle the response.
@@ -86,9 +83,9 @@ class DietPrefItems extends ResourceController
         ->where('item_id', $id)
         ->set(['diet_pr_id' => $data['diet_pr_id']])
         ->update()) {
-            return $this->respondUpdated($data, 'User data updated successfully.');
+            return $this->respondUpdated($data, 'Dietary Preference Item entry updated successfully.');
         } else {
-            return $this->failServerError('Failed to update user data.');
+            return $this->failServerError('Failed to update Dietary Preference Item entry.');
         }
     }
 

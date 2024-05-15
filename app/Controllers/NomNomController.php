@@ -114,7 +114,9 @@ class NomNomController extends BaseController
      *                      Otherwise, it's editing an existing menu
      * @param int|null $step The current step of the menu creation process (optional).
      *                 When $step is null, the process is in step 1
-     * @return View Returns the menu add/edit view with the needed data
+     * @return View|\CodeIgniter\HTTP\RedirectResponse  
+     *          Returns the menu add/edit view with the needed data
+     *          OR Redirects to the home page with a success message.
      **/
     public function menu_addedit($menuId = null, $step = null)
     {
@@ -152,9 +154,11 @@ class NomNomController extends BaseController
      *
      * @param int $menuId The ID of the menu to display.
      * @param int $tableNumber The table number associated with the customer view.
-     * @return View Returns the digital menu view for customer 
+     * @return View|\CodeIgniter\HTTP\RedirectResponse  
+     *       Returns the digital menu view for customer 
      *              or redirect to NomNomNow's landing page when the needed
      *              parameters are not defined
+     *       OR Redirects to the homepage
      */
     public function customer_view($menuId, $tableNumber) {
         $menuModel = new \App\Models\MenuModel();

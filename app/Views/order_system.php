@@ -47,6 +47,9 @@
 
 <script>
     let orderItemTemplate;
+
+    let todayDate = new Date();
+    todayDate.setHours(00,00);
     
     window.onload = () => {
         orderItemTemplate = document.querySelector("#order-item");
@@ -70,6 +73,10 @@
 
         // get all orders
         let orders = await get('orders').catch(err => console.log("An error occurred when fetching orders"));
+        orders = orders.filter(order => {
+            let orderDate = new Date(order.order_at);
+            return todayDate < orderDate;
+        })
 
         let orderItems = await get('order_items').catch(err => console.log("An error occurred when fetching order items"));
         orderItems = orderItems.filter(item => menuItemIds.includes(item.menu_item_id))

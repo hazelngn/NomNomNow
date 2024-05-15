@@ -8,17 +8,17 @@ class Menus extends ResourceController
     use ResponseTrait;
 
     /**
-     * Handle GET requests to list education entries or filter by user_id.
+     * Handle GET requests to list menu entries or filter by menu_id.
      */
     public function index()
     {
         $model = new \App\Models\MenuModel();
 
-        // Retrieve 'user_id' from query parameters if provided.
+        // Retrieve 'menu_id' from query parameters if provided.
         $menuId = $this->request->getGet('menu_id');
         $page = $this->request->getGet('page')??1;
 
-        // Filter the data by user_id if provided, otherwise retrieve all entries.
+        // Filter the data by menu_id if provided, otherwise retrieve all entries.
         $data = $menuId ? $model->find($menuId) : $model->paginate(3, 'default', $page);
         if ($page > $model->pager->getPageCount()) {
             $data = [];
@@ -29,13 +29,13 @@ class Menus extends ResourceController
     }
 
     /**
-     * Handle GET requests to retrieve a single education entry by its ID.
+     * Handle GET requests to retrieve a single menu entry by its ID.
      */
     public function show($id = null)
     {
         $model = new \App\Models\MenuModel();
 
-        // Attempt to retrieve the specific education entry by ID.
+        // Attempt to retrieve the specific menu entry by ID.
         $data = $model->find($id);
 
         // Check if data was found.
@@ -43,13 +43,13 @@ class Menus extends ResourceController
             return $this->respond($data);
         } else {
             // Return a 404 error if no data is found.
-            return $this->failNotFound("No Education entry found with ID: {$id}");
+            return $this->failNotFound("No menu entry found with ID: {$id}");
         }
         
     }
 
     /**
-     * Handle POST requests to create a new education entry.
+     * Handle POST requests to create a new menu entry.
      */
     public function create()
     {
@@ -66,14 +66,14 @@ class Menus extends ResourceController
         $id = $model->getInsertID();
         $data = $model->find($id);
         if ($inserted) {
-            return $this->respondCreated($data, 'User data created successfully.');
+            return $this->respondCreated($data, 'menu entry created successfully.');
         } else {
-            return $this->failServerError('Failed to create user data.');
+            return $this->failServerError('Failed to create menu entry.');
         }
     }
 
     /**
-     * Handle PUT requests to update an existing education entry by its ID.
+     * Handle PUT requests to update an existing menu entry by its ID.
      */
     public function update($id = null)
     {
@@ -82,19 +82,19 @@ class Menus extends ResourceController
 
         // Check if the record exists before attempting update.
         if (!$model->find($id)) {
-            return $this->failNotFound("No Users entry found with ID: {$id}");
+            return $this->failNotFound("No Menu entry found with ID: {$id}");
         }
 
         // Update the record and handle the response.
         if ($model->update($id, $data)) {
-            return $this->respondUpdated($data, 'User data updated successfully.');
+            return $this->respondUpdated($data, 'menu entry updated successfully.');
         } else {
-            return $this->failServerError('Failed to update user data.');
+            return $this->failServerError('Failed to update menu entry.');
         }
     }
 
     /**
-     * Handle DELETE requests to remove an existing education entry by its ID.
+     * Handle DELETE requests to remove an existing menu entry by its ID.
      */
     public function delete($id = null)
     {
@@ -102,14 +102,14 @@ class Menus extends ResourceController
 
         // Check if the record exists before attempting deletion.
         if (!$model->find($id)) {
-            return $this->failNotFound("No Users entry found with ID: {$id}");
+            return $this->failNotFound("No Menu entry found with ID: {$id}");
         }
 
         // Attempt to delete the record.
         if ($model->delete($id)) {
-            return $this->respondDeleted(['id' => $id, 'message' => 'User data deleted successfully.']);
+            return $this->respondDeleted(['id' => $id, 'message' => 'menu entry deleted successfully.']);
         } else {
-            return $this->failServerError('Failed to delete user data.');
+            return $this->failServerError('Failed to delete menu entry.');
         }
     }
 }

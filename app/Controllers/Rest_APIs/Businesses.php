@@ -9,7 +9,7 @@ class Businesses extends ResourceController
     use ResponseTrait;
 
     /**
-     * Handle GET requests to list education entries or filter by user_id.
+     * Handle GET requests to business entries or filter by business_id.
      */
     public function index()
     {
@@ -26,17 +26,19 @@ class Businesses extends ResourceController
     }
 
     /**
-     * Handle GET requests to retrieve a single education entry by its ID.
+     * Handle GET requests to retrieve a single business entry by its ID.
      */
     public function show($id = null)
     {
         $model = new \App\Models\BusinessModel();
 
-        // Attempt to retrieve the specific education entry by ID.
+        // Attempt to retrieve the specific Business entry by ID.
         $data = $model->find($id);
 
         // Check if data was found.
         if ($data) {
+            // Since only file name is stored in the database, this block
+            // reads the file and pass it as base64
             if ($data['logo']) {
                 $imagePath = WRITEPATH . 'uploads/' . $data['logo'];
                 $data['logoURL'] = $data['logo'];
@@ -45,13 +47,13 @@ class Businesses extends ResourceController
             return $this->respond($data);
         } else {
             // Return a 404 error if no data is found.
-            return $this->failNotFound("No Education entry found with ID: {$id}");
+            return $this->failNotFound("No Business entry found with ID: {$id}");
         }
         
     }
 
     /**
-     * Handle POST requests to create a new education entry.
+     * Handle POST requests to create a new Business entry.
      */
     public function create()
     {
@@ -68,14 +70,14 @@ class Businesses extends ResourceController
         if ($inserted) {
             $id = $model->getInsertID();
             $data = $model->find($id);
-            return $this->respondCreated($data, 'User data created successfully.');
+            return $this->respondCreated($data, 'Business entry created successfully.');
         } else {
-            return $this->failServerError('Failed to create user data.');
+            return $this->failServerError('Failed to create Business entry.');
         }
     }
 
     /**
-     * Handle PUT requests to update an existing education entry by its ID.
+     * Handle PUT requests to update an existing Business entry by its ID.
      */
     public function update($id = null)
     {
@@ -84,19 +86,19 @@ class Businesses extends ResourceController
 
         // Check if the record exists before attempting update.
         if (!$model->find($id)) {
-            return $this->failNotFound("No Users entry found with ID: {$id}");
+            return $this->failNotFound("No Business entry found with ID: {$id}");
         }
 
         // Update the record and handle the response.
         if ($model->update($id, $data)) {
-            return $this->respondUpdated($data, 'User data updated successfully.');
+            return $this->respondUpdated($data, 'Business entry updated successfully.');
         } else {
-            return $this->failServerError('Failed to update user data.');
+            return $this->failServerError('Failed to update Business entry.');
         }
     }
 
     /**
-     * Handle DELETE requests to remove an existing education entry by its ID.
+     * Handle DELETE requests to remove an existing Business entry by its ID.
      */
     public function delete($id = null)
     {
@@ -109,9 +111,9 @@ class Businesses extends ResourceController
 
         // Attempt to delete the record.
         if ($model->delete($id)) {
-            return $this->respondDeleted(['id' => $id, 'message' => 'User data deleted successfully.']);
+            return $this->respondDeleted(['id' => $id, 'message' => 'Business entry deleted successfully.']);
         } else {
-            return $this->failServerError('Failed to delete user data.');
+            return $this->failServerError('Failed to delete Business entry.');
         }
     }
 }
