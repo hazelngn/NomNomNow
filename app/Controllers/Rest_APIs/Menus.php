@@ -16,11 +16,24 @@ class Menus extends ResourceController
 
         // Retrieve 'menu_id' from query parameters if provided.
         $menuId = $this->request->getGet('menu_id');
-        $page = $this->request->getGet('page')??1;
+        $page = $this->request->getGet('page');
+
+        // Retrieve 'business_id' from query parameters if provided.
+        $businessId = $this->request->getGet('business_id');
 
         // Filter the data by menu_id if provided, otherwise retrieve all entries.
-        $data = $menuId ? $model->find($menuId) : $model->paginate(3, 'default', $page);
-        if ($page > $model->pager->getPageCount()) {
+        if ($page) {
+            $data = $model->paginate(3, 'default', $page);
+        } else {
+            // return all items when it is not paginated
+            $data = $menuId ? $model->find($menuId) : $model->findAll();
+        }
+        
+        if ($businessId){
+            $data = $model->where('business_id', $businessId)->paginate(3, 'default', $page);
+        }
+        
+        if ($page && $page > $model->pager->getPageCount()) {
             $data = [];
         }
 

@@ -121,6 +121,7 @@
         async function renderMenus() {
             const menusContainer = document.querySelector("#menus_container>section");
             const businessMenus = await get('menus', null, pageNum, <?= esc($business['id']) ?>).catch(err => console.log("An error occurred when fetching menus. Error: ", err));
+            console.log(businessMenus)
 
             if (businessMenus.length == 0) {
                 // When the page required goes over the total number

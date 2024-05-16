@@ -101,12 +101,6 @@ class Users extends ResourceController
         // Update the record and handle the response.
         if ($model->update($id, $data)) {
             $data = $model->find($id);
-            // if (sesison()->get('userId') == $id) {
-            //     // session()->set([
-            //     //     'usertype' => $data['usertype']
-            //     // ]);
-            //     log_mesasge('info', 'usertype: '. sesison()->get('usertype'));
-            // }
             return $this->respondUpdated($data, 'User entry updated successfully.');
         } else {
             return $this->failServerError('Failed to update User entry.');

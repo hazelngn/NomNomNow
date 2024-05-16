@@ -92,7 +92,7 @@
                                             <a href="<?= base_url("login") ?>">Login</a>
                                         </li>
                                         <li class="text-sm md:text-md lg:text-lg hover:bg-accent hover:text-base-100 hover:rounded-md" role="menuitem">
-                                            <a href="<?= base_url("signup") ?>">Sign Up</a>
+                                            <a href="#">Sign Up</a>
                                         </li>
                                     <?php endif; ?>
                                 </ul>

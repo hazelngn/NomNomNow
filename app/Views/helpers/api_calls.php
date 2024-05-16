@@ -15,6 +15,7 @@
         let pagedUrl = pageNum ? `${url}?page=${pageNum}` : url;
         // Only returns the one with that business_id
         pagedUrl = businessId ? `${pagedUrl}&business_id=${businessId}` : pagedUrl;
+
         let result = [];
 
         await fetch(pagedUrl, {

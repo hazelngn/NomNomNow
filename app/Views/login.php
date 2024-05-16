@@ -18,7 +18,7 @@
                 <section class="flex flex-col">
                     <input type="submit" class="p-2 btn btn-accent" value="Sign In" aria-label="Sign In button">
                     <section class="mt-4">
-                        <p>Don't have an account? <a href="<?= base_url("signup") ?>" class="text-accent font-bold" aria-label="Sign Up button">Sign Up</a></p>
+                        <p>Don't have an account? <a href="#" class="text-accent font-bold" aria-label="Sign Up button">Sign Up</a></p>
                     </section>
                 </section>
                 <section class="flex flex-col">
