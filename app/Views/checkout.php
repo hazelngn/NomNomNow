@@ -145,9 +145,12 @@
          let orderItems = <?= session()->get('order_items') ?>;
          details = orderItems.find(item => 'menuId' in item);
          orderItems = orderItems.filter(item => 'menu_item_id' in item);
+         
 
          if (customerDetails.reportValidity()) {
                const formData = new FormData(customerDetails);
+               // Append csrf to form
+
                const userDetails = Object.fromEntries(formData.entries());
                const payment_type = userDetails.payment_type;
                const status = userDetails.status;
@@ -155,23 +158,28 @@
                const totalPrice = total.innerText;
                
                // Add a new customer to the database to get customer_id
-               const customer = await add('customers', userDetails);
+               // const customer = await add('customers', userDetails);
+               // console.log("customer", customer)
 
+               // console.log("order hash", csrfHash)
                const order = {
-                  customer_id: customer.id,
+                  // customer_id: customer.id,
+                  customer_id: 55,
                   payment_type: payment_type,
                   table_num: <?= $tableNum ?>,
                   status: status,
                   order_at: new Date().toISOString(),
-                  total: totalPrice
+                  total: totalPrice,
                }
 
+               console.log(order)
                const resultedOrder = await add('orders', order);
 
                // Once we have order ID, add each item to order_items table
                orderItems.forEach(async item => {
                   const data = {
                      order_id: resultedOrder.id,
+                     // order_id: 34,
                      menu_item_id: item.menu_item_id,
                      quantity: item.quantity,
                   }
@@ -184,10 +192,10 @@
                // Display success message and navigate to the menu after 2 seconds
                orderSuccess.showModal();
 
-               setTimeout(() => {
-                  <?php session()->remove(['order_items']); ?>
-                  location.replace(`<?= base_url("onlineorder/")?>${details.menuId}/<?= $tableNum ?>`)
-               }, 2000);
+               // setTimeout(() => {
+               //    <?php session()->remove(['order_items']); ?>
+               //    location.replace(`<?= base_url("onlineorder/")?>${details.menuId}/<?= $tableNum ?>`)
+               // }, 2000);
 
          } else {
                return;

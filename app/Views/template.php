@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token-name" content="<?= csrf_token() ?>">
+    <meta name="csrf-token-value" content="<?= csrf_hash() ?>">
     <title>NomNomNow</title>
     <link href="https://cdn.jsdelivr.net/npm/daisyui@4.9.0/dist/full.min.css" rel="stylesheet" type="text/css" />
     <style>
@@ -127,8 +129,13 @@
 
     <script src="https://kit.fontawesome.com/fbc01cbf45.js" crossorigin="anonymous"></script>
     <script>
+        let csrfName = document.querySelector('meta[name="csrf-token-name"]').getAttribute('content'); // CSRF Token name
+        let csrfHash = document.querySelector('meta[name="csrf-token-value"]').getAttribute('content'); // CSRF hash
+
         const smallScreenSize = window.matchMedia("(max-width: 768px)");
         const stepElements = document.getElementsByClassName("steps");
+        const individualSteps = document.querySelectorAll(".step>span");
+        console.log(individualSteps)
         const businessId =  "<?= isset($business['id']) ? esc($business['id']) : null ?>";
         const customer_view = "<?= isset($customer_view) ?  esc($customer_view) : null ?>";
 
@@ -138,7 +145,11 @@
         if (window.innerWidth > 768) {
             /* the viewport is more than 600 pixels wide */
             for (let i = 0; i < stepElements.length; i++) {
-                stepElements[i].classList.remove("steps-vertical")
+                stepElements[i].classList.remove("steps-vertical");
+            }
+
+            for (let i = 0; i < individualSteps.length; i++) {
+                individualSteps[i].classList.remove("hidden");
             }
         }
 
@@ -146,11 +157,20 @@
             if (e.matches) {
                 /* the viewport is 600 pixels wide or less */
                 for (let i = 0; i < stepElements.length; i++) {
-                    stepElements[i].classList.add("steps-vertical")
+                    stepElements[i].classList.add("steps-vertical");
+                }
+
+                for (let i = 0; i < individualSteps.length; i++) {
+                    individualSteps[i].classList.add("hidden");
                 }
             } else {
                 for (let i = 0; i < stepElements.length; i++) {
-                    stepElements[i].classList.remove("steps-vertical")
+                    stepElements[i].classList.remove("steps-vertical");
+                    individualSteps[i].classList.remove("hidden");
+                }
+
+                for (let i = 0; i < individualSteps.length; i++) {
+                    individualSteps[i].classList.remove("hidden");
                 }
             }
         };

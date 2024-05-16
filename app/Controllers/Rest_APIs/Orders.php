@@ -2,7 +2,6 @@
 
 use CodeIgniter\RESTful\ResourceController;
 use CodeIgniter\API\ResponseTrait;
-use App\Models\EducationModel;
 
 class Orders extends ResourceController
 {
@@ -69,7 +68,10 @@ class Orders extends ResourceController
         $id = $model->getInsertID();
         $data = $model->find($id);
         if ($inserted) {
-            return $this->respondCreated($data, 'Order entry created successfully.');
+            $response = $this->respondCreated($data, 'User entry created successfully.');
+            $response->setHeader(csrf_token(), csrf_hash());
+            return $response;
+            // return $this->respondCreated($data, 'Order entry created successfully.');
         } else {
             return $this->failServerError('Failed to create Order entry.');
         }

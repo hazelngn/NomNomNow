@@ -1,8 +1,8 @@
 <section id="main_content" class="flex flex-row mt-3 md:flex-col md:w-4/6 lg:flex-col lg:w-4/6 m-auto" aria-label="Menu Creation">
     <ul class="steps steps-vertical pl-5 overflow-hidden w-1/5 h-96 md:h-fit md:w-full md:mb-11 lg:w-full lg:mb-11" role="navigation" aria-label="Steps Navigation">
-        <li class="step <?= esc($step) >= 1 ? 'step-secondary' : '' ?>">Menu Overview</li>
-        <li class="step <?= esc($step) >= 2 ? 'step-secondary' : '' ?>">Adding Items</li>
-        <li class="step <?= esc($step) >= 3 ? 'step-secondary' : '' ?>">Review</li>
+        <li class="step <?= esc($step) >= 1 ? 'step-secondary' : '' ?>"><span class="hidden">Menu Overview</span></li>
+        <li class="step <?= esc($step) >= 2 ? 'step-secondary' : '' ?>"><span class="hidden">Adding Items</span></li>
+        <li class="step <?= esc($step) >= 3 ? 'step-secondary' : '' ?>"><span class="hidden">Review</span></li>
     </ul>
     <section id="menu_creation" class="w-4/5 m-auto lg:w-10/12" aria-labelledby="menuCreationTitle">
         <section class="flex flex-col justify-between mb-3">

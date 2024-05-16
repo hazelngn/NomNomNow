@@ -60,11 +60,20 @@
 
         await fetch(url, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                [csrfName]: csrfHash
+            },
             body: JSON.stringify(data)
         })
         .then(response => {
             if (response.ok) {
+                const newCsrfHash = response.headers.get(csrfName);
+                if (newCsrfHash) {
+                    console.log("new hash", newCsrfHash)
+                    csrfHash = newCsrfHash;
+                    document.querySelector('meta[name="csrf-token-value"]').setAttribute('content', csrfHash);
+                }
                 return response.json()
             }
         })

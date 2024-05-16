@@ -308,7 +308,7 @@
      * After successful submission, redirects the user to the checkout page.
      */
     async function checkout() {
-        const data = [
+        let data = [
             // Construct the needed IDs for the controller
             {
                 menuId: <?= $menu['id'] ?>,
@@ -317,6 +317,13 @@
             },
             ...orderItems,
         ]
+
+        // Build the data object that contains csrf
+        data = {
+            "<?= csrf_token() ?>": "<?= csrf_hash() ?>",
+            content: data
+        }
+
 
         if (orderItems.length > 0) {
             await fetch("<?= base_url("checkout") ?>", {

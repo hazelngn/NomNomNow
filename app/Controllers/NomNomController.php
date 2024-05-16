@@ -96,6 +96,10 @@ class NomNomController extends BaseController
 
         $menu = $menuModel->find($menuId);
 
+        if ($menu['business_id'] != $business['id']) {
+            return redirect()->to("/");
+        }
+
         // menu_viewing = TRUE disables the ability to edit/ delete menu items.
         $data['menu_viewing'] = TRUE;
         $data['menu'] = $menu;
@@ -134,6 +138,9 @@ class NomNomController extends BaseController
         if ($menuId != null) {
             $menu = $menuModel->find($menuId);
             $data['menu'] = $menu;
+            if ($menu['business_id'] != $business['id']) {
+                return redirect()->to("/");
+            }
         }
 
         $data['step'] = $step == null ?  1 : ( intval($step) > 4 ? 1 : intval($step) );
@@ -251,6 +258,8 @@ class NomNomController extends BaseController
 
         if ($this->session->get('order_items')) {
             $orderItems = json_decode($this->session->get('order_items'), true);
+            $orderItems = $orderItems['content'];
+            $this->session->set(['order_items' => json_encode($orderItems)]);
             // Retrieve needed data for the models
             foreach($orderItems as $item) {
                 if (isset($item['menuId'])) {
