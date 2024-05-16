@@ -92,7 +92,7 @@ class Auth extends BaseController
         } else if (session()->get('usertype') == 'staff') {
             return redirect()->to('/ordersystem');
         } else {
-            if (isset($newUser)) { 
+            if (isset($newUser) || !$user['business_id']) { 
                 return redirect()->to('business_signup');
             } 
             return redirect()->to('/' . session()->get('userId') . '/');

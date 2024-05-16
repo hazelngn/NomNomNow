@@ -42,7 +42,7 @@
                     >NomNomNow</a>
                 <?php else: ?>
                     <a 
-                        class="btn btn-ghost text-3xl font-header" 
+                        class="btn btn-ghost text-3xl font-header h-fit w-11/12 md:w-fit" 
                         href="<?= base_url("onlineorder/") . $menu['id']. '/' . $tableNum ?>"
                         aria-label="Name of the business"
                     ><?=esc($business['name']) ?></a>
@@ -50,6 +50,17 @@
             </section>
             <?php if (!isset($customer_view) && !isset($checkout)): ?>
                 <section class="flex-none">
+                    <?php if (session()->get('isLoggedIn') && isset($business)) : ?>
+                        <?php if (esc(session()->get('usertype')) != 'staff'): ?>
+                            <section>
+                                <a 
+                                    href="<?= base_url("admin/" . esc(session()->get('userId'))) ?>"                                     
+                                    class="btn btn-accent"
+                                    aria-label="Navigate to the admin page"
+                                >Admin page</a>
+                            </section>
+                        <?php endif; ?>
+                    <?php endif; ?>
                     <ul class="menu menu-horizontal px-1">
                         <li>
                             <details>
@@ -57,15 +68,7 @@
                                     <!-- check admin to make it easier for testing, IRL admin wouldn't have a business -->
                                     <?php if (session()->get('isLoggedIn')) : ?>
                                         <?php  if (isset($business)): ?>
-                                            <?php if (esc(session()->get('usertype')) != 'staff'): ?>
-                                                <section>
-                                                    <a 
-                                                        href="<?= base_url("admin/" . esc(session()->get('userId'))) ?>"                                     
-                                                        class="btn btn-accent"
-                                                        aria-label="Navigate to the admin page"
-                                                    >Admin page</a>
-                                                </section>
-                                            <?php endif; ?>
+                                           
                                             <section tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                                                 <section class="w-10 rounded-full">
                                                     <img 
@@ -102,7 +105,7 @@
                 </section>
             <?php elseif (!isset($checkout)): ?>
                 <section class="indicator mr-4" aria-label="Shopping Cart Indicator">
-                    <span class="indicator-item badge badge-accent badge-sm md:badge-sm" id="totalQuantity">0</span> 
+                    <span class="indicator-item badge badge-accent badge-sm md:badge-sm" id="totalQuantity">0</span>
                     <button onclick="showCart()" aria-label="Open Cart">
                         <i class="text-2xl fa-solid fa-cart-shopping md:text-3xl"></i>
                     </button>
