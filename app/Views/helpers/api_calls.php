@@ -1,10 +1,19 @@
 <script>
-    // name: table to fetch from
+    /**
+     * Fetches data from a specified table.
+     * 
+     * @param {string} name - The name of the table to fetch from.
+     * @param {number} [id] - The ID of the item to fetch. If not provided, fetches all items.
+     * @param {number} [pageNum] - The page number for pagination.
+     * @param {number} [businessId] - The ID of the business to filter by.
+     * @returns {Promise<Array|Object>} - The fetched data.
+     */
     async function get(name, id, pageNum, businessId) {
         const baseUrl = `<?= base_url(); ?>/${name}`
         const url = id ? `${baseUrl}/${id}` : baseUrl;
+        // Handle thepage for pagination
         let pagedUrl = pageNum ? `${url}?page=${pageNum}` : url;
-        // possible security concerns
+        // Only returns the one with that business_id
         pagedUrl = businessId ? `${pagedUrl}&business_id=${businessId}` : pagedUrl;
         let result = [];
 
@@ -28,6 +37,13 @@
         return result
     }
 
+    /**
+     * Updates an item in a specified table.
+     * 
+     * @param {string} name - The name of the table to update.
+     * @param {Object} data - The data to update, including the item ID.
+     * @returns {Promise<Object>} - The updated data.
+     */
     async function update(name, data) {
         const url = `<?= base_url(); ?>/${name}/${data.id}`;
         let result = undefined;
@@ -54,6 +70,13 @@
         return result
     }
 
+    /**
+     * Adds a new item to a specified table.
+     * 
+     * @param {string} name - The name of the table to add to.
+     * @param {Object} data - The data of the new item to add.
+     * @returns {Promise<Object>} - The added data.
+     */
     async function add(name, data) {
         const url = `<?= base_url(); ?>/${name}`;
         let result = undefined;
@@ -89,6 +112,13 @@
         return result
     }
 
+    /**
+     * Deletes an item from a specified table.
+     * 
+     * @param {string} name - The name of the table to delete from.
+     * @param {number} id - The ID of the item to delete.
+     * @returns {Promise<Object>} - The deleted data.
+     */
     async function deleteItem(name, id) {
         const url = `<?= base_url(); ?>/${name}/${id}`;
         let result = undefined;

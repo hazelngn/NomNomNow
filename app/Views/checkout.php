@@ -158,13 +158,12 @@
                const totalPrice = total.innerText;
                
                // Add a new customer to the database to get customer_id
-               // const customer = await add('customers', userDetails);
-               // console.log("customer", customer)
+               const customer = await add('customers', userDetails);
+               console.log("customer", customer)
 
                // console.log("order hash", csrfHash)
                const order = {
-                  // customer_id: customer.id,
-                  customer_id: 55,
+                  customer_id: customer.id,
                   payment_type: payment_type,
                   table_num: <?= $tableNum ?>,
                   status: status,
@@ -179,7 +178,6 @@
                orderItems.forEach(async item => {
                   const data = {
                      order_id: resultedOrder.id,
-                     // order_id: 34,
                      menu_item_id: item.menu_item_id,
                      quantity: item.quantity,
                   }
@@ -192,10 +190,10 @@
                // Display success message and navigate to the menu after 2 seconds
                orderSuccess.showModal();
 
-               // setTimeout(() => {
-               //    <?php session()->remove(['order_items']); ?>
-               //    location.replace(`<?= base_url("onlineorder/")?>${details.menuId}/<?= $tableNum ?>`)
-               // }, 2000);
+               setTimeout(() => {
+                  <?php session()->remove(['order_items']); ?>
+                  location.replace(`<?= base_url("onlineorder/")?>${details.menuId}/<?= $tableNum ?>`)
+               }, 2000);
 
          } else {
                return;

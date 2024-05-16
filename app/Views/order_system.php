@@ -48,8 +48,8 @@
 <script>
     let orderItemTemplate;
 
-    // let todayDate = new Date();
-    // todayDate.setHours(00,00);
+    let todayDate = new Date();
+    todayDate.setHours(00,00);
     
     // Waiting for all PHP files are loaded before calling the functions
     window.onload = () => {
@@ -83,10 +83,10 @@
 
         // Fetch all orders placed today from 00:00
         let orders = await get('orders').catch(err => console.log("An error occurred when fetching orders"));
-        // orders = orders.filter(order => {
-        //     let orderDate = new Date(order.order_at);
-        //     return todayDate < orderDate;
-        // })
+        orders = orders.filter(order => {
+            let orderDate = new Date(order.order_at);
+            return todayDate < orderDate;
+        })
 
         let orderItems = await get('order_items').catch(err => console.log("An error occurred when fetching order items"));
         // Fetch all the order items that it the items in the current menus

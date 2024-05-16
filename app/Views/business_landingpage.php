@@ -120,19 +120,17 @@
          */
         async function renderMenus() {
             const menusContainer = document.querySelector("#menus_container>section");
-            const menus = await get('menus', null, pageNum).catch(err => console.log("An error occurred when fetching menus. Error: ", err));
+            const businessMenus = await get('menus', null, pageNum, <?= esc($business['id']) ?>).catch(err => console.log("An error occurred when fetching menus. Error: ", err));
 
-            if (menus.length == 0) {
+            if (businessMenus.length == 0) {
                 // When the page required goes over the total number
                 // of page available
                 pageNum -= 1;
                 return;
             }
 
-            if (menus) {
+            if (businessMenus) {
                 menusContainer.innerHTML = "";
-                const businessMenus = menus.filter(menu => menu.business_id == <?= $business['id'] ?>)
-                console.log(businessMenus)
 
                 // Populate the menu exists
                 businessMenus.forEach(menu => {

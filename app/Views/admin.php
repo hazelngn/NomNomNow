@@ -221,7 +221,7 @@
                 header.innerText = "Edit";
                 const phone = `<section class="flex flex-col gap-2">
                     <label class="font-bold" for="phone">Phone</label>
-                    <input type="tel" name="phone" id="phone" class="p-2 rounded-lg" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
+                    <input type="tel" name="phone" id="phone" class="p-2 rounded-lg" placeholder="123-45-678" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required value=${user.phone}>
                 </section>`
                 businessName.insertAdjacentHTML("afterend", phone);;
 
