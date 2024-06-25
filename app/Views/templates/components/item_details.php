@@ -29,8 +29,6 @@
                     <p id="ingre" class="text-accent" aria-label="Ingredients">Ingredients</p>
                     
                     <?php if (isset($customer_view)): ?>
-                        <!-- <label for="notes" class="text-accent" >Notes to staffs:</label>
-                        <textarea name="notes" id="notes" class="textarea textarea-accent" ></textarea> -->
                         <button id="addCartBtn" class="btn btn-accent btn-sm mt-2 md:btn-md" aria-label="Update Cart">Update cart</button>
                     <?php endif; ?>
                 </section>

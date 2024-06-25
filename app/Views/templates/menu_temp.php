@@ -1,6 +1,7 @@
  <!-- A template to view items in a menu (for business owner) and to order items (for customer) -->
 <section  id="loading" class="fixed left-0 w-full h-full flex justify-center bg-base-100 z-10"><span class="loading loading-spinner text-accent loading-lg"></span></section>
 <section>
+    <!-- Display all categories in a menu -->
     <div id="categories" class="flex flex-row flex-nowrap gap-1 pb-3 text-center justify-evenly overflow-scroll md:overflow-hidden">
         <template id="categoryTemplate">
             <div class="basis-1/5 md:basis-28 shrink-0 grow-0">
@@ -13,6 +14,7 @@
             </div>
         </template>
     </div>
+    <!-- Display the corresponding items based on category -->
     <section id="items" class="p-3 flex flex-col md:flex-row gap-3 flex-wrap md:w-4/6 m-auto">
         <template id="itemContainerTemplate">
             <div class="flex-col gap-4 hidden justify-evenly md:flex-row mt-5 flex-grow flex-wrap">

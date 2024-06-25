@@ -23,6 +23,7 @@
                         <!-- Users data will be here -->
 
                     </tbody>
+
                     <template id="userDetailsTemplate">
                         <tr class="flex flex-wrap mb-8 md:mb-11 lg:mb-0 w-10/12 m-auto lg:w-full lg:table-row">
                             <td class="hidden lg:table-cell">
@@ -47,10 +48,6 @@
             <button onclick="getNextPage()" class="join-item btn btn-outline btn-sm md:btn-md">Next</button>
         </section>
     </section>
-
-    <template id="childTemplate">
-        <p class="basis-1/12 grow-0">User ID</p>
-    </template>
 
     <?php include 'templates/admin_form.php'; ?>
 

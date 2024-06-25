@@ -19,6 +19,7 @@
                 </ul>
             </section>
         </section>
+
         <section class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12" role="tabpanel" aria-labelledby="business-info-heading">
             <input type="radio" name="my-accordion-2" id="business-info-accordion" /> 
             <section class="collapse-title text-xl font-medium flex flex-row gap-3 w-full" id="business-info-heading">
@@ -30,6 +31,7 @@
                 <?php include "templates/business_form.php"; ?>
             </section>
         </section>
+
         <section class="collapse collapse-arrow bg-base-200 lg:grow-0 lg:basis-5/12" role="tabpanel" aria-labelledby="qr-codes-heading">
             <input type="radio" name="my-accordion-2" id="qr-codes-accordion" /> 
             <section class="collapse-title text-xl font-medium flex flex-row gap-3 w-full" id="qr-codes-heading">
@@ -38,6 +40,7 @@
             </section>
             <section class="collapse-content bg-neutral"> 
                 <section class="pt-3 flex flex-col gap-5">
+
                     <?php if (isset($menus)): ?>
                         <section>
                             <label class="pt-3 font-bold" for="menuId">Choose menu to generate QR code</label>
@@ -62,12 +65,14 @@
                     <?php else: ?>
                         <p>No menus created.</p>
                     <?php endif; ?>
+
                 </section>
                 <section id="qr-codes">
                     <ul></ul>
                 </section>
             </section>
         </section>
+
         <section class="bg-base-200 lg:grow-0 lg:basis-5/12">
             <section class="collapse-title text-xl font-medium flex flex-row gap-3 w-full">
                 <i class="inline-block text-accent text-3xl fa-solid fa-gears"></i>
@@ -75,6 +80,7 @@
             </section>
         </section>
     </section>
+
     <section>
         <section class="container md:w-4/6 m-auto mt-11 md:text-md">
             <?php if (session()->getFlashdata('success')): ?>
@@ -88,6 +94,7 @@
             <?php endif; ?>
         </section>
     </section>
+    
     <!-- You can open the modal using ID.showModal() method -->
     <dialog id="qr" class="modal" aria-labelledby="qr-heading">
         <section class="modal-box p-10">

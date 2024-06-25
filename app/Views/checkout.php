@@ -6,18 +6,22 @@
       <section class="md:w-2/3">
          <form id="customerDetails" class="flex flex-col gap-2" role="form" >
                <h3 id="checkout-heading" class="text-accent text-xl md:text-2xl mb-2 font-bold">Continue as Guest</h3>
+
                <section class="flex flex-col gap-2">
                   <label for="name" class="text-accent">Your name</label>
                   <input type="text" id="name" name="name" class="p-2 rounded-lg bg-neutral" required aria-required="true">
                </section>
+
                <section class="flex flex-col gap-2">
                   <label for="email" class="text-accent">Your email address</label>
                   <input type="email" id="email" name="email" class="p-2 rounded-lg bg-neutral" required aria-required="true">
                </section>
+
                <section class="flex flex-col gap-2">
                   <label for="phone" class="text-accent">Your phone number</label>
                   <input type="tel" id="phone" name="phone" class="p-2 rounded-lg bg-neutral" required aria-required="true">
                </section>
+
                <section>
                   <h3 class="text-accent">Choose your payment type</h3>
                   <section class="form-control">
@@ -39,6 +43,7 @@
                      </label>
                   </section>
                </section>
+
                <input type="hidden" name="status" value="not started">
                <?= csrf_field() ?>
          </form>
@@ -73,6 +78,7 @@
                 </section>
             </template>
         </section>
+        
          <section class="flex flex-row items-center justify-between mt-5 gap-2">
                <p class="text-lg text-accent basis-1/2">Total: $<span id="total">0</span></p>
                <button onclick="submitOrder()" class="btn btn-accent basis-1/3">Submit</button>

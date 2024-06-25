@@ -8,7 +8,6 @@
             <input type="text" name="name" id="name" class="p-2 rounded-lg" required
                 value="<?= !isset($menu) ? '' : esc($menu['name']) ?>"
                 aria-labelledby="nameLabel"
-                
             >
         </div>
         <div class="flex flex-col gap-2">

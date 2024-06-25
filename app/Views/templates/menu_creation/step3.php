@@ -4,10 +4,7 @@
             Review menu <?= esc($menu['name']) ?>
         </h3>
         <section id="items">
-            <div role="tablist" class="tabs tabs-lifted mr-3">
-                <!-- colors -->
-                
-            </div>
+            <div role="tablist" class="tabs tabs-lifted mr-3"></div>
         </section>
     </section>
     

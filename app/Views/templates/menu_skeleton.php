@@ -4,6 +4,7 @@
         <li class="step <?= esc($step) >= 2 ? 'step-secondary' : '' ?>"><span class="hidden">Adding Items</span></li>
         <li class="step <?= esc($step) >= 3 ? 'step-secondary' : '' ?>"><span class="hidden">Review</span></li>
     </ul>
+    <!-- The content for each step -->
     <section id="menu_creation" class="w-4/5 m-auto lg:w-10/12" aria-labelledby="menuCreationTitle">
         <section class="flex flex-col justify-between mb-3">
         </section>
@@ -13,6 +14,9 @@
             <i id="nextBtn" class="text-accent text-3xl fa-solid fa-circle-arrow-right cursor-pointer" aria-label="Next Step"></i>
         </div>   
     </section>
+   
+
+    <!-- Load needed files at each step -->
     <?php 
         if (esc($step) == 1) {
             include "menu_creation/step1.php";
